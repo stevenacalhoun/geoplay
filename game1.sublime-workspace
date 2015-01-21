@@ -1,0 +1,1767 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"disp",
+				"displayLives"
+			],
+			[
+				"RECTANGLE",
+				"RECTANGLE_WIDTH"
+			],
+			[
+				"SCREE",
+				"SCREEN_HEIGHT"
+			],
+			[
+				"SCRE",
+				"SCREEN_WIDTH"
+			],
+			[
+				"re",
+				"removeLife〔function〕"
+			],
+			[
+				"MCSQ",
+				"MCSQUARE_HEIGHT"
+			],
+			[
+				"PLATFORM",
+				"PLATFORM_HEIGHT"
+			],
+			[
+				"u16",
+				"u16_CanId"
+			],
+			[
+				"u32_ca",
+				"u32_canData1"
+			],
+			[
+				"u8_boardI",
+				"u8_boardIndex"
+			],
+			[
+				"u8_board",
+				"u8_boardNum"
+			],
+			[
+				"u8_",
+				"u8_boardNum"
+			],
+			[
+				"u8_temp",
+				"u8_temp"
+			],
+			[
+				"u8_c",
+				"u8_countBoards"
+			],
+			[
+				"u16_msg_",
+				"u16_msg_id"
+			],
+			[
+				"DELY",
+				"DELAY_MS"
+			],
+			[
+				"hta",
+				"hTask_CANFactory"
+			],
+			[
+				"ESOS_TASK_WAIT",
+				"ESOS_TASK_WAIT_TICKS"
+			],
+			[
+				"__esos_is",
+				"__esos_IsSystemFlagSet"
+			],
+			[
+				"ECAN_MODE",
+				"ECAN_MODE_LISTEN_ONLY"
+			],
+			[
+				"embe",
+				"embedded_ecan_config"
+			],
+			[
+				"ESOS_WAIT_",
+				"ESOS_TASK_WAIT_TICKS"
+			],
+			[
+				"ESOS_TASK",
+				"ESOS_TASK_YIELD"
+			],
+			[
+				"ESOST",
+				"ESOS_TASK_END"
+			],
+			[
+				"CANMS",
+				"CAN_MSG_TYPE_SYNTH"
+			],
+			[
+				"ESOS",
+				"ESOS_TASK_BEGIN"
+			],
+			[
+				"SCons",
+				"SConstruct"
+			],
+			[
+				"Nom",
+				"NormalSupportLibSources"
+			],
+			[
+				"_DM",
+				"_DMA0IF"
+			],
+			[
+				"_D",
+				"_DMA1IF"
+			],
+			[
+				"f14",
+				"f14ui_toggleLED3"
+			],
+			[
+				"loo",
+				"loopback_test"
+			],
+			[
+				"pic2",
+				"pic24lib_all"
+			],
+			[
+				"ESOSTAKSWAIT",
+				"ESOS_TASK_WAIT_TICKS"
+			],
+			[
+				"u8_ch",
+				"u8_changed"
+			],
+			[
+				"waveForm",
+				"waveformType"
+			],
+			[
+				"f14ui_isR",
+				"f14ui_isRpgTurningFast"
+			],
+			[
+				"f14ui_isrpg",
+				"f14ui_isRpgTurningMedium"
+			],
+			[
+				"f14ui_isRpg",
+				"f14ui_isRpgTurningSlow"
+			],
+			[
+				"ESOS_WA",
+				"ESOS_TASK_WAIT_TICKS(1"
+			],
+			[
+				"u16_min",
+				"u16_minValue1"
+			],
+			[
+				"u16_minv",
+				"u16_minValue"
+			],
+			[
+				"psz_valu",
+				"psz_value2Title"
+			],
+			[
+				"psz_val",
+				"psz_value1Title"
+			],
+			[
+				"u16_maxva",
+				"u16_maxValue2"
+			],
+			[
+				"trun",
+				"f14ui_turnLED3Off"
+			],
+			[
+				"f14ui_turnLED1",
+				"f14ui_turnLED1Off"
+			],
+			[
+				"ESOS_TASKWAIT",
+				"ESOS_TASK_WAIT_TICKS"
+			],
+			[
+				"f14ui_isSw2",
+				"f14ui_isSW2Released"
+			],
+			[
+				"u8shif",
+				"u8_shiftDisplayRight"
+			],
+			[
+				"shif",
+				"u8_shiftDisplayRight"
+			],
+			[
+				"u8shi",
+				"u8_shiftDisplayRight"
+			],
+			[
+				"u8_sh",
+				"u8_shiftDisplayLeft"
+			],
+			[
+				"f14_isRpg",
+				"f14ui_isRpgTurningCW"
+			],
+			[
+				"psz_lin",
+				"psz_line1"
+			],
+			[
+				"pz",
+				"psz_line2"
+			],
+			[
+				"esoslcd_wri",
+				"esos_lcd_writeString"
+			],
+			[
+				"u8_tem",
+				"u8_tempSelectionIndex"
+			],
+			[
+				"esos",
+				"esos_lcd_writeChar"
+			],
+			[
+				"ESOSTASKWAITMN",
+				"ESOS_TASK_WAIT_MENU_MI"
+			],
+			[
+				"f14ui",
+				"f14ui_isSW1Pressed"
+			],
+			[
+				"u8sel",
+				"u8_selectionIndex"
+			],
+			[
+				"f",
+				"f14ui_isSW2Released"
+			],
+			[
+				"f14uiiss",
+				"f14ui_isSW1Released"
+			],
+			[
+				"esoslcdwrit",
+				"esos_lcd_writeChar"
+			],
+			[
+				"esostick",
+				"ESOS_TASK_WAIT_TICKS"
+			],
+			[
+				"u8",
+				"u8_tempSelection"
+			],
+			[
+				"rpg",
+				"f14ui_isRpgTurning"
+			],
+			[
+				"ESOSTASKWA",
+				"ESOS_TASK_WAIT_TICKS"
+			],
+			[
+				"u8_tempSel",
+				"u8_tempSelectionIndex"
+			],
+			[
+				"u8_te",
+				"u8_tempSelectionIndex"
+			],
+			[
+				"u8_selection",
+				"u8_selectionIndex"
+			],
+			[
+				"u8_sel",
+				"u8_selectionIndex"
+			],
+			[
+				"deci",
+				"decimal_to_string"
+			],
+			[
+				"esoslcdwir",
+				"esos_lcd_writeString"
+			],
+			[
+				"esoswir",
+				"esos_lcd_writeString"
+			],
+			[
+				"f14_isrpg",
+				"f14ui_isRpgTurningCCW"
+			],
+			[
+				"f14ui_isrp",
+				"f14ui_isRpgTurningCW"
+			],
+			[
+				"u16_va",
+				"u16_value"
+			],
+			[
+				"u16_temv",
+				"u16_tempValue1"
+			],
+			[
+				"f14ui_isSW3",
+				"f14ui_isSW3Pressed"
+			],
+			[
+				"pzs",
+				"psz_option2"
+			],
+			[
+				"pszop",
+				"psz_option2"
+			],
+			[
+				"psz_op",
+				"psz_option1"
+			],
+			[
+				"esos_lcdwr",
+				"esos_lcd_writeChar"
+			],
+			[
+				"pu8",
+				"pu8_cgTestBuffer"
+			],
+			[
+				"esosmen",
+				"esos_menu_SVTC"
+			],
+			[
+				"esos_wr",
+				"esos_lcd_writeString"
+			],
+			[
+				"esoslc",
+				"esos_lcd_writeString"
+			],
+			[
+				"ESOSTA",
+				"ESOS_TASK_END"
+			],
+			[
+				"u8_cha",
+				"u8_charSlot"
+			],
+			[
+				"au8",
+				"au8_characterNeedsWrite"
+			],
+			[
+				"esos_setcurs",
+				"esos_lcd_setCursorDisplay"
+			],
+			[
+				"COMMAND",
+				"COMMAND_CURSOR_RIGHT"
+			],
+			[
+				"esos_config",
+				"esos_lcd_configDisplay"
+			],
+			[
+				"esos_pic24_lcd",
+				"esos_pic24_init_lcd"
+			],
+			[
+				"display",
+				"display_test"
+			],
+			[
+				"ESOS_TAS",
+				"ESOS_TASK_WAIT_UNTIL"
+			],
+			[
+				"esoslcwr",
+				"esos_lcd_writeChar"
+			],
+			[
+				"u16_te",
+				"u16_tempBar"
+			],
+			[
+				"u8_char",
+				"u8_charsWritten"
+			],
+			[
+				"esossch",
+				"esos_lcd_setCustomChar"
+			],
+			[
+				"u8cg",
+				"u8_cgData"
+			],
+			[
+				"u8_cl",
+				"u8_column"
+			],
+			[
+				"esos_lcd_wri",
+				"esos_lcd_writeString"
+			],
+			[
+				"pu8_",
+				"pu8_addressNeedsWrite"
+			],
+			[
+				"u8_curre",
+				"u8_currentRow"
+			],
+			[
+				"st_f",
+				"st_f14lcd"
+			],
+			[
+				"u8_setc",
+				"u8_setCursorBlink"
+			],
+			[
+				"u8_ds",
+				"u8_displayVisible"
+			],
+			[
+				"u8_set",
+				"u8_setDisplayVisible"
+			],
+			[
+				"u8_curs",
+				"u8_cursor"
+			],
+			[
+				"esos_lcd_setcurso",
+				"esos_lcd_setCursorDisplay"
+			],
+			[
+				"u8_setC",
+				"u8_setCursorDisplay"
+			],
+			[
+				"u8_curso",
+				"u8_cursorDisplay"
+			],
+			[
+				"u8_cou",
+				"u8_counter2"
+			],
+			[
+				"childtas",
+				"childTaskLCDWriteCmd"
+			],
+			[
+				"u8_ro",
+				"u8_currentRow"
+			],
+			[
+				"ESOS_TAKS_WAITDAT",
+				"ESOS_TASK_WAIT_LCD_SET_DATA_ADDRESS"
+			],
+			[
+				"u8curr",
+				"u8_currentRow"
+			],
+			[
+				"total",
+				"totalGPA"
+			],
+			[
+				"read",
+				"readFileD"
+			],
+			[
+				"wr",
+				"writeFileD"
+			],
+			[
+				"file",
+				"file2"
+			],
+			[
+				"com",
+				"command"
+			],
+			[
+				"copy",
+				"copyCommand"
+			],
+			[
+				"in",
+				"interimReport"
+			],
+			[
+				"te",
+				"test4test"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "geometricPlay.py",
+			"settings":
+			{
+				"buffer_size": 15027,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "Searching 3 files for \"(0, 0, 0)\"\n\n/Volumes/Mac Media/Users/Steven/Documents/School/2015 Spring/Game Design/Game 1/geometricPlay.py:\n   52  \n   53      # Draw a ground\n   54:     ground = pygame.draw.rect(screen, BLACK, (0, GROUND_Y, SCREEN_WIDTH, GROUND_THICKNESS))\n   55  \n   56      # Get our square character and add him to the dynamic sprite group\n   ..\n  130          # Draw a simple black square\n  131          self.image = pygame.Surface((MCSQUARE_WIDTH, MCSQUARE_HEIGHT))\n  132:         self.image.fill((0, 0, 0))\n  133  \n  134          # Start him on the ground in the center of the screen\n  ...\n  249          # Simple rectangular image\n  250          self.image = pygame.Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))\n  251:         self.image.fill((0, 0, 0))\n  252  \n  253          # Position the platform by the passed in value\n  ...\n  263          # Draw a simple black rectangle\n  264          self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))\n  265:         self.image.fill((0, 0, 0))\n  266  \n  267          self.rect = self.image.get_rect()\n  ...\n  374  \n  375          # Draw a line to section off the hud\n  376:         pygame.draw.line(screen, (0, 0, 0), (0, HUD_HEIGHT), (SCREEN_WIDTH, HUD_HEIGHT))\n  377  \n  378      def addCharacter(self, character):\n  ...\n  381      def displayScore(self):\n  382          self.font = pygame.font.SysFont('monospace', SCORE_FONT_SIZE)\n  383:         self.label = self.font.render(str(self.score), 1, (0, 0, 0))\n  384          screen.blit(self.label, SCORE_POS)\n  385  \n  ...\n  406  \n  407          for x in range(self.remainingLives):\n  408:             pygame.draw.rect(screen, (0, 0, 0), (xLoc - (x * 80), yLoc, 40, 40))\n  409  \n  410      def removeLife(self):\n  ...\n  418          screen.fill((255, 255, 255))\n  419          self.font = pygame.font.SysFont('monospace', SCORE_FONT_SIZE)\n  420:         self.label = self.font.render(\"Game Over\", 1, (0, 0, 0))\n  421          screen.blit(self.label, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2))\n  422  \n\n/Volumes/Mac Media/Users/Steven/Documents/School/2015 Spring/Game Design/Game 1/Scott Test/pyGameTest.py:\n   22  def main():\n   23      pygame.init()\n   24:     screen.fill((0, 0, 0))\n   25  \n   26      running = True\n\n9 matches across 2 files\n",
+			"settings":
+			{
+				"buffer_size": 2259,
+				"line_ending": "Unix",
+				"name": "Find Results",
+				"scratch": true
+			}
+		},
+		{
+			"file": "Scott Test/pyGameTest.py",
+			"settings":
+			{
+				"buffer_size": 6027,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/User/Embedded.sublime-build",
+	"command_palette":
+	{
+		"height": 375.0,
+		"selected_items":
+		[
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"sublimelinter",
+				"SublimeLinter: Disable Linting"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"open ",
+				"View: Toggle Open Files in Side Bar"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"install package ",
+				"Package Control: Install Package"
+			],
+			[
+				"pack",
+				"Package Control: List Packages"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: List Packages"
+			],
+			[
+				"ins",
+				"Package Control: Install Package"
+			],
+			[
+				"lint",
+				"SublimeLinter: Lint Current File"
+			],
+			[
+				"Pack",
+				"Package Control: Install Package"
+			],
+			[
+				"Install",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 453.0
+	},
+	"console":
+	{
+		"height": 125.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '7183a2d3e96f11eeadd761d777e62404' + 'e330c659d4bb41d3bdf022e94cab3cd0'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://sublime.wbond.net/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2015 Spring/Game Design/Game 1",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2015 Spring/Game Design/Game 1/Scott Test",
+		"/Volumes/Mac Media/Users/Steven/Downloads/yogom-master"
+	],
+	"file_history":
+	[
+		"/Volumes/Mac Media/Users/Steven/Downloads/yogom-master/tryengine/sprites.py",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_sensor.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/revF14.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/pic24/esos_pic24_sensor.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7synth.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/esos_can.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos_can.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab8/t8synth.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/esos_lcd.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/embedded_lab.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/SConstruct.py",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/chap14/app_childtask.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/esos_comm.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/templates/build-exe.bat",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/esos.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7send.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos_comm.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos_mail.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/all_generic.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/embedded_lab.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7receive.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/CANSnooper.py",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos_menu.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/esos_menu.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab6/fcn_synth.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos_dachandler.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/esos_dachandler.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7loopback.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab5/temperature_lcd.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/chap14/app_timerLEDecho.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/chap14/app_test1.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos_f14_ui/include/esos_f14_ui.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/templates/pic24_ports_config.h-template",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/esos_lcd.c.orig",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/team_sw_metrics.xls",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/chap14/esos_skel.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/templates/data_sheet_to_csv.bat",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7sniff.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos_task.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/embedded_ecan_config.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/ecan_receiver.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7loopbackEsos.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/embedded_lab.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/ecan_sender.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_ecan.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos_f14_ui/src/esos_f14_ui.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/chap14/app_mailA.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/ecan_sniffer.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/lib/src/pic24_ecan.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/lib/include/pic24_ecan.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_clockfreq.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_comparator.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_all.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_adc.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_chip.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos_lcd.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/ecan_example_fifo.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/SConstruct",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/src/pic24_ecan.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/f14_cashew.sublime-project",
+		"/Volumes/Mac Media/Users/Steven/Library/Application Support/Sublime Text 3/Packages/User/Preferences.sublime-settings",
+		"/Volumes/Mac Media/Users/Steven/Library/Application Support/Sublime Text 3/Packages/Default/Preferences.sublime-settings",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 fall/Embedded/Lab/f14_cashew/f14_cashew.sublime-workspace",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/templates/pic24_ecan.h-template",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/templates/pic24_ecan.c-template",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/chap14/esos_skel.elf",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab6/fcn_synth.elf",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/esos_mail.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 fall/Embedded/Lab/Lab 7/esos_task_CAN.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/src/pic24_serial.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_irq.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/src/pic24_configbits.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/templates/pic24_devices.csv",
+		"/Volumes/Mac Media/Users/Steven/Desktop/SConstruct.py",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_serial.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 fall/Embedded/Lab/Lab 7/embedded_ecan_config.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/test.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/esos_cb.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/lib/src/pic24_spi.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7sniff.elf",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7loopback.elf",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab7/t7loopback.hex",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab2/revF14.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab3/t3_app.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/chap14/app_irqs.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/src/pic24_util.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 fall/Embedded/Lab/Lab 7/ecan_sender.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 fall/Embedded/Lab/Lab 7/ecan_receiver.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_util.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/templates/pic24_uart.c-template",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/lib/include/pic24_uart.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_unions.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/lib/include/pic24_i2c.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/lkr/p33EP512GP806_bootldr.gld",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/lib/include/pic24_ports.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/Lab 7/ecan_sender.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/Lab 7/ecan_receiver.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab5/temperature_lcd.hex",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab5/temperature_lcd.elf",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/lc.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_lcd.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/pic24/esos_pic24_lcd.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab4/t4_sensor1.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/lc-switch.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/chap14/app_ds1631.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab4/t4_sensor2.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/pic24/esos_pic24_lcd.c.orig",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/src/pic24/esos_pic24_i2c.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_i2c.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab4/t4_sensor2.hex",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab4/t4_sensor2.elf",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab4/t4_sensor1.hex",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/Lab4/t4_sensor1.elf",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/esos_embeddedF14_33EP512GP806/SCons_esos.py",
+		"/Volumes/Mac Media/Users/Steven/.hgrc",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Lab/f14_cashew/f14_cashew",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/SConstruct.py",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/build/bootloader_default_24HJ64GP506A/lib/src/pic24_uart.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/build/bootloader_default_24HJ64GP506A/lib/include/pic24_ports_mapping.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/lib/src/pic24_uart.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/build/bootloader_default_24HJ64GP506/lib/src/pic24_uart.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/lib/include/pic24_uart.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/lib/src/pic24_adc.c",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/lib/include/pic24_chip.h",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/chap06/psv_intarray.s",
+		"/Volumes/Mac Media/Users/Steven/Documents/School/2014 Fall/Embedded/Code Examples/pic24lib_all/SConstruct"
+	],
+	"find":
+	{
+		"height": 33.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"geometricPlay.py",
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"removeLife",
+			"addCharac",
+			"(0, 0, 0)",
+			"(255, 255, 255)",
+			"(0, 0, 0)",
+			"outoflives",
+			"position",
+			"staticSpriteGroup",
+			"\n    ",
+			"formatStandardDataFrameECAN",
+			"u8_DataLength",
+			"ESOS_GET_MSG_DATA_LENGTH",
+			"esos_u16SystemFlags",
+			"__esos_u16SystemFlags",
+			"BIT_CLEAR_MASK",
+			"__esos_u16SystemFlags",
+			"BIT_CLEAR_MASK",
+			"BIT4",
+			"__ESOS_SYS_COMM_RX_IS_BUSY",
+			"ESOS_TASK_MAKE_MSG_UINT8",
+			"hTask_CANFactory",
+			"ESOS_TASK_MAKE_MSG_UINT16",
+			"MI",
+			"uitoa",
+			"u8_boardIndex",
+			"u8_countBoards",
+			"ESOS_TASK_MAKE_MSG_UINT16",
+			"uitoa",
+			"u8_boradNum",
+			"spi",
+			"configtimer",
+			"printf",
+			"ESOS_TASK_WAIT_TICKS",
+			"pac_boardNetIDs",
+			"hTask_CANFactory",
+			"ESOS_IS_TASK_SENDER",
+			"t7SynthCallBackMsgIdChk",
+			"synth_recv",
+			"print",
+			"esosConfigECAN1",
+			"print",
+			"TEMP",
+			"MY_NAME",
+			"MY_ID",
+			"RX_BUFFER_ID",
+			"GET_FIFO_READBUFFER_ECAN1",
+			"ESOS_GET_MSG_DATA_LENGTH",
+			"msgBuf",
+			"__esos_ReadMailMessage",
+			"READ",
+			"ESOS_DOES_TASK_HAVE_ID",
+			"pfn_callBackMsgIdChk",
+			"MAILMESSAGE",
+			"ESOS_DOES_TASK_HAVE_ID",
+			"ESOS_MARK_",
+			"ESOS_MARK_USER_FLAG",
+			"PRINTF",
+			"BIT_SET_MASK",
+			"__esos_u16SystemFlags",
+			"ESOS_TASK_HANDLE    esos_GetTaskHandleFromID( uint16_t u16_TaskID );\nESOS_TASK_HANDLE    esos_GetTaskHandleFromID( uint16_t u16_TaskID );\n__esos_u16SystemFlags",
+			"ESOS_TASK_HANDLE    esos_GetTaskHandleFromID( uint16_t u16_TaskID );\n__esos_u16SystemFlags",
+			"__esos_u16SystemFlags",
+			"__esos_clearSystemFlag",
+			"__esos_SetSystemFlag",
+			"ECAN_MODE_LISTEN_ONLY",
+			"esos",
+			"BUILT",
+			"ECAN_MODE_LISTEN_ONLY",
+			"__esos_ClearSystemFlag(_DMA1IF)",
+			"clearsystem",
+			"ECAN_PRSEG_3TQ",
+			"getNameFromMsgID",
+			"ECAN_SEG1PH_4TQ",
+			"ECAN_SEG1PH_TQ",
+			"ECAN_SEG1PH_4TQ",
+			"ECAN_SEG1PH_3TQ",
+			"taskID",
+			"taskId",
+			"esos_u8UserTasksRegistered",
+			"__esos_u8UserTasksRegistered",
+			"ID",
+			"taskID",
+			"TaskID",
+			"taskId",
+			"ESOS_USER_TASK",
+			"register",
+			"MSG_ID",
+			"ESOS_DOES_TASK_HAVE_ID",
+			"getTxInProgressECAN1",
+			"exclude",
+			"canSnooper",
+			"YOUR_MSG_ID",
+			"ESOS_GET_PMSG_DATA_LENGTH",
+			"esos_usertask_foo",
+			"msgBuf",
+			"_DMA0IF",
+			"DMA0I",
+			"DMA",
+			"ESOS_IRQ_PIC24_DMA0",
+			"DMA1IF",
+			"DMAI",
+			"ecan",
+			"dma",
+			"ESOS",
+			"clear",
+			"ESOS",
+			"esos",
+			"_DMA1IF",
+			"__esos_u16SystemFlags",
+			"__esos_u16UserFlags",
+			"esos_SetUserFlag",
+			"flag",
+			"CHANGE_MODE_ECAN1",
+			"_DMA1IF",
+			"configBasic",
+			"ESOSSupportLibSources",
+			"DMA1IF",
+			"_DMA1IF",
+			"2",
+			"ecan2",
+			"configBaudECAN",
+			"CANCKS",
+			"/*",
+			"configBasic",
+			"ecan0",
+			"DMA0STAL",
+			"CONFIG_C1TX_TO_RP",
+			"ECAN_MATCH_EID"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"BLACK",
+			"WHITE",
+			"nominal",
+			"'",
+			"images",
+			"$highlight",
+			"$medium",
+			"$light"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "geometricPlay.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 15027,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								412,
+								412
+							]
+						],
+						"settings":
+						{
+							"auto_complete": false,
+							"codeintel": true,
+							"codeintel_database_dir": "~/.codeintel",
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Node.js",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_exclude_scopes_from_complete_triggers":
+							[
+								"comment"
+							],
+							"codeintel_language_settings":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_exclude_dir":
+									[
+										"/build/",
+										"/min/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": false,
+									"codeintel_selected_catalogs":
+									[
+										"jQuery"
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 15,
+									"codeintel_scan_exclude_dir":
+									[
+										"/Applications/MAMP/bin/php/php5.5.3/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": true,
+									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
+								},
+								"Python3":
+								{
+									"codeintel_scan_extra_dir":
+									[
+										"/Applications/Sublime Text.app/Contents/MacOS",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
+									],
+									"codeintel_scan_files_in_project": true,
+									"codeintel_selected_catalogs":
+									[
+									],
+									"python3": "/usr/local/bin/python3.3"
+								}
+							},
+							"codeintel_live": true,
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							[
+							],
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+							],
+							"codeintel_snippets": false,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"codeintel_word_completions": "buffer",
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": -0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2259,
+						"regions":
+						{
+							"match":
+							{
+								"flags": 112,
+								"regions":
+								[
+									[
+										218,
+										218
+									],
+									[
+										512,
+										521
+									],
+									[
+										757,
+										766
+									],
+									[
+										1002,
+										1011
+									],
+									[
+										1176,
+										1185
+									],
+									[
+										1469,
+										1478
+									],
+									[
+										1648,
+										1657
+									],
+									[
+										1921,
+										1930
+									],
+									[
+										2188,
+										2197
+									]
+								],
+								"scope": ""
+							}
+						},
+						"selection":
+						[
+							[
+								216,
+								216
+							]
+						],
+						"settings":
+						{
+							"detect_indentation": false,
+							"line_numbers": false,
+							"output_tag": 1,
+							"result_base_dir": "",
+							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
+							"result_line_regex": "^ +([0-9]+):",
+							"scroll_past_end": true,
+							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "Scott Test/pyGameTest.py",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 6027,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3037,
+								3045
+							]
+						],
+						"settings":
+						{
+							"codeintel": true,
+							"codeintel_database_dir": "~/.codeintel",
+							"codeintel_enabled_languages":
+							[
+								"JavaScript",
+								"SCSS",
+								"Python",
+								"HTML",
+								"Ruby",
+								"Python3",
+								"XML",
+								"Sass",
+								"HTML5",
+								"Perl",
+								"CSS",
+								"Twig",
+								"Less",
+								"Node.js",
+								"TemplateToolkit",
+								"PHP"
+							],
+							"codeintel_exclude_scopes_from_complete_triggers":
+							[
+								"comment"
+							],
+							"codeintel_language_settings":
+							{
+								"JavaScript":
+								{
+									"codeintel_max_recursive_dir_depth": 2,
+									"codeintel_scan_exclude_dir":
+									[
+										"/build/",
+										"/min/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": false,
+									"codeintel_selected_catalogs":
+									[
+										"jQuery"
+									]
+								},
+								"PHP":
+								{
+									"codeintel_max_recursive_dir_depth": 15,
+									"codeintel_scan_exclude_dir":
+									[
+										"/Applications/MAMP/bin/php/php5.5.3/"
+									],
+									"codeintel_scan_extra_dir":
+									[
+									],
+									"codeintel_scan_files_in_project": true,
+									"php": "/Applications/MAMP/bin/php/php5.5.3/bin/php"
+								},
+								"Python3":
+								{
+									"codeintel_scan_extra_dir":
+									[
+										"/Applications/Sublime Text.app/Contents/MacOS",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/arch",
+										"~/Library/Application Support/Sublime Text 3/Packages/SublimeCodeIntel/libs"
+									],
+									"codeintel_scan_files_in_project": true,
+									"codeintel_selected_catalogs":
+									[
+									],
+									"python3": "/usr/local/bin/python3.3"
+								}
+							},
+							"codeintel_live": true,
+							"codeintel_max_recursive_dir_depth": 10,
+							"codeintel_scan_exclude_dir":
+							[
+							],
+							"codeintel_scan_files_in_project": true,
+							"codeintel_selected_catalogs":
+							[
+							],
+							"codeintel_snippets": false,
+							"codeintel_syntax_map":
+							{
+								"Python Django": "Python"
+							},
+							"codeintel_tooltips": "popup",
+							"codeintel_word_completions": "buffer",
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1108.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 23.0
+	},
+	"input":
+	{
+		"height": 35.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 258.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"project": "game1.sublime-project",
+	"replace":
+	{
+		"height": 42.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"esossens",
+				"esos_embeddedF14_33EP512GP806/esos/src/pic24/esos_pic24_sensor.c"
+			],
+			[
+				"t7",
+				"Lab7/t7synth.c"
+			],
+			[
+				"t8",
+				"Lab8/t8synth.c"
+			],
+			[
+				"esoscan.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_can.h"
+			],
+			[
+				"esosca",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_can.c"
+			],
+			[
+				"rev",
+				"revF14.h"
+			],
+			[
+				"can.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_can.h"
+			],
+			[
+				"t7send",
+				"Lab7/t7send.c"
+			],
+			[
+				"t7rece",
+				"Lab7/t7receive.c"
+			],
+			[
+				"can",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_can.c"
+			],
+			[
+				"t7sy",
+				"Lab7/t7synth.c"
+			],
+			[
+				"t8sy",
+				"Lab8/t8synth.c"
+			],
+			[
+				"embe",
+				"esos_embeddedF14_33EP512GP806/esos/src/embedded_lab.c"
+			],
+			[
+				"esoscom",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_comm.c"
+			],
+			[
+				"t7re",
+				"Lab7/t7receive.c"
+			],
+			[
+				"t7sen",
+				"Lab7/t7send.c"
+			],
+			[
+				"esoscan",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_can.h"
+			],
+			[
+				"menu",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_menu.h"
+			],
+			[
+				"embed",
+				"esos_embeddedF14_33EP512GP806/esos/include/embedded_lab.h"
+			],
+			[
+				"synt",
+				"Lab6/fcn_synth.c"
+			],
+			[
+				"esosdac",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_dachandler.c"
+			],
+			[
+				"dach",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_dachandler.h"
+			],
+			[
+				"scon",
+				"SConstruct.py"
+			],
+			[
+				"esosmenu",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_menu.c"
+			],
+			[
+				"t7se",
+				"Lab7/t7send.c"
+			],
+			[
+				"fcn",
+				"Lab6/fcn_synth.c"
+			],
+			[
+				"t7syn",
+				"Lab7/t7synth.c"
+			],
+			[
+				"t7synth",
+				"Lab7/t7synth.c"
+			],
+			[
+				"loo",
+				"Lab7/t7loopbackEsos.c"
+			],
+			[
+				"t7r",
+				"Lab7/t7receive.c"
+			],
+			[
+				"embedd",
+				"esos_embeddedF14_33EP512GP806/esos/include/embedded_lab.h"
+			],
+			[
+				"f14",
+				"esos_embeddedF14_33EP512GP806/esos_f14_ui/include/esos_f14_ui.h"
+			],
+			[
+				"mail.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_mail.h"
+			],
+			[
+				"esosmai",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_mail.h"
+			],
+			[
+				"esosmail",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_mail.h"
+			],
+			[
+				"essodac",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_dachandler.h"
+			],
+			[
+				"scons",
+				"SConstruct.py"
+			],
+			[
+				"esos.c",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos.c"
+			],
+			[
+				"pic24_",
+				"lib/include/pic24_ecan.h"
+			],
+			[
+				"pic24all",
+				"esos_embeddedF14_33EP512GP806/lib/include/pic24_all.h"
+			],
+			[
+				"pic24can.",
+				"lib/src/pic24_ecan.c"
+			],
+			[
+				"esoseca",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_can.h"
+			],
+			[
+				"esostask",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_task.h"
+			],
+			[
+				"esos.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos.h"
+			],
+			[
+				"t7rec",
+				"Lab7/t7receive.c"
+			],
+			[
+				"esoslc",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_lcd.h"
+			],
+			[
+				"esostask.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_task.h"
+			],
+			[
+				"esoscan.",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_can.h"
+			],
+			[
+				"pic24eca",
+				"lib/src/pic24_ecan.c"
+			],
+			[
+				"esoscan.c",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_can.c"
+			],
+			[
+				"esos_can.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_can.h"
+			],
+			[
+				"t7sn",
+				"Lab7/t7sniff.c"
+			],
+			[
+				"fc",
+				"Lab6/fcn_synth.c"
+			],
+			[
+				"esos_mail.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_mail.h"
+			],
+			[
+				"fifo",
+				"Lab7/ecan_example_fifo.c"
+			],
+			[
+				"pic24_clockre",
+				"esos_embeddedF14_33EP512GP806/lib/include/pic24_clockfreq.h"
+			],
+			[
+				"pic24_ecna",
+				"lib/include/pic24_ecan.h"
+			],
+			[
+				"pic24_serial",
+				"esos_embeddedF14_33EP512GP806/lib/src/pic24_serial.c"
+			],
+			[
+				"ecna.c",
+				"lib/src/pic24_ecan.c"
+			],
+			[
+				"pic24seria",
+				"esos_embeddedF14_33EP512GP806/lib/src/pic24_serial.c"
+			],
+			[
+				"sonc",
+				"SConstruct.py"
+			],
+			[
+				"pic24util",
+				"esos_embeddedF14_33EP512GP806/lib/src/pic24_util.c"
+			],
+			[
+				"pic24ecan",
+				"lib/src/pic24_ecan.c"
+			],
+			[
+				"f14ui",
+				"esos_embeddedF14_33EP512GP806/esos_f14_ui/include/esos_f14_ui.h"
+			],
+			[
+				"lcd",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_lcd.c"
+			],
+			[
+				"f14u",
+				"esos_embeddedF14_33EP512GP806/esos_f14_ui/include/esos_f14_ui.h"
+			],
+			[
+				"esossnes",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_sensor.h"
+			],
+			[
+				"te",
+				"Lab5/temperature_lcd.c"
+			],
+			[
+				"tempe",
+				"Lab5/temperature_lcd.c"
+			],
+			[
+				"esospic24",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_lcd.h"
+			],
+			[
+				"esoslcd.c",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_lcd.c"
+			],
+			[
+				"esoslcd.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_lcd.h"
+			],
+			[
+				"esospic24lcd",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_lcd.h"
+			],
+			[
+				"esoscomm.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_comm.h"
+			],
+			[
+				"esospic24sens",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_sensor.h"
+			],
+			[
+				"esosf14ui.h",
+				"esos_embeddedF14_33EP512GP806/esos_f14_ui/include/esos_f14_ui.h"
+			],
+			[
+				"esosl",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_lcd.h"
+			],
+			[
+				"esos_pic24_lcd.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_lcd.h"
+			],
+			[
+				"sconstr",
+				"SConstruct.py"
+			],
+			[
+				"tem",
+				"Lab5/temperature_lcd.c"
+			],
+			[
+				"soc",
+				"SConstruct.py"
+			],
+			[
+				"esoslcd",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_lcd.h"
+			],
+			[
+				"tempera",
+				"Lab5/temperature_lcd.c"
+			],
+			[
+				"esospic24lc.c",
+				"esos_embeddedF14_33EP512GP806/esos/src/pic24/esos_pic24_lcd.c"
+			],
+			[
+				"esospic",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_lcd.h"
+			],
+			[
+				"esos",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_lcd.c"
+			],
+			[
+				"tmperature",
+				"Lab5/temperature_lcd.c"
+			],
+			[
+				"esopic",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_lcd.h"
+			],
+			[
+				"sens",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_sensor.h"
+			],
+			[
+				"sensor",
+				"esos_embeddedF14_33EP512GP806/esos/src/pic24/esos_pic24_sensor.c"
+			],
+			[
+				"esossensor",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_sensor.h"
+			],
+			[
+				"4snesr",
+				"Lab4/t4_sensor1.c"
+			],
+			[
+				"esosf1",
+				"esos_embeddedF14_33EP512GP806/esos_f14_ui/src/esos_f14_ui.c"
+			],
+			[
+				"t4sens",
+				"Lab4/t4_sensor2.c"
+			],
+			[
+				"t4sesn",
+				"Lab4/t4_sensor1.c"
+			],
+			[
+				"essoscomm.",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_comm.h"
+			],
+			[
+				"pic24_sensro.h",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_sensor.h"
+			],
+			[
+				"esosf",
+				"esos_embeddedF14_33EP512GP806/esos_f14_ui/src/esos_f14_ui.c"
+			],
+			[
+				"esos_comm.c",
+				"esos_embeddedF14_33EP512GP806/esos/src/esos_comm.c"
+			],
+			[
+				"esoscomm",
+				"esos_embeddedF14_33EP512GP806/esos/include/esos_comm.h"
+			],
+			[
+				"esospic24lc",
+				"esos_embeddedF14_33EP512GP806/esos/src/pic24/esos_pic24_lcd.c"
+			],
+			[
+				"esospic24l",
+				"esos_embeddedF14_33EP512GP806/esos/include/pic24/esos_pic24_lcd.h"
+			],
+			[
+				"pic24uart",
+				"pic24lib_all/lib/src/pic24_uart.c"
+			],
+			[
+				"pic24_adc.c",
+				"pic24lib_all/lib/src/pic24_adc.c"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 241.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
