@@ -8,3 +8,6 @@
 # Sublime project files
 *.sublime-project
 *.sublime-workspace
+
+# pyc files
+*.pyc
