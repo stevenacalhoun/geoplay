@@ -8,15 +8,14 @@ class TextLine():
     self.color_fg = color
     self.color_bg = Color("white")
 
-    self._aa = True 
+    self._aa = True
     self._text = text
     self.dirty = True
 
   def _render(self):
     # render for cache
-    """no AA = automatic transparent. With AA you need to set the color key too"""
-    self.dirty = False    
-    self.image = self.font.render(self._text, self._aa, self.color_fg)      
+    self.dirty = False
+    self.image = self.font.render(self._text, self._aa, self.color_fg)
     self.rect = self.image.get_rect()
     self.width = self.rect.width
     self.height = self.rect.height
@@ -51,18 +50,17 @@ class TextBox():
     self.color_fg = color
     self.color_bg = Color("white")
 
-    self.text_lines = [ TextLine(line, font=fontName, size=size, color=color) for line in text ]    
+    self.text_lines = [ TextLine(line, font=fontName, size=size, color=color) for line in text ]
 
-    self._aa = True 
+    self._aa = True
     self._text = text
     self.dirty = True
 
 
   def _render(self):
     # render for cache
-    """no AA = automatic transparent. With AA you need to set the color key too"""
-    self.dirty = False    
-    self.image = self.font.render(self._text, self.aa, self.color_fg)      
+    self.dirty = False
+    self.image = self.font.render(self._text, self.aa, self.color_fg)
     self.rect = self.image.get_rect()
     self.screen = pygame.display.get_surface()
 

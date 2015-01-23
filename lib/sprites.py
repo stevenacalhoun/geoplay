@@ -4,10 +4,11 @@ from pygame.locals import *
 from pygame import Surface
 from pygame.locals import *
 from constants import *
+from spriteSheets import *
 
 # McSquare size
-MCSQUARE_HEIGHT = 100
-MCSQUARE_WIDTH = 100
+MCSQUARE_HEIGHT = 140
+MCSQUARE_WIDTH = 130
 MCSQUARE_SPEED = 15
 MCSQUARE_JUMP_SPEED = 30
 
@@ -22,14 +23,41 @@ RECTANGLE_SPAWN_RATE = 100
 
 # McSquare class
 class Mcsquare(pygame.sprite.Sprite):
+  # Arrays to hold all the animations for the left and right running
+  runningRightImages = []
+  runningLeftImages = []
+
   # Initializer
   def __init__(self, screen):
     pygame.sprite.Sprite.__init__(self)
 
-    # Draw a simple black square
-    self.image = pygame.Surface((MCSQUARE_WIDTH, MCSQUARE_HEIGHT))
-    self.image.fill(BLACK)
+    spriteSheet = SpriteSheet("images/braid_man.png")
 
+    # Location for the next image in the sprite sheet
+    xVal = 0
+    yVal = 0
+
+    # There are 26 images in the sprite sheet, load them all
+    for imageCount in range(0, 26):
+      # Load each image and add it to the running right images
+      image = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
+      self.runningRightImages.append(image)
+      imageCount += 1
+
+      # At the end of a row of sprites, go to the next row by adding some arbitrary amound of pixels
+      if imageCount % 7 == 0:
+        xVal = 0
+        yVal += MCSQUARE_HEIGHT + 13
+      else:
+        xVal += MCSQUARE_WIDTH
+
+    # For the running left images just flipe the right ones
+    for image in self.runningRightImages:
+      leftImage = pygame.transform.flip(image, True, False)
+      self.runningLeftImages.append(leftImage)
+
+
+    self.image = image
     self.screen = screen
 
     # Start him on the ground in the center of the screen
@@ -40,25 +68,24 @@ class Mcsquare(pygame.sprite.Sprite):
     # Start of not moving, jumping, or falling
     self.xMove = 0
     self.yMove = 0
-    self.movingRight = False
-    self.movingLeft = False
+    self.runningRight = False
+    self.runningLeft = False
     self.jumping = False
     self.falling = False
 
+    # Count frames to make the animation look smooth
+    self.frame = 0
+    self.frameCount = 0
+
   # Update based on the current number of ticks
   def update(self):
-    # Move the sprite and plan the next update
+    # Move the sprite, check bounds, and animate
     self.move()
     self.checkBounds()
+    self.animate()
 
   # Moves McSquare on the screen
   def move(self):
-    # Clean up old location
-    self.old = self.rect
-    blank = pygame.Surface((MCSQUARE_WIDTH, MCSQUARE_HEIGHT))
-    blank.fill(WHITE)
-    self.screen.blit(blank, self.old)
-
     # Move horizontally within the screen bounds
     if (self.rect.x >= 0) and (self.rect.x <= (SCREEN_WIDTH - MCSQUARE_WIDTH)):
       self.rect.x += self.xMove
@@ -74,6 +101,7 @@ class Mcsquare(pygame.sprite.Sprite):
           self.falling = True
           self.jumping = False
           self.yMove = GRAVITY * .1
+      # As he's falling increase the amount of gravity until we reach full gravity
       if self.falling:
         if self.yMove < GRAVITY:
           self.yMove += GRAVITY * .1
@@ -81,7 +109,8 @@ class Mcsquare(pygame.sprite.Sprite):
           self.yMove = GRAVITY
 
   # Check to see if we've collided with anything
-  def checkCollisions(self, platforms, triangle):
+  def checkCollisions(self, platforms, triangles):
+    # Check to see if we landed on any platforms
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         # Moving up
@@ -93,8 +122,13 @@ class Mcsquare(pygame.sprite.Sprite):
           self.rect.y = platform.rect.y - MCSQUARE_HEIGHT
 
     # Check to see if we've gotten to the triangle
-    if self.rect.colliderect(triangle.rect):
-      return True
+    captureCount = 0
+    for triangle in triangles:
+      if self.rect.colliderect(triangle.rect):
+        captureCount += 1
+        triangle.captured = True
+    return captureCount
+
 
   # Just to make sure we haven't crossed any bounds
   def checkBounds(self):
@@ -113,12 +147,16 @@ class Mcsquare(pygame.sprite.Sprite):
       self.rect.y = HUD_HEIGHT + 1
 
   def moveLeft(self):
+    self.runningLeft = True
     self.xMove = -MCSQUARE_SPEED
 
   def moveRight(self):
+    self.runningRight = True
     self.xMove = MCSQUARE_SPEED
 
   def stopMoving(self):
+    self.runningLeft = False
+    self.runningRight = False
     self.xMove = 0
 
   def jump(self):
@@ -126,6 +164,25 @@ class Mcsquare(pygame.sprite.Sprite):
     if self.jumping == False and self.falling == False:
       self.jumping = True
       self.yMove = -MCSQUARE_JUMP_SPEED
+
+  def animate(self):
+    # Check if it's time for a new fram and if we are currently running
+    if self.frameCount >= 1 and (self.runningRight or self.runningLeft):
+      # Select the correct set of images, and display the new frame
+      if self.runningLeft:
+        self.image = self.runningLeftImages[self.frame]
+      elif self.runningRight:
+        self.image = self.runningRightImages[self.frame]
+      self.frame += 1
+
+      # Final fram reached
+      if self.frame == len(self.runningRightImages):
+        self.frame = 0
+      self.frameCount = 0
+
+    # Increment the frame count if it's not time to change frames
+    else:
+      self.frameCount += 1
 
 # Platform class
 class Platform(pygame.sprite.Sprite):
@@ -144,6 +201,7 @@ class Platform(pygame.sprite.Sprite):
     self.rect.topleft = position
 
   def update(self):
+    # Platforms are currently stationary
     pass
 
 # Rectangle rain class
@@ -161,11 +219,12 @@ class RectangleRain(pygame.sprite.Sprite):
     self.rect = self.image.get_rect()
     self.rect.topleft = initialPosition
 
+    # Set it to fall and make it alive
     self.fallingSpeed = GRAVITY * .3
-
     self.alive = True
 
   def despawn(self):
+    # Stop the rectangle and set it to being dead
     self.fallingSpeed = 0
     self.alive = False
 
@@ -190,7 +249,6 @@ class RectangleRain(pygame.sprite.Sprite):
       return True
     return False
 
-
 class NormalRectangleRain(RectangleRain):
   ## TO DO ##
   def update(self):
@@ -198,12 +256,6 @@ class NormalRectangleRain(RectangleRain):
     self.move()
 
   def move(self):
-    # Clean up old location
-    self.old = self.rect
-    blank = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
-    blank.fill(WHITE)
-    self.screen.blit(blank, self.old)
-
     self.rect.y += self.fallingSpeed
 
     if self.alive == False:
@@ -212,6 +264,7 @@ class NormalRectangleRain(RectangleRain):
       self.image.fill(WHITE)
 
   def animate():
+    # No animation for this type of rain currently
     pass
 
 class BounceUpRectangleRain(RectangleRain):
@@ -243,30 +296,27 @@ class Triangle(pygame.sprite.Sprite):
     # bY is simply cY minus the height, and bX is cX minus the offset
     bX = cX - xOffset
     bY = cY + height
-    
+
     # aY is simply cY minus the height, and aX is cX plus the offset
     aX = cX + xOffset
     aY = cY + height
 
     self.points = [[aX, aY], [bX, bY], [cX, cY]]
 
-    # Draw the triangle and place a rectangle around it for collision detection
+    # Load the triangle and size it based on the input parameters
     self.height = height
     self.width = 2*xOffset
     self.image = pygame.Surface([self.width, self.height])
     self.image.fill(WHITE)
     self.image = pygame.image.load("images/triangle.png")
     self.image = pygame.transform.scale(self.image, (int(self.width), int(self.height)))
-    # pygame.draw.polygon(screen, (0,0,0), self.points)
+
     self.rect = pygame.Rect(bX, cY, self.width, self.height)
 
     self.screen = screen
 
-  # Remove the triangle when it is captured
-  def capture(self):
-    blank = pygame.Surface((self.width, self.height + 1))
-    blank.fill(WHITE)
-    self.screen.blit(blank, self.rect)
+    self.captured = False
 
   def update(self):
+    # Triangles are currently stationary
     pass
