@@ -3,10 +3,12 @@ from pygame import Surface
 from pygame.locals import *
 
 class TextLine():
-  def __init__(self, text, font='monospace', size=16, color=(0,0,0)):
+  def __init__(self, screen, text, font='monospace', size=16, color=(0,0,0)):
     self.font = pygame.font.SysFont(font, size)
     self.color_fg = color
     self.color_bg = Color("white")
+
+    self.screen = screen
 
     self._aa = True
     self._text = text
@@ -21,27 +23,27 @@ class TextLine():
     self.height = self.rect.height
     self.screen = pygame.display.get_surface()
 
-  def _draw(self, screen, location=(0,0)):
-    screen.blit(self.image, location)
+  def _draw(self, location=(0,0)):
+    self.screen.blit(self.image, location)
 
     locX, locY = location
 
     # pygame.draw.line(self.screen, (0,0,0), (0, locY), (1200, locY))
     # pygame.draw.line(self.screen, (0,0,0), (locX, 0), (locX, 900))
 
-  def drawByCenter(self, screen, center=(0,0)):
+  def drawByCenter(self, center=(0,0)):
     self._render()
     locX, locY = center
 
     drawX = locX - (self.width/2)
     drawY = locY - (self.height/2)
 
-    self._draw(screen, (drawX, drawY))
+    self._draw((drawX, drawY))
 
-  def drawByTopLeft(self, screen, topLeft=(0,0)):
+  def drawByTopLeft(self,topLeft=(0,0)):
     self._render()
 
-    self._draw(screen, topLeft)
+    self._draw(topLeft)
 
 
 class TextBox():

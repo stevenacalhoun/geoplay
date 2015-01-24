@@ -5,7 +5,8 @@ from constants import *
 from fonts import *
 from boxes import *
 from sprites import *
-from random import randint
+import random
+from levels import *
 
 # Triangle testing stuff
 TRIANGLE_HEIGHT = 75
@@ -19,11 +20,11 @@ class Scene(object):
     self.screen = screen
 
 class MainMenu(Scene):
-  def __init(self):
-    pass
+  def __init__(self, screen):
+    Scene.__init__(self, screen)
 
   # Show the main menu where you can select play, difficulty, or help
-  def display(self, screen):
+  def display(self):
     # Constants for the boxes
     menuBoxWidth = SCREEN_WIDTH/3
     menuBoxHeight = 80
@@ -40,7 +41,7 @@ class MainMenu(Scene):
     # Keep looping unitl somehting has been selected
     selectionMade = False
     while selectionMade == False:
-      screen.fill(WHITE)
+      self.screen.fill(WHITE)
       event = pygame.event.poll()
 
       # Key up and down the menu
@@ -62,39 +63,39 @@ class MainMenu(Scene):
             return menuSelection
 
       # Draw the title
-      title = TextLine("Geo-Play", color=BLACK, size=76)
-      title.drawByCenter(screen, center=(SCREEN_WIDTH/2, 100))
+      title = TextLine(self.screen, "Geo-Play", color=BLACK, size=76)
+      title.drawByCenter((SCREEN_WIDTH/2, 100))
 
       # Draw all the menu options
-      playBox = Box(menuBoxWidth, menuBoxHeight, BLACK)
-      playBox.drawByCenter(screen, (SCREEN_WIDTH/2, playBoxY))
-      playLabel = TextLine("Play Game", color=WHITE, size=36)
-      playLabel.drawByCenter(screen, center=(SCREEN_WIDTH/2, playBoxY))
+      playBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      playBox.drawByCenter((SCREEN_WIDTH/2, playBoxY))
+      playLabel = TextLine(self.screen, "Play Game", color=WHITE, size=36)
+      playLabel.drawByCenter((SCREEN_WIDTH/2, playBoxY))
 
-      diffBox = Box(menuBoxWidth, menuBoxHeight, BLACK)
-      diffBox.drawByCenter(screen, (SCREEN_WIDTH/2, diffBoxY))
-      diffLabel = TextLine("Select Difficulty", color=WHITE, size=36)
-      diffLabel.drawByCenter(screen, center=(SCREEN_WIDTH/2, diffBoxY))
+      diffBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      diffBox.drawByCenter((SCREEN_WIDTH/2, diffBoxY))
+      diffLabel = TextLine(self.screen, "Select Difficulty", color=WHITE, size=36)
+      diffLabel.drawByCenter((SCREEN_WIDTH/2, diffBoxY))
 
-      helpBox = Box(menuBoxWidth, menuBoxHeight, BLACK)
-      helpBox.drawByCenter(screen, (SCREEN_WIDTH/2, helpBoxY))
-      helpLabel = TextLine("Game Help", color=WHITE, size=36)
-      helpLabel.drawByCenter(screen, center=(SCREEN_WIDTH/2, helpBoxY))
+      helpBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      helpBox.drawByCenter((SCREEN_WIDTH/2, helpBoxY))
+      helpLabel = TextLine(self.screen, "Game Help", color=WHITE, size=36)
+      helpLabel.drawByCenter((SCREEN_WIDTH/2, helpBoxY))
 
-      quitBox = Box(menuBoxWidth, menuBoxHeight, BLACK)
-      quitBox.drawByCenter(screen, (SCREEN_WIDTH/2, quitBoxY))
-      quitLabel = TextLine("Quit", color=WHITE, size=36)
-      quitLabel.drawByCenter(screen, center=(SCREEN_WIDTH/2, quitBoxY))
+      quitBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      quitBox.drawByCenter((SCREEN_WIDTH/2, quitBoxY))
+      quitLabel = TextLine(self.screen, "Quit", color=WHITE, size=36)
+      quitLabel.drawByCenter((SCREEN_WIDTH/2, quitBoxY))
 
       # Draw a box around the currently selected menu item
       if menuSelection == 0:
-        playBox.outline(screen)
+        playBox.outline()
       elif menuSelection == 1:
-        diffBox.outline(screen)
+        diffBox.outline()
       elif menuSelection == 2:
-        helpBox.outline(screen)
+        helpBox.outline()
       elif menuSelection == 3:
-        quitBox.outline(screen)
+        quitBox.outline()
 
       pygame.display.flip()
 
@@ -113,8 +114,8 @@ class HUD():
 
   def displayScore(self):
     # Draw new score
-    title = TextLine(str(self.score), color=BLACK, size=76)
-    title.drawByTopLeft(self.screen, topLeft=SCORE_POS)
+    title = TextLine(self.screen, str(self.score), color=BLACK, size=76)
+    title.drawByTopLeft(topLeft=SCORE_POS)
 
   def addPoints(self, points):
     self.score += points
@@ -143,34 +144,49 @@ class HUD():
 
 class LevelScene(Scene):
   def __init__(self, screen, difficulty):
-    self.screen = screen
+    Scene.__init__(self, screen)
     self.difficulty = difficulty
     self.triangleSpriteGroup = pygame.sprite.Group()
+    self.levelNum = 1
+    self.level = getLevel(self.levelNum)
 
   # Start the game
-  def display(self, screen):
-    screen.fill(WHITE)
+  def display(self):
+    self.screen.fill(WHITE)
+
+    # Generate all the sprites for the level
+    platformLocs, self.startingLoc = self.level.generateLevel()
 
     # Draw the hud
-    self.HUD = HUD(screen)
+    self.HUD = HUD(self.screen)
 
     # Get our square character and add him to the dynamic sprite group
-    self.mcSquare = Mcsquare(screen)
+    self.mcSquare = Mcsquare(self.screen, self.startingLoc)
     self.dynamicSpriteGroup = pygame.sprite.Group(self.mcSquare)
-    self.spawnTriangle(triangleLocations[currentTriangle])
+    # self.spawnTriangle(triangleLocations[currentTriangle])
+
 
     # Create a sprite group to hold the rain
     self.rectangleSpriteGroup = pygame.sprite.Group()
 
     # Get our platforms from the screen and draw them
-    platformOne = Platform(screen, ((SCREEN_WIDTH * 0.25) - (PLATFORM_WIDTH / 2), 500))
-    platformTwo = Platform(screen, ((SCREEN_WIDTH * 0.75) - (PLATFORM_WIDTH / 2), 500))
-    self.platforms = [platformOne, platformTwo]
-    self.platformSpriteGroup = pygame.sprite.Group(self.platforms)
-    self.platformSpriteGroup.draw(screen)
+    # platformOne = Platform(self.screen, ((SCREEN_WIDTH * 0.25) - (PLATFORM_WIDTH / 2), 500))
+    # platformTwo = Platform(self.screen, ((SCREEN_WIDTH * 0.75) - (PLATFORM_WIDTH / 2), 500))
+    # self.platforms = [platformOne, platformTwo]
+    self.platformSpriteGroup = pygame.sprite.Group()
+    self.platforms = []
 
-    # Draw a ground
-    pygame.draw.rect(screen, BLACK, (0, GROUND_Y, SCREEN_WIDTH, GROUND_THICKNESS))
+    for platformParams in platformLocs:
+      platformLoc, platformSize = platformParams
+      platform = Platform(self.screen, platformLoc, platformSize)
+      self.platforms.append(platform)
+      self.platformSpriteGroup.add(platform)
+
+    self.platformSpriteGroup.draw(self.screen)
+
+    platform = random.choice(self.platforms)
+    self.triangleSpriteGroup.add(platform.spawnTriangle())
+
 
     # Keep up with when we need to draw a new rectangle rain
     self.rectangleCounter = 0
@@ -230,7 +246,7 @@ class LevelScene(Scene):
     # See if we need to spawn a new rectangle
     if self.rectangleCounter >= (RECTANGLE_SPAWN_RATE / self.difficulty):
       self.rectangleCounter = 0
-      randomX = randint(0, SCREEN_WIDTH - RECTANGLE_WIDTH)
+      randomX = random.randint(0, SCREEN_WIDTH - RECTANGLE_WIDTH)
       self.rectangleSpriteGroup.add(NormalRectangleRain(self.screen, (randomX, HUD_HEIGHT + 1)))
     else:
       self.rectangleCounter += 1
@@ -251,7 +267,7 @@ class LevelScene(Scene):
     self.HUD.update()
 
     # Draw a ground
-    pygame.draw.rect(self.screen, BLACK, (0, GROUND_Y, SCREEN_WIDTH, GROUND_THICKNESS))
+    # pygame.draw.rect(self.screen, BLACK, (0, GROUND_Y, SCREEN_WIDTH, GROUND_THICKNESS))
 
   # Update all the sprites on screen
   def checkCollisions(self):
@@ -268,13 +284,17 @@ class LevelScene(Scene):
           self.removeTriangle(triangle)
           triangle = None
 
-      # Some test positions for the triangles
-      if currentTriangle == 0:
-        currentTriangle = 1
-      else:
-        currentTriangle = 0
+      # # Some test positions for the triangles
+      # if currentTriangle == 0:
+      #   currentTriangle = 1
+      # else:
+      #   currentTriangle = 0
+      #
+      # self.spawnTriangle(triangleLocations[currentTriangle])
 
-      self.spawnTriangle(triangleLocations[currentTriangle])
+      platform = random.choice(self.platforms)
+      self.triangleSpriteGroup.add(platform.spawnTriangle())
+
       self.HUD.addPoints(captureCount)
 
     # Check for a hit by the rain
@@ -284,10 +304,10 @@ class LevelScene(Scene):
           self.HUD.removeLife()
 
 class DifficultyMenu(Scene):
-  def __init(self):
-    pass
+  def __init__(self, screen):
+    Scene.__init__(self, screen)
 
-  def display(self, screen):
+  def display(self):
     # Constants for the boxes
     menuBoxWidth = SCREEN_WIDTH/3
     menuBoxHeight = 80
@@ -301,7 +321,7 @@ class DifficultyMenu(Scene):
     # Loop until we've made a selection
     selectionMade = False
     while selectionMade == False:
-      screen.fill(WHITE)
+      self.screen.fill(WHITE)
       event = pygame.event.poll()
       if event.type == pygame.QUIT:
         running = False
@@ -325,38 +345,38 @@ class DifficultyMenu(Scene):
       font = pygame.font.SysFont('monospace', 36)
 
       # Draw top, mid, and bot boxes and their labels
-      topBox = Box(menuBoxWidth, menuBoxHeight, BLACK)
-      topBox.drawByCenter(screen, (SCREEN_WIDTH/2, topBoxY))
-      topLabel = TextLine("Easy", color=WHITE, size=36)
-      topLabel.drawByCenter(screen, center=(SCREEN_WIDTH/2, topBoxY))
+      topBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      topBox.drawByCenter((SCREEN_WIDTH/2, topBoxY))
+      topLabel = TextLine(self.screen, "Easy", color=WHITE, size=36)
+      topLabel.drawByCenter((SCREEN_WIDTH/2, topBoxY))
 
-      midBox = Box(menuBoxWidth, menuBoxHeight, BLACK)
-      midBox.drawByCenter(screen, (SCREEN_WIDTH/2, midBoxY))
-      midLabel = TextLine("Medium", color=WHITE, size=36)
-      midLabel.drawByCenter(screen, center=(SCREEN_WIDTH/2, midBoxY))
+      midBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      midBox.drawByCenter((SCREEN_WIDTH/2, midBoxY))
+      midLabel = TextLine(self.screen, "Medium", color=WHITE, size=36)
+      midLabel.drawByCenter((SCREEN_WIDTH/2, midBoxY))
 
-      botBox = Box(menuBoxWidth, menuBoxHeight, BLACK)
-      botBox.drawByCenter(screen, (SCREEN_WIDTH/2, botBoxY))
-      botLabel = TextLine("Hard", color=WHITE, size=36)
-      botLabel.drawByCenter(screen, center=(SCREEN_WIDTH/2, botBoxY))
+      botBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      botBox.drawByCenter((SCREEN_WIDTH/2, botBoxY))
+      botLabel = TextLine(self.screen, "Hard", color=WHITE, size=36)
+      botLabel.drawByCenter((SCREEN_WIDTH/2, botBoxY))
 
       # Draw a box around the currently selected menu item
       if menuSelection == 1:
-        topBox.outline(screen)
+        topBox.outline()
       elif menuSelection == 2:
-        midBox.outline(screen)
+        midBox.outline()
       elif menuSelection == 3:
-        botBox.outline(screen)
+        botBox.outline()
 
 
       pygame.display.flip()
 
 class HelpScene(Scene):
   def __init(self):
-    pass  # Show the help menu
+    Scene.__init__(self, screen)
 
-  def display(self, screen):
-    screen.fill(WHITE)
+  def display(self):
+    self.screen.fill(WHITE)
 
     # Constants for the help box
     helpBoxWidth = SCREEN_WIDTH * 0.75
@@ -369,20 +389,20 @@ class HelpScene(Scene):
     backButtonLoc = SCREEN_WIDTH/2, SCREEN_HEIGHT*0.75
 
     # Draw the help box and label
-    helpBox = Box(helpBoxWidth, helpBoxHeight, WHITE)
-    helpBox.drawByCenter(screen, helpLoc)
-    helpBox.outline(screen, color=BLACK)
+    helpBox = Box(self.screen, helpBoxWidth, helpBoxHeight, WHITE)
+    helpBox.drawByCenter(helpLoc)
+    helpBox.outline(color=BLACK)
 
-    helpLabel = TextLine("Help Shtuff", color=BLACK, size=36)
-    helpLabel.drawByCenter(screen, center=helpLoc)
+    helpLabel = TextLine(self.screen, "Help Shtuff", color=BLACK, size=36)
+    helpLabel.drawByCenter(helpLoc)
 
     # Draw the back button
-    backBox = Box(backButtonWidth, backButtonHeight, BLACK)
-    backBox.drawByCenter(screen, backButtonLoc)
-    backBox.outline(screen)
+    backBox = Box(self.screen, backButtonWidth, backButtonHeight, BLACK)
+    backBox.drawByCenter(backButtonLoc)
+    backBox.outline()
 
-    backButtonLabel = TextLine("Back", color=WHITE, size=36)
-    backButtonLabel.drawByCenter(screen, center=backButtonLoc)
+    backButtonLabel = TextLine(self.screen, "Back", color=WHITE, size=36)
+    backButtonLabel.drawByCenter(backButtonLoc)
 
     # Wait until we want to go back
     goBack = False
@@ -399,11 +419,11 @@ class HelpScene(Scene):
 
 class GameOverScene(Scene):
   def __init(self):
-    pass
+    Scene.__init__(self, screen)
 
   # Show game over screen
-  def display(self, screen):
-    screen.fill(WHITE)
+  def display(self):
+    self.screen.fill(WHITE)
 
     # Constants to hold the main menu button
     mainMenuButtonWidth = SCREEN_WIDTH/3
@@ -413,15 +433,15 @@ class GameOverScene(Scene):
     mainMenuButtonY = SCREEN_HEIGHT * 0.66
 
     # Draw the game over text
-    endLabel = TextLine("Game Over", color=BLACK, size=SCORE_FONT_SIZE)
-    endLabel.drawByCenter(screen, center=((SCREEN_WIDTH/2), SCREEN_HEIGHT*0.25))
+    endLabel = TextLine(self.screen, "Game Over", color=BLACK, size=SCORE_FONT_SIZE)
+    endLabel.drawByCenter(((SCREEN_WIDTH/2), SCREEN_HEIGHT*0.25))
 
     # Draw the back box
-    backBox = Box(mainMenuButtonWidth, mainMenuButtonHeight, BLACK)
-    backBox.drawByCenter(screen, (mainMenuButtonX, mainMenuButtonY))
-    backButtonLabel = TextLine("Main Menu", color=WHITE, size=36)
-    backButtonLabel.drawByCenter(screen, center=(mainMenuButtonX, mainMenuButtonY))
-    backBox.outline(screen)
+    backBox = Box(self.screen, mainMenuButtonWidth, mainMenuButtonHeight, BLACK)
+    backBox.drawByCenter((mainMenuButtonX, mainMenuButtonY))
+    backButtonLabel = TextLine(self.screen, "Main Menu", color=WHITE, size=36)
+    backButtonLabel.drawByCenter((mainMenuButtonX, mainMenuButtonY))
+    backBox.outline()
 
     # Wait until we want to go back
     goBack = False

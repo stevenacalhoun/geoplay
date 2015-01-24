@@ -28,7 +28,7 @@ class Mcsquare(pygame.sprite.Sprite):
   runningLeftImages = []
 
   # Initializer
-  def __init__(self, screen):
+  def __init__(self, screen, startingLoc):
     pygame.sprite.Sprite.__init__(self)
 
     spriteSheet = SpriteSheet("images/braid_man.png")
@@ -62,16 +62,15 @@ class Mcsquare(pygame.sprite.Sprite):
 
     # Start him on the ground in the center of the screen
     self.rect = self.image.get_rect()
-    self.rect.x = (SCREEN_WIDTH / 2) - (MCSQUARE_WIDTH / 2)
-    self.rect.y = GROUND_Y - MCSQUARE_HEIGHT
+    self.rect.topleft = startingLoc
 
     # Start of not moving, jumping, or falling
     self.xMove = 0
-    self.yMove = 0
+    self.yMove = GRAVITY
     self.runningRight = False
     self.runningLeft = False
     self.jumping = False
-    self.falling = False
+    self.jumpRecharged = True
 
     # Count frames to make the animation look smooth
     self.frame = 0
@@ -98,11 +97,12 @@ class Mcsquare(pygame.sprite.Sprite):
         self.yMove += MCSQUARE_JUMP_SPEED * .04
         if self.yMove >= 0:
           # Peak of the jump
+          print "Peak of jump"
           self.falling = True
           self.jumping = False
           self.yMove = GRAVITY * .1
       # As he's falling increase the amount of gravity until we reach full gravity
-      if self.falling:
+      if self.jumping == False:
         if self.yMove < GRAVITY:
           self.yMove += GRAVITY * .1
         else:
@@ -115,10 +115,10 @@ class Mcsquare(pygame.sprite.Sprite):
       if self.rect.colliderect(platform.rect):
         # Moving up
         if self.yMove < 0:
-          self.rect.y = platform.rect.y + PLATFORM_HEIGHT
+          self.rect.y = platform.rect.y - platform.height
         # Moving down
         if self.yMove > 0:
-          self.falling = False
+          self.jumpRecharged = True
           self.rect.y = platform.rect.y - MCSQUARE_HEIGHT
 
     # Check to see if we've gotten to the triangle
@@ -129,7 +129,6 @@ class Mcsquare(pygame.sprite.Sprite):
         triangle.captured = True
     return captureCount
 
-
   # Just to make sure we haven't crossed any bounds
   def checkBounds(self):
     # Left side
@@ -138,10 +137,6 @@ class Mcsquare(pygame.sprite.Sprite):
     # Right side
     if (self.rect.x > SCREEN_WIDTH - MCSQUARE_WIDTH):
       self.rect.x = SCREEN_WIDTH - MCSQUARE_WIDTH
-    # Ground
-    if (self.rect.y > GROUND_Y - MCSQUARE_HEIGHT):
-      self.rect.y = GROUND_Y - MCSQUARE_HEIGHT
-      self.falling = False
     # Ceiling
     if (self.rect.y < HUD_HEIGHT):
       self.rect.y = HUD_HEIGHT + 1
@@ -161,9 +156,10 @@ class Mcsquare(pygame.sprite.Sprite):
 
   def jump(self):
     # No double jumping allowed
-    if self.jumping == False and self.falling == False:
+    if self.jumpRecharged:
       self.jumping = True
       self.yMove = -MCSQUARE_JUMP_SPEED
+      self.jumpRecharged = False
 
   def animate(self):
     # Check if it's time for a new fram and if we are currently running
@@ -187,11 +183,13 @@ class Mcsquare(pygame.sprite.Sprite):
 # Platform class
 class Platform(pygame.sprite.Sprite):
   # Initializer
-  def __init__(self, screen, position):
+  def __init__(self, screen, position, size):
     pygame.sprite.Sprite.__init__(self)
 
+    self.width, self.height = size
+
     # Simple rectangular image
-    self.image = pygame.Surface((PLATFORM_WIDTH, PLATFORM_HEIGHT))
+    self.image = pygame.Surface(size)
     self.image.fill(BLACK)
 
     self.screen = screen
@@ -203,6 +201,11 @@ class Platform(pygame.sprite.Sprite):
   def update(self):
     # Platforms are currently stationary
     pass
+
+  def spawnTriangle(self):
+    topPoint = (self.rect.x + (self.width/2)), self.rect.y - 80
+    self.triangle = Triangle(self.screen, topPoint, TRIANGLE_HEIGHT)
+    return self.triangle
 
 # Rectangle rain class
 class RectangleRain(pygame.sprite.Sprite):
