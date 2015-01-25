@@ -33,6 +33,7 @@ class Level(object):
 
   def generateLevel(self):
     platformLocs = []
+    triangleLocs = []
 
     numRows = len(self.levelTiles)
     numColumns = len(self.levelTiles[0])
@@ -48,9 +49,20 @@ class Level(object):
     platformLoc = 0
 
     # Walk over every row in the level
-    for row in self.levelTiles:
+    for rowNum, row in enumerate(self.levelTiles):
       # Walk over every tile in the row
-      for tile in row:
+      for tileNum, tile in enumerate(row):
+        # T stands for a triangle spawn location
+        if tile == "T":
+          # If there is a t that means position it between the two tiles
+          if row[tileNum+1] == "t":
+            triangleLoc = (currentXLoc + tileWidth), (currentYLoc)
+            triangleLocs.append(triangleLoc)
+          # Otherwise just position it in the middle of the tile
+          else:
+            triangleLoc = (currentXLoc + (tileWidth/2)), (currentYLoc)
+            triangleLocs.append(triangleLoc)
+            pass
         # P stands for platform
         if tile == "P":
           # If we are currently building a platform, create it
@@ -89,7 +101,7 @@ class Level(object):
     platformLocs.append([platformLoc, (platformWidth+tileWidth, tileHeight)])
 
     # Return the platform locations and starting location
-    return platformLocs, startingLoc
+    return platformLocs, triangleLocs, startingLoc
 
 class Level_01(Level):
    def __init__(self):
@@ -97,18 +109,18 @@ class Level_01(Level):
     "____________",
     "____________",
     "____________",
+    "____________",
+    "______T_____",
     "______P_____",
     "____________",
     "____________",
-    "____________",
+    "__Tt____Tt__",
     "__Pp____Pp__",
-    "____________",
-    "____________",
     "____________",
     "_________S__",
     "____________",
-    "____________",
-    "PppPppPppPpp"]
+    "_T___T___T__",
+    "Pppppppppppp"]
 
 class Level_02(Level):
   def __init__(self):

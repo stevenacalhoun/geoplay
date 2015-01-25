@@ -155,7 +155,7 @@ class LevelScene(Scene):
     self.screen.fill(WHITE)
 
     # Generate all the sprites for the level
-    platformLocs, self.startingLoc = self.level.generateLevel()
+    platformLocs, self.triangleLocs, self.startingLoc = self.level.generateLevel()
 
     # Draw the hud
     self.HUD = HUD(self.screen)
@@ -179,8 +179,10 @@ class LevelScene(Scene):
 
     self.platformSpriteGroup.draw(self.screen)
 
-    platform = random.choice(self.platforms)
-    self.triangleSpriteGroup.add(platform.spawnTriangle())
+    triangleLoc = random.choice(self.triangleLocs)
+    self.spawnTriangle(triangleLoc)
+    # platform = random.choice(self.platforms)
+    # self.triangleSpriteGroup.add(platform.spawnTriangle())
 
 
     # Keep up with when we need to draw a new rectangle rain
@@ -274,8 +276,10 @@ class LevelScene(Scene):
           self.removeTriangle(triangle)
           triangle = None
 
-      platform = random.choice(self.platforms)
-      self.triangleSpriteGroup.add(platform.spawnTriangle())
+      triangleLoc = random.choice(self.triangleLocs)
+      self.spawnTriangle(triangleLoc)
+      # platform = random.choice(self.platforms)
+      # self.triangleSpriteGroup.add(platform.spawnTriangle())
 
       self.HUD.addPoints(captureCount)
 
