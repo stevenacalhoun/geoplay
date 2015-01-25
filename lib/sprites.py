@@ -5,7 +5,7 @@ from pygame import Surface
 from pygame.locals import *
 from constants import *
 from spriteSheets import *
-
+import time
 # McSquare size
 MCSQUARE_HEIGHT = 140
 MCSQUARE_WIDTH = 130
@@ -71,6 +71,9 @@ class Mcsquare(pygame.sprite.Sprite):
     self.runningLeft = False
     self.jumping = False
     self.jumpRecharged = True
+    self.falling = True
+
+    self.height = MCSQUARE_HEIGHT
 
     # Count frames to make the animation look smooth
     self.frame = 0
@@ -97,12 +100,10 @@ class Mcsquare(pygame.sprite.Sprite):
         self.yMove += MCSQUARE_JUMP_SPEED * .04
         if self.yMove >= 0:
           # Peak of the jump
-          print "Peak of jump"
-          self.falling = True
           self.jumping = False
           self.yMove = GRAVITY * .1
       # As he's falling increase the amount of gravity until we reach full gravity
-      if self.jumping == False:
+      else:
         if self.yMove < GRAVITY:
           self.yMove += GRAVITY * .1
         else:
@@ -111,15 +112,17 @@ class Mcsquare(pygame.sprite.Sprite):
   # Check to see if we've collided with anything
   def checkCollisions(self, platforms, triangles):
     # Check to see if we landed on any platforms
+    # self.falling = True
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         # Moving up
         if self.yMove < 0:
-          self.rect.y = platform.rect.y - platform.height
+          self.rect.y = platform.rect.y + platform.height
         # Moving down
         if self.yMove > 0:
           self.jumpRecharged = True
           self.rect.y = platform.rect.y - MCSQUARE_HEIGHT
+          str(self.rect.y + MCSQUARE_HEIGHT) + "==" + str(platform.rect.y)
 
     # Check to see if we've gotten to the triangle
     captureCount = 0
@@ -241,10 +244,6 @@ class RectangleRain(pygame.sprite.Sprite):
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         self.despawn()
-
-    # Check collisions with ground
-    if self.rect.y + RECTANGLE_HEIGHT >= GROUND_Y:
-      self.despawn()
 
     # Check collisions with McSquare
     if self.rect.colliderect(mcSquare.rect):

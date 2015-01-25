@@ -163,16 +163,11 @@ class LevelScene(Scene):
     # Get our square character and add him to the dynamic sprite group
     self.mcSquare = Mcsquare(self.screen, self.startingLoc)
     self.dynamicSpriteGroup = pygame.sprite.Group(self.mcSquare)
-    # self.spawnTriangle(triangleLocations[currentTriangle])
-
 
     # Create a sprite group to hold the rain
     self.rectangleSpriteGroup = pygame.sprite.Group()
 
     # Get our platforms from the screen and draw them
-    # platformOne = Platform(self.screen, ((SCREEN_WIDTH * 0.25) - (PLATFORM_WIDTH / 2), 500))
-    # platformTwo = Platform(self.screen, ((SCREEN_WIDTH * 0.75) - (PLATFORM_WIDTH / 2), 500))
-    # self.platforms = [platformOne, platformTwo]
     self.platformSpriteGroup = pygame.sprite.Group()
     self.platforms = []
 
@@ -200,6 +195,8 @@ class LevelScene(Scene):
       # Update the screen and check for collisions
       self.update()
       self.checkCollisions()
+      self.draw()
+      ## FUCKING FIGURED IT OUT, SPRITES DON'T REDRAW WITH checkCollisions()
       pygame.display.flip()
       clock.tick(FRAME_RATE)
 
@@ -234,7 +231,6 @@ class LevelScene(Scene):
     # Update our dynamic sprite and refresh the screen
     self.screen.fill(WHITE)
     self.dynamicSpriteGroup.update()
-    self.dynamicSpriteGroup.draw(self.screen)
 
     # Remove any dead rectangles
     for rectangle in self.rectangleSpriteGroup:
@@ -253,21 +249,15 @@ class LevelScene(Scene):
 
     # Update the rectangle rain
     self.rectangleSpriteGroup.update()
-    self.rectangleSpriteGroup.draw(self.screen)
 
     # Update the platform sprites
     self.platformSpriteGroup.update()
-    self.platformSpriteGroup.draw(self.screen)
 
     # Update the triangles
     self.triangleSpriteGroup.update()
-    self.triangleSpriteGroup.draw(self.screen)
 
     # Update the HUD
     self.HUD.update()
-
-    # Draw a ground
-    # pygame.draw.rect(self.screen, BLACK, (0, GROUND_Y, SCREEN_WIDTH, GROUND_THICKNESS))
 
   # Update all the sprites on screen
   def checkCollisions(self):
@@ -284,14 +274,6 @@ class LevelScene(Scene):
           self.removeTriangle(triangle)
           triangle = None
 
-      # # Some test positions for the triangles
-      # if currentTriangle == 0:
-      #   currentTriangle = 1
-      # else:
-      #   currentTriangle = 0
-      #
-      # self.spawnTriangle(triangleLocations[currentTriangle])
-
       platform = random.choice(self.platforms)
       self.triangleSpriteGroup.add(platform.spawnTriangle())
 
@@ -302,6 +284,12 @@ class LevelScene(Scene):
         hit = rectangle.checkCollisions(self.platforms, self.mcSquare)
         if hit:
           self.HUD.removeLife()
+
+  def draw(self):
+    self.dynamicSpriteGroup.draw(self.screen)
+    self.platformSpriteGroup.draw(self.screen)
+    self.rectangleSpriteGroup.draw(self.screen)
+    self.triangleSpriteGroup.draw(self.screen)
 
 class DifficultyMenu(Scene):
   def __init__(self, screen):
