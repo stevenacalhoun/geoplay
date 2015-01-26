@@ -265,7 +265,7 @@ class LevelScene(Scene):
         rectangle = None
 
     # See if we need to spawn a new rectangle
-    if self.rectangleCounter >= (RECTANGLE_SPAWN_RATE / self.difficulty):
+    if self.rectangleCounter >= (self.level.rectangleSpawnNumber / self.difficulty):
       # Reset the counter and pick a random location to spawn the rectangle
       self.rectangleCounter = 0
       randomX = random.randint(0, SCREEN_WIDTH - RECTANGLE_WIDTH)

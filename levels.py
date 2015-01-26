@@ -29,28 +29,43 @@ def getLevel(level):
 
 
 class Level(object):
-  def __init__(self, requiredScore=10, normalRainChance=1, bounceRainChance=0, explodingRainChance=0, puddleRainChance=0):
+  def __init__(self, requiredScore=10, rectangleSpawnNumber=100, normalRainChance=1, bounceRainChance=0, explodingRainChance=0, puddleRainChance=0):
+    # An array to help generate a random rectangle type
     self.rectangleChoices = []
+
+    # Recquire score to complete the level
     self.requiredScore = requiredScore
+
+    # Keep up with how often to spawn rectangles
+    self.rectangleSpawnNumber = rectangleSpawnNumber
+
+    # Hold all the different chances to spawn each type of rectangle rain
     self.normalRainChance = normalRainChance
     self.bounceRainChance = bounceRainChance
     self.explodingRainChance = explodingRainChance
     self.puddleRainChance = puddleRainChance
+
+    # Create the rectangle choice array
     self.createRectangleChoiceHolder()
 
   def generateLevel(self):
+    # Keep track of our platforms and triangles
     platformLocs = []
     triangleLocs = []
 
+    # Get our total number of rows and columns
     numRows = len(self.levelTiles)
     numColumns = self.countColumns()
 
+    # Tile width and height based on the number of columns and rows
     tileWidth = SCREEN_WIDTH/numColumns
     tileHeight = SCREEN_HEIGHT/numRows
 
+    # Current x,y coordinate for the current tile
     currentXLoc = 0
     currentYLoc = 0
 
+    # Stuff to keep track of building platforms
     buildingPlatform = False
     platformWidth = 0
     platformLoc = 0
@@ -193,7 +208,7 @@ class Level_01(Level):
 
 class Level_02(Level):
   def __init__(self):
-    Level.__init__(self, requiredScore=9999)
+    Level.__init__(self, requiredScore=9999, rectangleSpawnNumber=75)
 
     self.levelTiles = [
     "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",

@@ -6,6 +6,7 @@ from pygame.locals import *
 from constants import *
 from spriteSheets import *
 import time
+
 # McSquare size
 MCSQUARE_HEIGHT = 140
 MCSQUARE_WIDTH = 130
