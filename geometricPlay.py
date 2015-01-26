@@ -32,6 +32,7 @@ def main():
       scene = scenes.LevelScene(screen)
       scene.setDifficulty(difficulty)
       nextScene = scene.display()
+      totalScore, level = scene.getFinalProgress()
 
     # Show the Difficulty menu
     elif nextScene == scenes.Scene.difficultyScene:
@@ -52,6 +53,7 @@ def main():
     # Show the game over scene
     elif nextScene == scenes.Scene.gameOverScene:
       scene = scenes.GameOverScene(screen)
+      scene.setFinalProgress(totalScore, level)
       nextScene = scene.display()
 
     # Time to quit

@@ -326,6 +326,9 @@ class LevelScene(Scene):
   def setDifficulty(self, difficulty):
     self.difficulty = difficulty
 
+  def getFinalProgress(self):
+    return self.HUD.score, self.levelNum
+
 class DifficultyMenu(Scene):
   def __init__(self, screen):
     Scene.__init__(self, screen)
@@ -460,6 +463,12 @@ class GameOverScene(Scene):
     endLabel = TextLine(self.screen, "Game Over", color=BLACK, size=SCORE_FONT_SIZE)
     endLabel.drawByCenter(((SCREEN_WIDTH/2), SCREEN_HEIGHT*0.25))
 
+    # Show the final level and score
+    levelLabel = TextLine(self.screen, "You made it to level " + str(self.finalLevel), color=BLACK, size=int((SCORE_FONT_SIZE*.75)))
+    levelLabel.drawByCenter(((SCREEN_WIDTH/2), SCREEN_HEIGHT*0.4))
+    scoreLabel = TextLine(self.screen, "You recieved a score of " + str(self.finalScore), color=BLACK, size=int((SCORE_FONT_SIZE*.75)))
+    scoreLabel.drawByCenter(((SCREEN_WIDTH/2), SCREEN_HEIGHT*0.5))
+
     # Draw the back box
     backBox = Box(self.screen, mainMenuButtonWidth, mainMenuButtonHeight, BLACK)
     backBox.drawByCenter((mainMenuButtonX, mainMenuButtonY))
@@ -478,3 +487,7 @@ class GameOverScene(Scene):
           return Scene.mainMenuScene
 
       pygame.display.flip()
+
+  def setFinalProgress(self, score, levelNum):
+    self.finalScore = score
+    self.finalLevel = levelNum
