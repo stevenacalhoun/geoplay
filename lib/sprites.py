@@ -13,10 +13,6 @@ MCSQUARE_WIDTH = 130
 MCSQUARE_SPEED = 15
 MCSQUARE_JUMP_SPEED = 30
 
-# Platform size
-PLATFORM_WIDTH = 240
-PLATFORM_HEIGHT = 40
-
 # Rectangle size
 RECTANGLE_WIDTH = 40
 RECTANGLE_HEIGHT = 100
@@ -24,15 +20,19 @@ RECTANGLE_SPAWN_RATE = 100
 
 # McSquare class
 class Mcsquare(pygame.sprite.Sprite):
-  # Arrays to hold all the animations for the left and right running
-  runningRightImages = []
-  runningLeftImages = []
-
   # Initializer
-  def __init__(self, screen, startingLoc):
+  def __init__(self, screen, startingLoc, height):
     pygame.sprite.Sprite.__init__(self)
 
+    # Sprite sheet for McSquare
     spriteSheet = SpriteSheet("images/braid_man.png")
+
+    # Keep up with our height for collision detection
+    self.height = height
+
+    # Arrays to hold all the animations for the left and right running
+    self.runningRightImages = []
+    self.runningLeftImages = []
 
     # Location for the next image in the sprite sheet
     xVal = 0
@@ -40,8 +40,9 @@ class Mcsquare(pygame.sprite.Sprite):
 
     # There are 26 images in the sprite sheet, load them all
     for imageCount in range(0, 26):
-      # Load each image and add it to the running right images
-      image = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
+      # Load each image, scale them, and add it to the running right images
+      rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
+      image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
       self.runningRightImages.append(image)
       imageCount += 1
 
@@ -73,8 +74,6 @@ class Mcsquare(pygame.sprite.Sprite):
     self.jumping = False
     self.jumpRecharged = True
     self.falling = True
-
-    self.height = MCSQUARE_HEIGHT
 
     # Count frames to make the animation look smooth
     self.frame = 0
@@ -122,8 +121,7 @@ class Mcsquare(pygame.sprite.Sprite):
         # Moving down
         if self.yMove > 0:
           self.jumpRecharged = True
-          self.rect.y = platform.rect.y - MCSQUARE_HEIGHT
-          str(self.rect.y + MCSQUARE_HEIGHT) + "==" + str(platform.rect.y)
+          self.rect.y = platform.rect.y - self.height
 
     # Check to see if we've gotten to the triangle
     captureCount = 0

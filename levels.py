@@ -58,8 +58,8 @@ class Level(object):
     numColumns = self.countColumns()
 
     # Tile width and height based on the number of columns and rows
-    tileWidth = SCREEN_WIDTH/numColumns
-    tileHeight = SCREEN_HEIGHT/numRows
+    self.tileWidth = SCREEN_WIDTH/numColumns
+    self.tileHeight = SCREEN_HEIGHT/numRows
 
     # Current x,y coordinate for the current tile
     currentXLoc = 0
@@ -82,13 +82,13 @@ class Level(object):
           while stillSearching:
             # If there is a t that means position it between the two tiles
             if row[tileNum+currentSearch] == "t":
-              triangleLoc = ((currentXLoc + tileWidth), currentYLoc)
+              triangleLoc = ((currentXLoc + self.tileWidth), currentYLoc)
               triangleLocs.append(triangleLoc)
               stillSearching = False
 
             # Otherwise just position it in the middle of the tile
             elif row[tileNum+currentSearch] == "_":
-              triangleLoc = ((currentXLoc + (tileWidth/2)), (currentYLoc))
+              triangleLoc = ((currentXLoc + (self.tileWidth/2)), (currentYLoc))
               triangleLocs.append(triangleLoc)
               stillSearching = False
 
@@ -105,11 +105,11 @@ class Level(object):
           # Start a new platform
           buildingPlatform = True
           platformLoc = currentXLoc, currentYLoc
-          platformWidth = tileWidth
+          platformWidth = self.tileWidth
 
         # p stands for a growing platform
         elif tile == "p":
-          platformWidth += tileWidth
+          platformWidth += self.tileWidth
 
         # S stands for the starting point for McSquare
         elif tile == "S":
@@ -119,20 +119,20 @@ class Level(object):
         elif tile == "_":
           # If we are building a platform, this means we've finished it, so build it
           if buildingPlatform:
-            platformLocs.append([platformLoc, (platformWidth, tileHeight)])
+            platformLocs.append([platformLoc, (platformWidth, self.tileHeight)])
             buildingPlatform = False
             platformWidth = 0
 
         # Change our x location for each tile
         if tile != " ":
-          currentXLoc += tileWidth
+          currentXLoc += self.tileWidth
 
       # Change our y location for each row, and reset back to the first tile
-      currentYLoc += tileHeight
+      currentYLoc += self.tileHeight
       currentXLoc = 0
 
     # Create any platform we were still building at the end
-    platformLocs.append([platformLoc, (platformWidth+tileWidth, tileHeight)])
+    platformLocs.append([platformLoc, (platformWidth+self.tileWidth, self.tileHeight)])
 
     # Return the platform locations and starting location
     return platformLocs, triangleLocs, startingLoc

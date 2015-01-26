@@ -243,7 +243,7 @@ class LevelScene(Scene):
   # Generate all the new sprites for a level
   def generateSprites(self):
     # Get our square character and add him to the dynamic sprite group
-    self.mcSquare = Mcsquare(self.screen, self.startingLoc)
+    self.mcSquare = Mcsquare(self.screen, self.startingLoc, self.level.tileHeight*2)
     self.dynamicSpriteGroup = pygame.sprite.Group(self.mcSquare)
 
     # Create a sprite group to hold the rain
