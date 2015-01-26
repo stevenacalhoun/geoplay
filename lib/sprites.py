@@ -300,6 +300,9 @@ class Triangle(pygame.sprite.Sprite):
   def __init__(self, screen, topPoint, height):
     pygame.sprite.Sprite.__init__(self)
 
+    # Store the triangle's top point
+    self.topPoint = topPoint
+
     # C point is simply the passed in topPoint
     cX, cY = topPoint
 

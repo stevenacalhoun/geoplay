@@ -29,8 +29,9 @@ def getLevel(level):
 
 
 class Level(object):
-  def __init__(self, normalRainChance, bounceRainChance, explodingRainChance, puddleRainChance):
+  def __init__(self, requiredScore=10, normalRainChance=1, bounceRainChance=0, explodingRainChance=0, puddleRainChance=0):
     self.rectangleChoices = []
+    self.requiredScore = requiredScore
     self.normalRainChance = normalRainChance
     self.bounceRainChance = bounceRainChance
     self.explodingRainChance = explodingRainChance
@@ -60,15 +61,26 @@ class Level(object):
       for tileNum, tile in enumerate(row):
         # T stands for a triangle spawn location
         if tile == "T":
-          # If there is a t that means position it between the two tiles
-          if row[tileNum+1] == "t":
-            triangleLoc = (currentXLoc + tileWidth), (currentYLoc - TRIANGLE_HEIGHT)
-            triangleLocs.append(triangleLoc)
-          # Otherwise just position it in the middle of the tile
-          else:
-            triangleLoc = (currentXLoc + (tileWidth/2)), (currentYLoc)
-            triangleLocs.append(triangleLoc)
-            pass
+          # Search for either a 't' or a '_'
+          currentSearch = 1
+          stillSearching = True
+          while stillSearching:
+            # If there is a t that means position it between the two tiles
+            if row[tileNum+currentSearch] == "t":
+              triangleLoc = ((currentXLoc + tileWidth), currentYLoc)
+              triangleLocs.append(triangleLoc)
+              stillSearching = False
+
+            # Otherwise just position it in the middle of the tile
+            elif row[tileNum+currentSearch] == "_":
+              triangleLoc = ((currentXLoc + (tileWidth/2)), (currentYLoc))
+              triangleLocs.append(triangleLoc)
+              stillSearching = False
+
+            # Still looking for it
+            else:
+              currentSearch += 1
+
         # P stands for platform
         if tile == "P":
           # If we are currently building a platform, create it
@@ -155,9 +167,12 @@ class Level(object):
     elif rectangleChoice == "P":
       return PuddleRectangleRain((xLoc, HUD_HEIGHT + 1))
 
+  def levelComplete(self, currentScore):
+    return currentScore >= self.requiredScore
+
 class Level_01(Level):
    def __init__(self):
-    Level.__init__(self, 1, 0, 0, 0)
+    Level.__init__(self, requiredScore=2)
 
     self.levelTiles = [
     "_ _ _ _ _ _ _ _ _ _ _ _",
@@ -178,7 +193,32 @@ class Level_01(Level):
 
 class Level_02(Level):
   def __init__(self):
-    pass
+    Level.__init__(self, requiredScore=9999)
+
+    self.levelTiles = [
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ P _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ P _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ P _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ T t _ _ _ _ T t _ _ T t _ _ _ _ _ _ _ _ _ _ T t _ _ T t _ _ T t _ _",
+    "_ _ P p _ _ _ _ P p _ _ P p _ _ _ _ _ _ _ _ _ _ P p _ _ P p _ _ P p _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ S _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _",
+    "P p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p"]
 
 class Level_03(Level):
   def __init__(self):
