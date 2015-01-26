@@ -208,14 +208,12 @@ class Platform(pygame.sprite.Sprite):
 # Rectangle rain class
 class RectangleRain(pygame.sprite.Sprite):
   # Initializer
-  def __init__(self, screen, initialPosition):
+  def __init__(self, initialPosition):
     pygame.sprite.Sprite.__init__(self)
 
     # Draw a simple black rectangle
     self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
     self.image.fill(BLACK)
-
-    self.screen = screen
 
     self.rect = self.image.get_rect()
     self.rect.topleft = initialPosition
@@ -247,7 +245,6 @@ class RectangleRain(pygame.sprite.Sprite):
     return False
 
 class NormalRectangleRain(RectangleRain):
-  ## TO DO ##
   def update(self):
     # Move the sprite and plan the next update
     self.move()
@@ -264,17 +261,36 @@ class NormalRectangleRain(RectangleRain):
     # No animation for this type of rain currently
     pass
 
-class BounceUpRectangleRain(RectangleRain):
+class BounceRectangleRain(RectangleRain):
   ## TO DO ##
+  def update(self):
+    pass
+
+  def move(self):
+    pass
+
   def animate():
     pass
 
 class ExplodingRectangleRain(RectangleRain):
   ## TO DO ##
+  def update(self):
+    pass
+
+  def move(self):
+    pass
+
   def animate():
     pass
+
 class PuddleRectangleRain(RectangleRain):
   ## TO DO ##
+  def update(self):
+    pass
+
+  def move(self):
+    pass
+
   def animate():
     pass
 

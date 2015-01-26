@@ -1,8 +1,9 @@
 import pygame
 import math
-from random import randint
+import random
 from constants import *
 import scenes
+from sprites import *
 
 def getLevel(level):
   if level == 1:
@@ -28,8 +29,13 @@ def getLevel(level):
 
 
 class Level(object):
-  def __init__(self):
-    pass
+  def __init__(self, normalRainChance, bounceRainChance, explodingRainChance, puddleRainChance):
+    self.rectangleChoices = []
+    self.normalRainChance = normalRainChance
+    self.bounceRainChance = bounceRainChance
+    self.explodingRainChance = explodingRainChance
+    self.puddleRainChance = puddleRainChance
+    self.createRectangleChoiceHolder()
 
   def generateLevel(self):
     platformLocs = []
@@ -112,8 +118,47 @@ class Level(object):
 
     return columnCount
 
+  def createRectangleChoiceHolder(self):
+    # N spawns a normal rain rectangle
+    for chance in range(self.normalRainChance):
+      self.rectangleChoices.append("N")
+
+    # B spawns a bounce rain rectangle
+    for chance in range(self.bounceRainChance):
+      self.rectangleChoices.append("B")
+
+    # E spawns an exploding rain rectangle
+    for chance in range(self.explodingRainChance):
+      self.rectangleChoices.append("E")
+
+    # P spawns a puddle rain rectangle
+    for chance in range(self.puddleRainChance):
+      self.rectangleChoices.append("P")
+
+  def spawnNewRectangle(self, xLoc):
+    # Get a random rectangle choice from our list
+    rectangleChoice = random.choice(self.rectangleChoices)
+
+    # Normal rain
+    if rectangleChoice == "N":
+      return NormalRectangleRain((xLoc, HUD_HEIGHT + 1))
+
+    # Bouncing rain
+    elif rectangleChoice == "B":
+      return BounceRectangleRain((xLoc, HUD_HEIGHT + 1))
+
+    # Exploding rain
+    elif rectangleChoice == "E":
+      return ExplodingRectangleRain((xLoc, HUD_HEIGHT + 1))
+
+    # Puddle rain
+    elif rectangleChoice == "P":
+      return PuddleRectangleRain((xLoc, HUD_HEIGHT + 1))
+
 class Level_01(Level):
    def __init__(self):
+    Level.__init__(self, 1, 0, 0, 0)
+
     self.levelTiles = [
     "_ _ _ _ _ _ _ _ _ _ _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _",

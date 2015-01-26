@@ -157,7 +157,7 @@ class LevelScene(Scene):
     # Generate all the sprites for the level
     platformLocs, self.triangleLocs, self.startingLoc = self.level.generateLevel()
 
-    # Draw the hud
+    # Generate the HUD
     self.HUD = HUD(self.screen)
 
     # Get our square character and add him to the dynamic sprite group
@@ -167,24 +167,23 @@ class LevelScene(Scene):
     # Create a sprite group to hold the rain
     self.rectangleSpriteGroup = pygame.sprite.Group()
 
-    # Get our platforms from the screen and draw them
+    # Keep up with when we need to draw a new rectangle rain
+    self.rectangleCounter = 0
+
+    # Generate all the platforms from the locations provided by the level
     self.platformSpriteGroup = pygame.sprite.Group()
     self.platforms = []
-
     for platformParams in platformLocs:
       platformLoc, platformSize = platformParams
       platform = Platform(self.screen, platformLoc, platformSize)
       self.platforms.append(platform)
       self.platformSpriteGroup.add(platform)
 
-    self.platformSpriteGroup.draw(self.screen)
-
+    # Pick a random choice from all the possible triangle locations and spawn one
     triangleLoc = random.choice(self.triangleLocs)
     self.spawnTriangle(triangleLoc)
 
-    # Keep up with when we need to draw a new rectangle rain
-    self.rectangleCounter = 0
-
+    # Continue so long as we have lives left
     while self.HUD.outOfLives() == False:
       # Let the scene handle the movement
       event = pygame.event.poll()
@@ -201,12 +200,12 @@ class LevelScene(Scene):
 
     return Scene.gameOverScene
 
+  # Spawn a new triangle with the given top point
   def spawnTriangle(self, topPoint):
-    # Spawn a new triangle with the given top point
     self.triangleSpriteGroup.add(Triangle(self.screen, topPoint, TRIANGLE_HEIGHT))
 
+  # Remove a captured triangle
   def removeTriangle(self, triangle):
-    # Remove the capture triangle
     self.triangleSpriteGroup.remove(triangle)
 
   # Hand key input
@@ -240,9 +239,17 @@ class LevelScene(Scene):
 
     # See if we need to spawn a new rectangle
     if self.rectangleCounter >= (RECTANGLE_SPAWN_RATE / self.difficulty):
+      # Reset the counter and pick a random location to spawn the rectangle
       self.rectangleCounter = 0
       randomX = random.randint(0, SCREEN_WIDTH - RECTANGLE_WIDTH)
-      self.rectangleSpriteGroup.add(NormalRectangleRain(self.screen, (randomX, HUD_HEIGHT + 1)))
+
+      # Get the type of rectangle we need to spawn
+      rectangle = self.level.spawnNewRectangle(randomX)
+
+      # Add the rectangle to our group
+      self.rectangleSpriteGroup.add(rectangle)
+
+    # Otherwise increment the counter
     else:
       self.rectangleCounter += 1
 
@@ -258,10 +265,8 @@ class LevelScene(Scene):
     # Update the HUD
     self.HUD.update()
 
-  # Update all the sprites on screen
+  # Checks for collisions with rectangles or triangles
   def checkCollisions(self):
-    global currentTriangle, triangleLocations
-
     # Check for triangle collisions
     captureCount = self.mcSquare.checkCollisions(self.platforms, self.triangleSpriteGroup)
 
@@ -284,12 +289,14 @@ class LevelScene(Scene):
         if hit:
           self.HUD.removeLife()
 
+  # Redraws all the current sprites
   def draw(self):
     self.dynamicSpriteGroup.draw(self.screen)
     self.platformSpriteGroup.draw(self.screen)
     self.rectangleSpriteGroup.draw(self.screen)
     self.triangleSpriteGroup.draw(self.screen)
 
+  # Sets the difficult for the level
   def setDifficulty(self, difficulty):
     self.difficulty = difficulty
 
