@@ -36,7 +36,7 @@ class Level(object):
     triangleLocs = []
 
     numRows = len(self.levelTiles)
-    numColumns = len(self.levelTiles[0])
+    numColumns = self.countColumns()
 
     tileWidth = SCREEN_WIDTH/numColumns
     tileHeight = SCREEN_HEIGHT/numRows
@@ -56,7 +56,7 @@ class Level(object):
         if tile == "T":
           # If there is a t that means position it between the two tiles
           if row[tileNum+1] == "t":
-            triangleLoc = (currentXLoc + tileWidth), (currentYLoc)
+            triangleLoc = (currentXLoc + tileWidth), (currentYLoc - TRIANGLE_HEIGHT)
             triangleLocs.append(triangleLoc)
           # Otherwise just position it in the middle of the tile
           else:
@@ -83,7 +83,7 @@ class Level(object):
           startingLoc = currentXLoc, currentYLoc
 
         # There is nothing on this tile
-        else:
+        elif tile == "_":
           # If we are building a platform, this means we've finished it, so build it
           if buildingPlatform:
             platformLocs.append([platformLoc, (platformWidth, tileHeight)])
@@ -91,7 +91,8 @@ class Level(object):
             platformWidth = 0
 
         # Change our x location for each tile
-        currentXLoc += tileWidth
+        if tile != " ":
+          currentXLoc += tileWidth
 
       # Change our y location for each row, and reset back to the first tile
       currentYLoc += tileHeight
@@ -103,24 +104,32 @@ class Level(object):
     # Return the platform locations and starting location
     return platformLocs, triangleLocs, startingLoc
 
+  def countColumns(self):
+    columnCount = 0
+    for column in self.levelTiles[0]:
+      if column != " ":
+        columnCount += 1
+
+    return columnCount
+
 class Level_01(Level):
    def __init__(self):
     self.levelTiles = [
-    "____________",
-    "____________",
-    "____________",
-    "____________",
-    "______T_____",
-    "______P_____",
-    "____________",
-    "____________",
-    "__Tt____Tt__",
-    "__Pp____Pp__",
-    "____________",
-    "_________S__",
-    "____________",
-    "_T___T___T__",
-    "Pppppppppppp"]
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ T _ _ _ _ _",
+    "_ _ _ _ _ _ P _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ T t _ _ _ _ T t _ _",
+    "_ _ P p _ _ _ _ P p _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ S _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ T _ _ _ T _ _ _ T _ _",
+    "P p p p p p p p p p p p"]
 
 class Level_02(Level):
   def __init__(self):

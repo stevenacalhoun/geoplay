@@ -21,30 +21,42 @@ def main():
 
   # Default difficulty is two, start on the main menu
   difficulty = 2
-  scene = scenes.MainMenu(screen)
-  newScene = scene.display()
+  nextScene = scenes.Scene.mainMenuScene
 
-  # Loop infinitely
+  # Loop until it's time to quit
   running = True
-  while True:
+  while running:
 
-    # This is a weird way of switch screens, I'm trying to thingk of better mehtods of accomplishing it
-    if newScene == 0:
-      scene = scenes.LevelScene(screen, difficulty)
-      newScene = scene.display()
-    elif newScene == 1:
+    # Show the level scene
+    if nextScene == scenes.Scene.levelScene:
+      scene = scenes.LevelScene(screen)
+      scene.setDifficulty(difficulty)
+      nextScene = scene.display()
+
+    # Show the Difficulty menu
+    elif nextScene == scenes.Scene.difficultyScene:
       scene = scenes.DifficultyMenu(screen)
-      newScene, difficulty = scene.display()
-    elif newScene == 2:
-      scene = scenes.HelpScene(screen)
-      newScene = scene.display()
-    elif newScene == 3:
-      scene = scenes.MainMenu(screen)
-      newScene = scene.display()
-    elif newScene == 4:
-      scene = scenes.GameOverScene(screen)
-      newScene = scene.display()
+      nextScene = scene.display()
+      difficulty = scene.getDifficulty()
 
+    # Show the help screen
+    elif nextScene == scenes.Scene.helpScene:
+      scene = scenes.HelpScene(screen)
+      nextScene = scene.display()
+
+    # Show the main menu
+    elif nextScene == scenes.Scene.mainMenuScene:
+      scene = scenes.MainMenu(screen)
+      nextScene = scene.display()
+
+    # Show the game over scene
+    elif nextScene == scenes.Scene.gameOverScene:
+      scene = scenes.GameOverScene(screen)
+      nextScene = scene.display()
+
+    # Time to quit
+    elif nextScene == scenes.Scene.quit:
+      running = False
 
 # Run our program
 if __name__ == "__main__":

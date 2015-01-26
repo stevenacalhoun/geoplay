@@ -8,14 +8,16 @@ from sprites import *
 import random
 from levels import *
 
-# Triangle testing stuff
-TRIANGLE_HEIGHT = 75
-triangleLocations = [(SCREEN_WIDTH * 0.25, 400), (SCREEN_WIDTH * 0.75, 400)]
-currentTriangle = 0
-
 clock = pygame.time.Clock()
 
 class Scene(object):
+  mainMenuScene = 0
+  levelScene = 1
+  difficultyScene = 2
+  helpScene = 3
+  gameOverScene = 4
+  quit = 5
+
   def __init__(self, screen):
     self.screen = screen
 
@@ -36,7 +38,7 @@ class MainMenu(Scene):
     quitBoxY = helpBoxY + 150
 
     # Keep up with what's selected
-    menuSelection = 0
+    menuSelection = Scene.levelScene
 
     # Keep looping unitl somehting has been selected
     selectionMade = False
@@ -46,21 +48,20 @@ class MainMenu(Scene):
 
       # Key up and down the menu
       if event.type == pygame.KEYDOWN:
+        # Go down one option
         if event.key == pygame.K_DOWN:
           menuSelection += 1
-          if menuSelection >= 4:
-            menuSelection = 0
+          if menuSelection >= 5:
+            menuSelection = Scene.levelScene
+        # Go up one option
         if event.key == pygame.K_UP:
           menuSelection -= 1
-          if menuSelection < 0:
-            menuSelection = 3
+          if menuSelection < Scene.levelScene:
+            menuSelection = Scene.quit
+        # Select the current option
         if event.key == pygame.K_RETURN:
-          if menuSelection == 3:
-            pygame.quit()
-          else:
-            self.display = menuSelection
-            selectionMade = True
-            return menuSelection
+          selectionMade = True
+          return menuSelection
 
       # Draw the title
       title = TextLine(self.screen, "Geo-Play", color=BLACK, size=76)
@@ -88,13 +89,13 @@ class MainMenu(Scene):
       quitLabel.drawByCenter((SCREEN_WIDTH/2, quitBoxY))
 
       # Draw a box around the currently selected menu item
-      if menuSelection == 0:
+      if menuSelection == Scene.levelScene:
         playBox.outline()
-      elif menuSelection == 1:
+      elif menuSelection == Scene.difficultyScene:
         diffBox.outline()
-      elif menuSelection == 2:
+      elif menuSelection == Scene.helpScene:
         helpBox.outline()
-      elif menuSelection == 3:
+      elif menuSelection == Scene.quit:
         quitBox.outline()
 
       pygame.display.flip()
@@ -143,9 +144,8 @@ class HUD():
     self.displayLives()
 
 class LevelScene(Scene):
-  def __init__(self, screen, difficulty):
+  def __init__(self, screen):
     Scene.__init__(self, screen)
-    self.difficulty = difficulty
     self.triangleSpriteGroup = pygame.sprite.Group()
     self.levelNum = 1
     self.level = getLevel(self.levelNum)
@@ -181,9 +181,6 @@ class LevelScene(Scene):
 
     triangleLoc = random.choice(self.triangleLocs)
     self.spawnTriangle(triangleLoc)
-    # platform = random.choice(self.platforms)
-    # self.triangleSpriteGroup.add(platform.spawnTriangle())
-
 
     # Keep up with when we need to draw a new rectangle rain
     self.rectangleCounter = 0
@@ -198,11 +195,11 @@ class LevelScene(Scene):
       self.update()
       self.checkCollisions()
       self.draw()
-      ## FUCKING FIGURED IT OUT, SPRITES DON'T REDRAW WITH checkCollisions()
+
       pygame.display.flip()
       clock.tick(FRAME_RATE)
 
-    return 4
+    return Scene.gameOverScene
 
   def spawnTriangle(self, topPoint):
     # Spawn a new triangle with the given top point
@@ -278,8 +275,6 @@ class LevelScene(Scene):
 
       triangleLoc = random.choice(self.triangleLocs)
       self.spawnTriangle(triangleLoc)
-      # platform = random.choice(self.platforms)
-      # self.triangleSpriteGroup.add(platform.spawnTriangle())
 
       self.HUD.addPoints(captureCount)
 
@@ -295,6 +290,9 @@ class LevelScene(Scene):
     self.rectangleSpriteGroup.draw(self.screen)
     self.triangleSpriteGroup.draw(self.screen)
 
+  def setDifficulty(self, difficulty):
+    self.difficulty = difficulty
+
 class DifficultyMenu(Scene):
   def __init__(self, screen):
     Scene.__init__(self, screen)
@@ -303,9 +301,9 @@ class DifficultyMenu(Scene):
     # Constants for the boxes
     menuBoxWidth = SCREEN_WIDTH/3
     menuBoxHeight = 80
-    topBoxY = SCREEN_HEIGHT/4
-    midBoxY = (SCREEN_HEIGHT/2) - (menuBoxHeight/2)
-    botBoxY = midBoxY + (midBoxY - topBoxY)
+    easyBoxY = SCREEN_HEIGHT/4
+    medBoxY = (SCREEN_HEIGHT/2) - (menuBoxHeight/2)
+    hardBoxY = medBoxY + (medBoxY - easyBoxY)
 
     # Keep track of the current selection
     menuSelection = 1
@@ -332,36 +330,38 @@ class DifficultyMenu(Scene):
           self.display = 3
           self.difficulty = menuSelection
           selectionMade = True
-          return 3, menuSelection
+          return Scene.mainMenuScene
 
       font = pygame.font.SysFont('monospace', 36)
 
-      # Draw top, mid, and bot boxes and their labels
-      topBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
-      topBox.drawByCenter((SCREEN_WIDTH/2, topBoxY))
-      topLabel = TextLine(self.screen, "Easy", color=WHITE, size=36)
-      topLabel.drawByCenter((SCREEN_WIDTH/2, topBoxY))
+      # Draw all the difficulty options
+      easyBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      easyBox.drawByCenter((SCREEN_WIDTH/2, easyBoxY))
+      easyLabel = TextLine(self.screen, "Easy", color=WHITE, size=36)
+      easyLabel.drawByCenter((SCREEN_WIDTH/2, easyBoxY))
 
-      midBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
-      midBox.drawByCenter((SCREEN_WIDTH/2, midBoxY))
-      midLabel = TextLine(self.screen, "Medium", color=WHITE, size=36)
-      midLabel.drawByCenter((SCREEN_WIDTH/2, midBoxY))
+      medBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      medBox.drawByCenter((SCREEN_WIDTH/2, medBoxY))
+      medLabel = TextLine(self.screen, "Medium", color=WHITE, size=36)
+      medLabel.drawByCenter((SCREEN_WIDTH/2, medBoxY))
 
-      botBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
-      botBox.drawByCenter((SCREEN_WIDTH/2, botBoxY))
-      botLabel = TextLine(self.screen, "Hard", color=WHITE, size=36)
-      botLabel.drawByCenter((SCREEN_WIDTH/2, botBoxY))
+      hardBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+      hardBox.drawByCenter((SCREEN_WIDTH/2, hardBoxY))
+      hardLabel = TextLine(self.screen, "Hard", color=WHITE, size=36)
+      hardLabel.drawByCenter((SCREEN_WIDTH/2, hardBoxY))
 
       # Draw a box around the currently selected menu item
       if menuSelection == 1:
-        topBox.outline()
+        easyBox.outline()
       elif menuSelection == 2:
-        midBox.outline()
+        medBox.outline()
       elif menuSelection == 3:
-        botBox.outline()
-
+        hardBox.outline()
 
       pygame.display.flip()
+
+  def getDifficulty(self):
+    return self.difficulty
 
 class HelpScene(Scene):
   def __init(self):
@@ -404,8 +404,7 @@ class HelpScene(Scene):
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_RETURN:
           goBack = True
-          return 3
-          self.display = 3
+          return Scene.mainMenuScene
 
       pygame.display.flip()
 
@@ -443,7 +442,6 @@ class GameOverScene(Scene):
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_RETURN:
           goBack = True
-          self.display = 3
-          return 3
+          return Scene.mainMenuScene
 
       pygame.display.flip()

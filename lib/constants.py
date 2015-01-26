@@ -1,3 +1,4 @@
+# Lock in the frame rate at 60 FPS
 FRAME_RATE = 60
 
 # Locations for HUD
@@ -20,7 +21,6 @@ SCREEN_HEIGHT = 900
 
 # Gravity and ground constants
 GRAVITY = 15
-GROUND_THICKNESS = 100
-GROUND_Y = SCREEN_HEIGHT - GROUND_THICKNESS
 
+# Triangle height
 TRIANGLE_HEIGHT = 75

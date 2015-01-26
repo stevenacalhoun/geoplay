@@ -205,11 +205,6 @@ class Platform(pygame.sprite.Sprite):
     # Platforms are currently stationary
     pass
 
-  def spawnTriangle(self):
-    topPoint = (self.rect.x + (self.width/2)), self.rect.y - 80
-    self.triangle = Triangle(self.screen, topPoint, TRIANGLE_HEIGHT)
-    return self.triangle
-
 # Rectangle rain class
 class RectangleRain(pygame.sprite.Sprite):
   # Initializer
