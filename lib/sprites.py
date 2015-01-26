@@ -16,7 +16,6 @@ MCSQUARE_JUMP_SPEED = 30
 # Rectangle size
 RECTANGLE_WIDTH = 40
 RECTANGLE_HEIGHT = 100
-RECTANGLE_SPAWN_RATE = 100
 
 # McSquare class
 class Mcsquare(pygame.sprite.Sprite):
@@ -296,7 +295,7 @@ class PuddleRectangleRain(RectangleRain):
 # Triangle class
 class Triangle(pygame.sprite.Sprite):
   # Initializer
-  def __init__(self, screen, topPoint, height):
+  def __init__(self, topPoint, height):
     pygame.sprite.Sprite.__init__(self)
 
     # Store the triangle's top point
@@ -321,15 +320,17 @@ class Triangle(pygame.sprite.Sprite):
     # Load the triangle and size it based on the input parameters
     self.height = height
     self.width = 2*xOffset
+
+    # Load the triangle image and transform it to the desired size
     self.image = pygame.Surface([self.width, self.height])
     self.image.fill(WHITE)
     self.image = pygame.image.load("images/triangle.png")
     self.image = pygame.transform.scale(self.image, (int(self.width), int(self.height)))
 
+    # The rectangle is for collision detection, really should be a triangle
     self.rect = pygame.Rect(bX, cY, self.width, self.height)
 
-    self.screen = screen
-
+    # Currently not captured
     self.captured = False
 
   def update(self):

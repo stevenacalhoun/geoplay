@@ -270,7 +270,8 @@ class LevelScene(Scene):
     while newLoc == self.oldTriLoc:
       newLoc = random.choice(self.triangleLocs)
 
-    self.triangleSpriteGroup.add(Triangle(self.screen, newLoc, TRIANGLE_HEIGHT))
+    # Spawn the new triangle
+    self.triangleSpriteGroup.add(Triangle(newLoc, self.level.tileHeight))
 
   # Remove a captured triangle
   def removeTriangle(self, triangle):
