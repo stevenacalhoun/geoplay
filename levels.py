@@ -206,7 +206,7 @@ class Level_01(Level):
     "_ T _ _ _ T _ _ _ T _ _",
     "P p p p p p p p p p p p"]
 
-    self.caption = "Just warming up."
+    self.caption = "Just warming up"
 
 class Level_02(Level):
   def __init__(self):
@@ -237,7 +237,7 @@ class Level_02(Level):
     "_ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _",
     "P p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p"]
 
-    self.caption = "Try this."
+    self.caption = "Try this"
 
 class Level_03(Level):
   def __init__(self):

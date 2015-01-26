@@ -162,6 +162,9 @@ class LevelScene(Scene):
     # Generate the HUD
     self.HUD = HUD(self.screen)
 
+    # Show a transition screen
+    self.showLevelTransitionScreen()
+
     # Generate all the sprites for the level
     self.generateSprites()
 
@@ -186,6 +189,9 @@ class LevelScene(Scene):
         self.levelNum += 1
         self.level = getLevel(self.levelNum)
 
+        # Show a transition screen
+        self.showLevelTransitionScreen()
+
         # Regenerate all the new locations and sprites
         self.platformParams, self.triangleLocs, self.startingLoc = self.level.generateLevel()
         self.generateSprites()
@@ -196,6 +202,43 @@ class LevelScene(Scene):
 
     # Go to the game over scene when we're out of lives
     return Scene.gameOverScene
+
+  def showLevelTransitionScreen(self):
+    self.screen.fill(WHITE)
+
+    # Constants to hold the main menu button
+    nextLevelButtonWidth = SCREEN_WIDTH/3
+    nextLevelButtonHeight = 80
+
+    nextLevelButtonX = SCREEN_WIDTH/2
+    nextLevelButtonY = SCREEN_HEIGHT * 0.66
+
+    # Draw the game over text
+    levelLabel = TextLine(self.screen, "Level " + str(self.levelNum), color=BLACK, size=SCORE_FONT_SIZE)
+    levelLabel.drawByCenter(((SCREEN_WIDTH/2), SCREEN_HEIGHT*0.25))
+
+    # Show the final level and score
+    captionLabel = TextLine(self.screen, self.level.caption, color=BLACK, size=int((SCORE_FONT_SIZE*.66)))
+    captionLabel.drawByCenter(((SCREEN_WIDTH/2), SCREEN_HEIGHT*0.4))
+
+    # Draw the back box
+    nextLevelBox = Box(self.screen, nextLevelButtonWidth, nextLevelButtonHeight, BLACK)
+    nextLevelBox.drawByCenter((nextLevelButtonX, nextLevelButtonY))
+    nextLevelButtonLabel = TextLine(self.screen, "Start Level", color=WHITE, size=36)
+    nextLevelButtonLabel.drawByCenter((nextLevelButtonX, nextLevelButtonY))
+    nextLevelBox.outline()
+
+    # Wait until we want to go back
+    proceed = False
+    while proceed == False:
+      event = pygame.event.poll()
+      # Key up and down the menu
+      if event.type == pygame.KEYDOWN:
+        if event.key == pygame.K_RETURN:
+          proceed = True
+          return Scene.mainMenuScene
+
+      pygame.display.flip()
 
   # Generate all the new sprites for a level
   def generateSprites(self):
