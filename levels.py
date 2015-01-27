@@ -59,11 +59,14 @@ class Level(object):
 
     # Tile width and height based on the number of columns and rows
     self.tileWidth = SCREEN_WIDTH/numColumns
-    self.tileHeight = SCREEN_HEIGHT/numRows
+    self.tileHeight = (SCREEN_HEIGHT-HUD_HEIGHT)/numRows
+
+    # Since the tileHeigth is a rounded down integer then it leaves this weird gap at the bottom
+    self.bottomGap = SCREEN_HEIGHT - (HUD_HEIGHT + (numRows*self.tileHeight))
 
     # Current x,y coordinate for the current tile
     currentXLoc = 0
-    currentYLoc = 0
+    currentYLoc = HUD_HEIGHT
 
     # Stuff to keep track of building platforms
     buildingPlatform = False
@@ -131,8 +134,8 @@ class Level(object):
       currentYLoc += self.tileHeight
       currentXLoc = 0
 
-    # Create any platform we were still building at the end
-    platformLocs.append([platformLoc, (platformWidth+self.tileWidth, self.tileHeight)])
+    # Create any platform we were still building at the end, which will be the ground so add the weird gap at the bottom
+    platformLocs.append([platformLoc, (platformWidth+self.tileWidth, self.tileHeight+self.bottomGap)])
 
     # Return the platform locations and starting location
     return platformLocs, triangleLocs, startingLoc
