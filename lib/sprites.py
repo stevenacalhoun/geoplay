@@ -121,8 +121,11 @@ class Mcsquare(pygame.sprite.Sprite):
         # Moving up
         if self.yMove < 0:
           self.rect.y = platform.rect.y + platform.height
+
+          # We've bumped our head, so immediately start moving downwards
+          self.yMove = 1
         # Moving down
-        if self.yMove > 0:
+        elif self.yMove > 0:
           self.jumpRecharged = True
           self.rect.y = platform.rect.y - self.height
 
@@ -145,6 +148,9 @@ class Mcsquare(pygame.sprite.Sprite):
     # Ceiling
     if (self.rect.y < HUD_HEIGHT):
       self.rect.y = HUD_HEIGHT + 1
+
+      # We've bumped our head, so immediately start moving downwards
+      self.yMove = 1
 
   def moveLeft(self):
     self.runningLeft = True
