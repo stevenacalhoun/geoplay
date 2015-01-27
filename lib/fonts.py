@@ -2,88 +2,69 @@ import pygame
 from pygame import Surface
 from pygame.locals import *
 from constants import *
+import string
 
+# Class to help render single lines of text
 class TextLine():
   def __init__(self, screen, text, font=GAME_FONT, size=16, color=(0,0,0)):
-    self.font = pygame.font.SysFont(font, size)
-    self.color_fg = color
-    self.color_bg = Color("white")
-
     self.screen = screen
-
-    self._aa = True
-    self._text = text
-    self.dirty = True
+    self.text = text
+    self.font = pygame.font.SysFont(font, size)
+    self.color = color
 
   def _render(self):
-    # render for cache
-    self.dirty = False
-    self.image = self.font.render(self._text, self._aa, self.color_fg)
+    # Render the text
+    self.image = self.font.render(self.text, True, self.color)
     self.rect = self.image.get_rect()
     self.width = self.rect.width
     self.height = self.rect.height
-    self.screen = pygame.display.get_surface()
 
   def _draw(self, location=(0,0)):
+    # Draw the text
     self.screen.blit(self.image, location)
 
-    locX, locY = location
-
-    # pygame.draw.line(self.screen, (0,0,0), (0, locY), (1200, locY))
-    # pygame.draw.line(self.screen, (0,0,0), (locX, 0), (locX, 900))
-
   def drawByCenter(self, center=(0,0)):
+    # Render the text
     self._render()
-    locX, locY = center
 
+    # Find where we need to offset it for the center
+    locX, locY = center
     drawX = locX - (self.width/2)
     drawY = locY - (self.height/2)
 
+    # Draw the text
     self._draw((drawX, drawY))
 
   def drawByTopLeft(self,topLeft=(0,0)):
+    # Render the text then draw it by the topleft
     self._render()
-
     self._draw(topLeft)
 
+# Class to help render multi-lined text
+class TextMultiLine():
+  def __init__(self, screen, text, font=GAME_FONT, size=16, color=(0,0,0), lineSpacing=10):
+    self.font = pygame.font.SysFont(font, size)
+    self.textLineObjects = []
+    self.lineSpacing = lineSpacing
 
-class TextBox():
-  def __init__(self, text, fontName='monospace', size=16, color=(0,0,0)):
-    self.font = pygame.font.SysFont(fontName, size)
-    self.color_fg = color
-    self.color_bg = Color("white")
+    # Split up the text and create a single line object for each line
+    textLines = string.split(text, "\n")
 
-    self.text_lines = [ TextLine(line, font=fontName, size=size, color=color) for line in text ]
+    for textLine in textLines:
+      self.textLineObjects.append(TextLine(screen, textLine, font=GAME_FONT, size=size, color=color))
 
-    self._aa = True
-    self._text = text
-    self.dirty = True
+  # Draw all the lines be positioning the center
+  def drawByCenter(self, center=(0,0)):
+    xLoc, yLoc = center
 
+    # Draw each line, increasing the yLoc for each line
+    for textLineNum, textLineObject in enumerate(self.textLineObjects):
+      textLineObject.drawByCenter((xLoc, yLoc + (textLineNum * self.lineSpacing)))
 
-  def _render(self):
-    # render for cache
-    self.dirty = False
-    self.image = self.font.render(self._text, self.aa, self.color_fg)
-    self.rect = self.image.get_rect()
-    self.screen = pygame.display.get_surface()
+  # Draw all the lines be positioning the top left
+  def drawByTopLeft(self,topLeft=(0,0)):
+    xLoc, yLoc = center
 
-  def draw(self, screen, location=(0,0)):
-    self._render()
-    screen.blit(self.image, location)
-
-  @property
-  def text(self):
-    return self._text
-
-  @text.setter
-  def text(self, text):
-    self.dirty = True
-    self._text = text
-
-  @property
-  def aa(self): return self._aa
-
-  @aa.setter
-  def aa(self, aa):
-    self.dirty = True
-    self._aa = aa
+    # Draw each line, increasing the yLoc for each line
+    for textLineNum, textLineObject in enumerate(self.textLineObjects):
+      textLineObject.drawByCenter((xLoc, yLoc + (textLineNum * self.lineSpacing)))

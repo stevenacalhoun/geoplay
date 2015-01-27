@@ -544,6 +544,7 @@ class HelpScene(Scene):
   def showMcSquareHelp(self):
     helpBoxX, helpBoxY = self.helpBoxLoc
 
+    # Help text for McSquare
     helpLabel = TextLine(self.screen, "This is Scotty McSquare", color=BLACK, size=36)
     helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
 
@@ -556,10 +557,11 @@ class HelpScene(Scene):
   def showTriangleHelp(self):
     helpBoxX, helpBoxY = self.helpBoxLoc
 
-    helpLabel = TextLine(self.screen, "All he wants in life are these triangles", color=BLACK, size=36)
+    # Help text for Triangle
+    helpLabel = TextMultiLine(self.screen, "All he wants in life\nare these triangles", color=BLACK, size=36, lineSpacing=45)
     helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
 
-    # Show McSquare running around
+    # Show triangle hovering (waiting on the sprites)
     self.triangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
     self.triangle.animateHover()
     self.triangle.draw(self.screen)
@@ -567,36 +569,44 @@ class HelpScene(Scene):
   def showNormalRectangleHelp(self):
     helpBoxX, helpBoxY = self.helpBoxLoc
 
-    helpLabel = TextLine(self.screen, "Look out for the evil rectangle rain though", color=BLACK, size=36)
+    # Help text for normal rectangle
+    helpLabel = TextMultiLine(self.screen, "Look out for the evil\nrectangle rain though", color=BLACK, size=36, lineSpacing=45)
     helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
 
+    # Show rectangle falling (waiting on the sprites)
     self.normalRectangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
     self.normalRectangle.draw(self.screen)
 
   def showExplodingRectangleHelp(self):
     helpBoxX, helpBoxY = self.helpBoxLoc
 
+    # Help text for exploding rectangle
     helpLabel = TextLine(self.screen, "Some rain is a bit explosive", color=BLACK, size=36)
-    helpLabel.drawByCenter(self.helpBoxLoc)
+    helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
 
+    # Show rectangle exploding (waiting on the sprites)
     self.explodingRectangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
     self.explodingRectangle.draw(self.screen)
 
   def showBounceRectangleHelp(self):
     helpBoxX, helpBoxY = self.helpBoxLoc
 
-    helpLabel = TextLine(self.screen, "Some rain liks to go both up and down", color=BLACK, size=36)
-    helpLabel.drawByCenter(self.helpBoxLoc)
+    # Help text for bouncing rectangle
+    helpLabel = TextMultiLine(self.screen, "Some rain likes to go\nboth up and down", color=BLACK, size=36, lineSpacing=45)
+    helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
 
+    # Show rectangle bouncing (waiting on the sprites)
     self.bounceRectangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
     self.bounceRectangle.draw(self.screen)
 
   def showPuddleRectangleHelp(self):
     helpBoxX, helpBoxY = self.helpBoxLoc
 
+    # Help text for puddle rectangle
     helpLabel = TextLine(self.screen, "Some rain leaves a puddle", color=BLACK, size=36)
-    helpLabel.drawByCenter(self.helpBoxLoc)
+    helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
 
+    # Show rectangle puddling (waiting on the sprites)
     self.puddleRectangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
     self.puddleRectangle.draw(self.screen)
 
