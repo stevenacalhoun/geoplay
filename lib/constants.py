@@ -22,5 +22,5 @@ SCREEN_HEIGHT = 900
 # Gravity and ground constants
 GRAVITY = 15
 
-# Triangle height
-TRIANGLE_HEIGHT = 75
+# Global font
+GAME_FONT = 'monospace'

@@ -15,8 +15,8 @@ class Scene(object):
   levelScene = 1
   difficultyScene = 2
   helpScene = 3
-  gameOverScene = 4
-  quit = 5
+  quit = 4
+  gameOverScene = 5
 
   def __init__(self, screen):
     self.screen = screen
@@ -449,44 +449,156 @@ class HelpScene(Scene):
 
   def display(self):
     self.screen.fill(WHITE)
+    currentHelpScreen = 1
+    numberOfHelpScreens = 6
 
     # Constants for the help box
     helpBoxWidth = SCREEN_WIDTH * 0.75
     helpBoxHeight = SCREEN_HEIGHT * 0.5
-    helpLoc = SCREEN_WIDTH/2, SCREEN_HEIGHT*0.33
+    helpBoxLocX = SCREEN_WIDTH/2
+    helpBoxLocY = SCREEN_HEIGHT*0.33
+    self.helpBoxLoc = helpBoxLocX, helpBoxLocY
+
+    # Location for page number
+    pageNumberLoc = (helpBoxLocX + (helpBoxWidth/2)) - 28, (helpBoxLocY + (helpBoxHeight/2)) - 18
 
     # Constants for the back button
     backButtonWidth = SCREEN_WIDTH/3
     backButtonHeight = 80
     backButtonLoc = SCREEN_WIDTH/2, SCREEN_HEIGHT*0.75
 
-    # Draw the help box and label
-    helpBox = Box(self.screen, helpBoxWidth, helpBoxHeight, WHITE)
-    helpBox.drawByCenter(helpLoc)
-    helpBox.outline(color=BLACK)
-
-    helpLabel = TextLine(self.screen, "Help Shtuff", color=BLACK, size=36)
-    helpLabel.drawByCenter(helpLoc)
-
-    # Draw the back button
-    backBox = Box(self.screen, backButtonWidth, backButtonHeight, BLACK)
-    backBox.drawByCenter(backButtonLoc)
-    backBox.outline()
-
-    backButtonLabel = TextLine(self.screen, "Back", color=WHITE, size=36)
-    backButtonLabel.drawByCenter(backButtonLoc)
+    # Sprites for various help sheets
+    self.mcSquare = Mcsquare(self.screen, self.helpBoxLoc, 100)
+    self.triangle = Triangle(self.helpBoxLoc, 100)
+    self.normalRectangle = NormalRectangleRain(self.helpBoxLoc)
+    self.explodingRectangle = ExplodingRectangleRain(self.helpBoxLoc)
+    self.bounceRectangle = BounceRectangleRain(self.helpBoxLoc)
+    self.puddleRectangle = PuddleRectangleRain(self.helpBoxLoc)
 
     # Wait until we want to go back
     goBack = False
     while goBack == False:
+      self.screen.fill(WHITE)
+
+      # Show the current help screen
+      self.showHelpScreen(currentHelpScreen)
+
+      # Draw the help box and label
+      helpBox = Box(self.screen, helpBoxWidth, helpBoxHeight, WHITE)
+      helpBox.drawByCenter(self.helpBoxLoc)
+      helpBox.outline(color=BLACK)
+
+      # Draw the back button
+      backBox = Box(self.screen, backButtonWidth, backButtonHeight, BLACK)
+      backBox.drawByCenter(backButtonLoc)
+      backBox.outline()
+
+      backButtonLabel = TextLine(self.screen, "Back", color=WHITE, size=36)
+      backButtonLabel.drawByCenter(backButtonLoc)
+
+      # Show help page number
+      pageLabel = TextLine(self.screen, str(currentHelpScreen) + "/" + str(numberOfHelpScreens), color=BLACK, size=18)
+      pageLabel = pageLabel.drawByTopLeft(pageNumberLoc)
+
+      # Show the current help content
+      self.showHelpScreen(currentHelpScreen)
+
       event = pygame.event.poll()
       # Key up and down the menu
       if event.type == pygame.KEYDOWN:
+        # Enter means we've hit the go back button
         if event.key == pygame.K_RETURN:
           goBack = True
           return Scene.mainMenuScene
 
+        # Go to the next help screen
+        elif event.key == pygame.K_RIGHT:
+          currentHelpScreen += 1
+
+          if currentHelpScreen > numberOfHelpScreens:
+            currentHelpScreen = numberOfHelpScreens
+
+        # Go to the previous help screen
+        elif event.key == pygame.K_LEFT:
+          currentHelpScreen -= 1
+
+          if currentHelpScreen < 1:
+            currentHelpScreen = 1
+
       pygame.display.flip()
+
+  def showHelpScreen(self, currentHelpScreen):
+    if currentHelpScreen == 1:
+      self.showMcSquareHelp()
+    elif currentHelpScreen == 2:
+      self.showTriangleHelp()
+    elif currentHelpScreen == 3:
+      self.showNormalRectangleHelp()
+    elif currentHelpScreen == 4:
+      self.showExplodingRectangleHelp()
+    elif currentHelpScreen == 5:
+      self.showBounceRectangleHelp()
+    elif currentHelpScreen == 6:
+      self.showPuddleRectangleHelp()
+
+  def showMcSquareHelp(self):
+    helpBoxX, helpBoxY = self.helpBoxLoc
+
+    helpLabel = TextLine(self.screen, "This is Scotty McSquare", color=BLACK, size=36)
+    helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
+
+    # Show McSquare running around
+    self.mcSquare.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
+    self.mcSquare.animateRunRight()
+    self.mcSquare.draw(self.screen)
+
+
+  def showTriangleHelp(self):
+    helpBoxX, helpBoxY = self.helpBoxLoc
+
+    helpLabel = TextLine(self.screen, "All he wants in life are these triangles", color=BLACK, size=36)
+    helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
+
+    # Show McSquare running around
+    self.triangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
+    self.triangle.animateHover()
+    self.triangle.draw(self.screen)
+
+  def showNormalRectangleHelp(self):
+    helpBoxX, helpBoxY = self.helpBoxLoc
+
+    helpLabel = TextLine(self.screen, "Look out for the evil rectangle rain though", color=BLACK, size=36)
+    helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
+
+    self.normalRectangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
+    self.normalRectangle.draw(self.screen)
+
+  def showExplodingRectangleHelp(self):
+    helpBoxX, helpBoxY = self.helpBoxLoc
+
+    helpLabel = TextLine(self.screen, "Some rain is a bit explosive", color=BLACK, size=36)
+    helpLabel.drawByCenter(self.helpBoxLoc)
+
+    self.explodingRectangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
+    self.explodingRectangle.draw(self.screen)
+
+  def showBounceRectangleHelp(self):
+    helpBoxX, helpBoxY = self.helpBoxLoc
+
+    helpLabel = TextLine(self.screen, "Some rain liks to go both up and down", color=BLACK, size=36)
+    helpLabel.drawByCenter(self.helpBoxLoc)
+
+    self.bounceRectangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
+    self.bounceRectangle.draw(self.screen)
+
+  def showPuddleRectangleHelp(self):
+    helpBoxX, helpBoxY = self.helpBoxLoc
+
+    helpLabel = TextLine(self.screen, "Some rain leaves a puddle", color=BLACK, size=36)
+    helpLabel.drawByCenter(self.helpBoxLoc)
+
+    self.puddleRectangle.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
+    self.puddleRectangle.draw(self.screen)
 
 class GameOverScene(Scene):
   def __init(self):

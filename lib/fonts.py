@@ -1,9 +1,10 @@
 import pygame
 from pygame import Surface
 from pygame.locals import *
+from constants import *
 
 class TextLine():
-  def __init__(self, screen, text, font='monospace', size=16, color=(0,0,0)):
+  def __init__(self, screen, text, font=GAME_FONT, size=16, color=(0,0,0)):
     self.font = pygame.font.SysFont(font, size)
     self.color_fg = color
     self.color_bg = Color("white")

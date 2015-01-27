@@ -28,6 +28,7 @@ class Mcsquare(pygame.sprite.Sprite):
 
     # Keep up with our height for collision detection
     self.height = height
+    self.width = height
 
     # Arrays to hold all the animations for the left and right running
     self.runningRightImages = []
@@ -108,6 +109,9 @@ class Mcsquare(pygame.sprite.Sprite):
         else:
           self.yMove = GRAVITY
 
+  def draw(self, screen):
+    screen.blit(self.image, self.rect.topleft)
+
   # Check to see if we've collided with anything
   def checkCollisions(self, platforms, triangles):
     # Check to see if we landed on any platforms
@@ -181,6 +185,26 @@ class Mcsquare(pygame.sprite.Sprite):
     else:
       self.frameCount += 1
 
+  def animateRunRight(self):
+    # Check if it's time for a new fram and if we are currently running
+    if self.frameCount >= 2:
+      # Select the correct set of images, and display the new frame
+      self.image = self.runningRightImages[self.frame]
+      self.frame += 1
+
+      # Final fram reached
+      if self.frame == len(self.runningRightImages):
+        self.frame = 0
+      self.frameCount = 0
+
+    # Increment the frame count if it's not time to change frames
+    else:
+      self.frameCount += 1
+
+  def reposition(self, newLoc):
+    self.rect.topleft = newLoc
+
+
 # Platform class
 class Platform(pygame.sprite.Sprite):
   # Initializer
@@ -220,6 +244,9 @@ class RectangleRain(pygame.sprite.Sprite):
     self.fallingSpeed = GRAVITY * .3
     self.alive = True
 
+  def draw(self, screen):
+    screen.blit(self.image, self.rect.topleft)
+
   def despawn(self):
     # Stop the rectangle and set it to being dead
     self.fallingSpeed = 0
@@ -241,6 +268,9 @@ class RectangleRain(pygame.sprite.Sprite):
       self.despawn()
       return True
     return False
+
+  def reposition(self, newLoc):
+    self.rect.topleft = newLoc
 
 class NormalRectangleRain(RectangleRain):
   def update(self):
@@ -300,26 +330,9 @@ class Triangle(pygame.sprite.Sprite):
 
     # Store the triangle's top point
     self.topPoint = topPoint
-
-    # C point is simply the passed in topPoint
-    cX, cY = topPoint
-
-    # Find the x offset for the other two points
-    xOffset = height * math.tan(math.radians(30))
-
-    # bY is simply cY minus the height, and bX is cX minus the offset
-    bX = cX - xOffset
-    bY = cY + height
-
-    # aY is simply cY minus the height, and aX is cX plus the offset
-    aX = cX + xOffset
-    aY = cY + height
-
-    self.points = [[aX, aY], [bX, bY], [cX, cY]]
-
-    # Load the triangle and size it based on the input parameters
     self.height = height
-    self.width = 2*xOffset
+
+    self.findTriangleInfo()
 
     # Load the triangle image and transform it to the desired size
     self.image = pygame.Surface([self.width, self.height])
@@ -328,7 +341,7 @@ class Triangle(pygame.sprite.Sprite):
     self.image = pygame.transform.scale(self.image, (int(self.width), int(self.height)))
 
     # The rectangle is for collision detection, really should be a triangle
-    self.rect = pygame.Rect(bX, cY, self.width, self.height)
+    self.rect = pygame.Rect(self.points[1][0], self.points[2][1], self.width, self.height)
 
     # Currently not captured
     self.captured = False
@@ -336,3 +349,34 @@ class Triangle(pygame.sprite.Sprite):
   def update(self):
     # Triangles are currently stationary
     pass
+
+  def draw(self, screen):
+    screen.blit(self.image, self.rect.topleft)
+
+  def findTriangleInfo(self):
+    # C point is simply the passed in topPoint
+    cX, cY = self.topPoint
+
+    # Find the x offset for the other two points
+    xOffset = self.height * math.tan(math.radians(30))
+
+    # bY is simply cY minus the height, and bX is cX minus the offset
+    bX = cX - xOffset
+    bY = cY + self.height
+
+    # aY is simply cY minus the height, and aX is cX plus the offset
+    aX = cX + xOffset
+    aY = cY + self.height
+
+    self.points = [[aX, aY], [bX, bY], [cX, cY]]
+
+    # Load the triangle and size it based on the input parameters
+    self.width = 2*xOffset
+
+  def animateHover(self):
+    pass
+
+  def reposition(self, newTopPoint):
+    self.topPoint = newTopPoint
+    self.findTriangleInfo()
+    self.rect.topleft = (self.points[1][0], self.points[2][1])
