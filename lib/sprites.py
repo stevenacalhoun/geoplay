@@ -129,6 +129,56 @@ class Mcsquare(pygame.sprite.Sprite):
           self.jumpRecharged = True
           self.rect.y = platform.rect.y - self.height
 
+
+        ###########################################################################
+        # Bunch of failed attempts to make collisions work better
+        ###########################################################################
+
+        # feetY = self.rect.y + self.height
+        # headY = self.rect.y
+        #
+        # leftSide = self.rect.x
+        # rightSide = self.rect.x + self.width
+        #
+        # platformTop = platform.rect.y
+        # platformBottom = platform.rect.y + platform.height
+        #
+        # platformRight = platform.rect.x
+        # platformLeft = platform.rect.x + platform.width
+        #
+        # bumpedHead = False
+        #
+        # # This means we are not above the platform, so we might be hitting the sides
+        # if (feetY-15 > platformTop) and (headY < platformBottom) and bumpedHead == False:
+        #   # self.rect.y = oldY
+        #   # Moving left
+        #   if self.xMove < 0:
+        #     self.rect.x = platform.rect.x + platform.width
+        #
+        #   # Moving right
+        #   elif self.xMove > 0:
+        #     self.rect.x = platform.rect.x - self.width
+        #
+        # # Moving up
+        # elif self.yMove < 0:
+        #   oldY = self.rect.y
+        #   self.rect.y = platform.rect.y + platform.height
+        #
+        #   # We've bumped our head, so immediately start moving downwards
+        #   self.yMove = 1
+        #   bumpedHead = True
+        #
+        # # Moving down
+        # elif self.yMove > 0:
+        #   self.jumpRecharged = True
+        #   oldY = self.rect.y
+        #   self.rect.y = platform.rect.y - self.height
+        #
+        ###########################################################################
+        # Keeping them here in case I want to revisit this issue
+        ###########################################################################
+
+
     # Check to see if we've gotten to the triangle
     captureCount = 0
     for triangle in triangles:
