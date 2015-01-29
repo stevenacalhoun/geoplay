@@ -8,6 +8,7 @@ import math
 from random import randint
 from constants import *
 import scenes
+import sprites
 
 # Global variable to draw on the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
@@ -18,6 +19,7 @@ def main():
   # Initialize the screen
   pygame.init()
   pygame.font.init()
+  sprites.prepareSprites()
 
   # Default difficulty is two, start on the main menu
   difficulty = 2

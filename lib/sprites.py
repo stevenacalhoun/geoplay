@@ -8,14 +8,21 @@ from spriteSheets import *
 import time
 
 # McSquare size
-MCSQUARE_HEIGHT = 140
-MCSQUARE_WIDTH = 130
+MCSQUARE_HEIGHT = 53
+MCSQUARE_WIDTH = 50
 MCSQUARE_SPEED = 15
 MCSQUARE_JUMP_SPEED = 30
 
 # Rectangle size
 RECTANGLE_WIDTH = 40
 RECTANGLE_HEIGHT = 100
+
+triangleImages = []
+powerUpImages = []
+normalRectangleImages = []
+explodingRectangleImages =[]
+bouncingRectangleImages = []
+puddleRectangleImages = []
 
 # McSquare class
 class Mcsquare(pygame.sprite.Sprite):
@@ -24,7 +31,7 @@ class Mcsquare(pygame.sprite.Sprite):
     pygame.sprite.Sprite.__init__(self)
 
     # Sprite sheet for McSquare
-    spriteSheet = SpriteSheet("images/braid_man.png")
+    spriteSheet = SpriteSheet("images/spritesheet.png")
 
     # Keep up with our height for collision detection
     self.height = height
@@ -44,41 +51,31 @@ class Mcsquare(pygame.sprite.Sprite):
     self.fallingLeftImages = []
 
     # Location for the next image in the sprite sheet
-    xVal = 0
-    yVal = 0
+    xVal = 15
+    yVal = 160
 
     # There are 26 images in the sprite sheet, load them all
-    for imageCount in range(0, 26):
+    for imageCount in range(0, 8):
       # Load each image, scale them, and add it to the running right images
       rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
       image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
       self.runningRightImages.append(image)
-      imageCount += 1
-
-      # At the end of a row of sprites, go to the next row by adding some arbitrary amound of pixels
-      if imageCount % 7 == 0:
-        xVal = 0
-        yVal += MCSQUARE_HEIGHT + 13
-      else:
-        xVal += MCSQUARE_WIDTH
+      xVal += MCSQUARE_WIDTH + 12
 
     # For the running left images just flip the right ones
     for image in self.runningRightImages:
       leftImage = pygame.transform.flip(image, True, False)
       self.runningLeftImages.append(leftImage)
 
-    otherSpriteSheet = SpriteSheet("images/tim_animations.png")
-
     # Standing left images
-    xVal = 615
-    yVal = 1205
-    for imageCount in range(0, 9):
-      rawImage = otherSpriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH - 30, MCSQUARE_HEIGHT)
-      image = pygame.transform.scale(rawImage, (int(self.height - 30), int(self.height)))
+    xVal = 986
+    yVal = 190
+    for imageCount in range(0, 3):
+      rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
+      image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
       self.standingRightImages.append(image)
-      imageCount += 1
 
-      xVal += MCSQUARE_WIDTH - 30
+      xVal += MCSQUARE_WIDTH + 7
 
     # Standing left images
     for image in self.standingRightImages:
@@ -86,13 +83,15 @@ class Mcsquare(pygame.sprite.Sprite):
       self.standingLeftImages.append(leftImage)
 
     # Jumping right images
-    xVal = 42
-    yVal = 870
+    xVal = 575
+    yVal = 200
     for imageCount in range(0, 3):
-      rawImage = otherSpriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
-      image = pygame.transform.scale(rawImage, (int(self.height - 30), int(self.height)))
+      rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
+      image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
       self.jumpingRightImages.append(image)
-      imageCount += 1
+
+      xVal += MCSQUARE_WIDTH + 7
+      yVal -= 9 + imageCount*9
 
     # Jumping left images
     for image in self.jumpingRightImages:
@@ -100,13 +99,15 @@ class Mcsquare(pygame.sprite.Sprite):
       self.jumpingLeftImages.append(leftImage)
 
     # Falling right images
-    xVal = 1655
-    yVal = 875
+    xVal = 750
+    yVal = 170
     for imageCount in range(0, 3):
-      rawImage = otherSpriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
-      image = pygame.transform.scale(rawImage, (int(self.height - 30), int(self.height)))
+      rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
+      image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
       self.fallingRightImages.append(image)
-      imageCount += 1
+
+      xVal += MCSQUARE_WIDTH + 7
+      yVal += 9 + imageCount*9
 
     # Falling left images
     for image in self.fallingRightImages:
@@ -303,7 +304,7 @@ class Mcsquare(pygame.sprite.Sprite):
     self.frameCount += 1
 
   def animateRunningRight(self):
-    if self.frameCount >= 1:
+    if self.frameCount >= 2:
       # Final fram reached
       if self.frame >= len(self.runningRightImages):
         self.frame = 0
@@ -315,7 +316,7 @@ class Mcsquare(pygame.sprite.Sprite):
       self.frameCount = 0
 
   def animateRunningLeft(self):
-    if self.frameCount >= 1:
+    if self.frameCount >= 2:
       # Final fram reached
       if self.frame >= len(self.runningLeftImages):
         self.frame = 0
@@ -429,6 +430,10 @@ class RectangleRain(pygame.sprite.Sprite):
     blank.fill(WHITE)
     self.image = blank
 
+  def reposition(self, newLoc):
+    self.rect.topleft = newLoc
+
+class NormalRectangleRain(RectangleRain):
   def checkCollisions(self, platforms, mcSquare):
     # Check collisions with platforms
     for platform in platforms:
@@ -441,10 +446,6 @@ class RectangleRain(pygame.sprite.Sprite):
       return True
     return False
 
-  def reposition(self, newLoc):
-    self.rect.topleft = newLoc
-
-class NormalRectangleRain(RectangleRain):
   def update(self):
     # Move the sprite and plan the next update
     self.move()
@@ -462,37 +463,172 @@ class NormalRectangleRain(RectangleRain):
     pass
 
 class BounceRectangleRain(RectangleRain):
-  ## TO DO ##
+  def __init__(self, initialPosition):
+    RectangleRain.__init__(self, initialPosition)
+
+    self.bouncingImages = bouncingRectangleImages
+
+    self.goingBackUp = False
+    self.doneAnimating = False
+
+    self.frame = 0
+    self.frameCount = 0
+
   def update(self):
-    pass
+    self.move()
+    if self.goingBackUp:
+      self.animate()
+
+  def checkCollisions(self, platforms, mcSquare):
+    # Check collisions with platforms
+    for platform in platforms:
+      if self.rect.colliderect(platform.rect) and self.goingBackUp == False:
+        self.fallingSpeed = 0
+        self.goingBackUp = True
+
+    # Check collisions with McSquare
+    if self.rect.colliderect(mcSquare.rect):
+      self.despawn()
+      return True
+    return False
+
 
   def move(self):
-    pass
+    self.rect.y += self.fallingSpeed
 
-  def animate():
-    pass
+    if self.goingBackUp:
+      if self.rect.y <= HUD_HEIGHT:
+        self.despawn()
+
+    if self.alive == False:
+      # Blank out last location
+      self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
+      self.image.fill(WHITE)
+
+  def animate(self):
+    self.frameCount += 1
+    if self.frameCount >= 5:
+      self.frameCount = 0
+
+      # Final fram reached
+      if self.frame >= len(self.bouncingImages):
+        self.doneAnimating = True
+        self.fallingSpeed = (-1 * GRAVITY * .3)
+
+      # Change to the next frame
+      # self.image = self.bouncingRectangleImages[self.frame]
+      self.frame += 1
+
 
 class ExplodingRectangleRain(RectangleRain):
-  ## TO DO ##
+  def __init__(self, initialPosition):
+    RectangleRain.__init__(self, initialPosition)
+
+    self.explodingImages = explodingRectangleImages
+
+    self.frame = 0
+    self.frameCount = 0
+
+    self.exploding = False
+
   def update(self):
-    pass
+    self.move()
+    if self.exploding:
+      self.animate()
+
+  def checkCollisions(self, platforms, mcSquare):
+    # Check collisions with platforms
+    for platform in platforms:
+      if self.rect.colliderect(platform.rect):
+        self.fallingSpeed = 0
+        self.exploding = True
+
+    # Check collisions with McSquare
+    if self.rect.colliderect(mcSquare.rect):
+      self.despawn()
+      return True
+    return False
 
   def move(self):
-    pass
+    self.rect.y += self.fallingSpeed
 
-  def animate():
-    pass
+    if self.alive == False:
+      # Blank out last location
+      self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
+      self.image.fill(WHITE)
+
+  def animate(self):
+    self.frameCount += 1
+    if self.frameCount >= 5:
+      self.frameCount = 0
+
+      # Final fram reached
+      if self.frame >= len(self.explodingImages):
+        self.despawn()
+
+      # Change to the next frame
+      # self.image = self.explodingRectangleImages[self.frame]
+      self.frame += 1
+
 
 class PuddleRectangleRain(RectangleRain):
-  ## TO DO ##
+  def __init__(self, initialPosition):
+    RectangleRain.__init__(self, initialPosition)
+
+    self.puddleImages = puddleRectangleImages
+
+    self.puddling = False
+    self.puddled = False
+    self.puddleCount = 0
+
+    self.frame = 0
+    self.frameCount = 0
+
   def update(self):
-    pass
+    self.move()
+    if self.puddling:
+      self.animate()
+
+    if self.puddled:
+      self.puddleCount += 1
+
+      if self.puddleCount >= 100:
+        self.despawn()
+
+  def checkCollisions(self, platforms, mcSquare):
+    # Check collisions with platforms
+    for platform in platforms:
+      if self.rect.colliderect(platform.rect):
+        self.fallingSpeed = 0
+        self.puddling = True
+
+    # Check collisions with McSquare
+    if self.rect.colliderect(mcSquare.rect):
+      self.despawn()
+      return True
+    return False
 
   def move(self):
-    pass
+    self.rect.y += self.fallingSpeed
 
-  def animate():
-    pass
+    if self.alive == False:
+      # Blank out last location
+      self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
+      self.image.fill(WHITE)
+
+  def animate(self):
+    self.frameCount += 1
+    if self.frameCount >= 5:
+      self.frameCount = 0
+
+      # Final fram reached
+      if self.frame >= len(self.puddleImages):
+        self.puddled = True
+
+      # Change to the next frame
+      # self.image = self.puddleRectangleImages[self.frame]
+      self.frame += 1
+
 
 # Triangle class
 class Triangle(pygame.sprite.Sprite):
@@ -505,6 +641,10 @@ class Triangle(pygame.sprite.Sprite):
     self.height = height
 
     self.findTriangleInfo()
+
+    self.hoverImages = triangleImages
+    self.frameCount = 0
+    self.frame = 0
 
     # Load the triangle image and transform it to the desired size
     self.image = pygame.Surface([self.width, self.height])
@@ -519,8 +659,7 @@ class Triangle(pygame.sprite.Sprite):
     self.captured = False
 
   def update(self):
-    # Triangles are currently stationary
-    pass
+    self.animate()
 
   def draw(self, screen):
     screen.blit(self.image, self.rect.topleft)
@@ -545,10 +684,48 @@ class Triangle(pygame.sprite.Sprite):
     # Load the triangle and size it based on the input parameters
     self.width = 2*xOffset
 
-  def animateHover(self):
-    pass
+  def animate(self):
+    self.frameCount += 1
+    if self.frameCount >= 5:
+      self.frameCount = 0
+
+      # Final fram reached
+      if self.frame >= len(self.hoverImages):
+        self.frame = 0
+
+      # Change to the next frame
+      # self.image = self.hoverImages[self.frame]
+      self.frame += 1
 
   def reposition(self, newTopPoint):
     self.topPoint = newTopPoint
     self.findTriangleInfo()
     self.rect.topleft = (self.points[1][0], self.points[2][1])
+
+
+def prepareSprites():
+  global triangleImages, powerUpImages, normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
+
+  # Exploding Rectangle
+  # explodingRectangleImages = getImages("explodingRectangle", 7)
+
+  # Bouncing Rectangle
+  # bouncingRectangleImages = getImages("bouncingRectangle", 9)
+
+  # Puddle Rectangle
+  # puddleRectangleImages = getImages("puddleRectangle", 6)
+
+  # Triangle
+  # triangleImages = getImages("triangle", 5)
+
+  # Power up
+  # powerUpImages = getImages("powerUp", 5)
+
+def getImages(baseName, totalImages):
+  images = []
+
+  for imageNum in range (1, totalImages):
+    image = pygame.image.load(baseName + str(totalImages)).convert()
+    images.append(image)
+
+  return images
