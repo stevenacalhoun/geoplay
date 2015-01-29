@@ -30,9 +30,18 @@ class Mcsquare(pygame.sprite.Sprite):
     self.height = height
     self.width = height
 
-    # Arrays to hold all the animations for the left and right running
+    # Arrays to hold all the animations
     self.runningRightImages = []
     self.runningLeftImages = []
+
+    self.standingRightImages = []
+    self.standingLeftImages = []
+
+    self.jumpingRightImages = []
+    self.jumpingLeftImages = []
+
+    self.fallingRightImages = []
+    self.fallingLeftImages = []
 
     # Location for the next image in the sprite sheet
     xVal = 0
@@ -53,11 +62,56 @@ class Mcsquare(pygame.sprite.Sprite):
       else:
         xVal += MCSQUARE_WIDTH
 
-    # For the running left images just flipe the right ones
+    # For the running left images just flip the right ones
     for image in self.runningRightImages:
       leftImage = pygame.transform.flip(image, True, False)
       self.runningLeftImages.append(leftImage)
 
+    otherSpriteSheet = SpriteSheet("images/tim_animations.png")
+
+    # Standing left images
+    xVal = 615
+    yVal = 1205
+    for imageCount in range(0, 9):
+      rawImage = otherSpriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH - 30, MCSQUARE_HEIGHT)
+      image = pygame.transform.scale(rawImage, (int(self.height - 30), int(self.height)))
+      self.standingRightImages.append(image)
+      imageCount += 1
+
+      xVal += MCSQUARE_WIDTH - 30
+
+    # Standing left images
+    for image in self.standingRightImages:
+      leftImage = pygame.transform.flip(image, True, False)
+      self.standingLeftImages.append(leftImage)
+
+    # Jumping right images
+    xVal = 42
+    yVal = 870
+    for imageCount in range(0, 3):
+      rawImage = otherSpriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
+      image = pygame.transform.scale(rawImage, (int(self.height - 30), int(self.height)))
+      self.jumpingRightImages.append(image)
+      imageCount += 1
+
+    # Jumping left images
+    for image in self.jumpingRightImages:
+      leftImage = pygame.transform.flip(image, True, False)
+      self.jumpingLeftImages.append(leftImage)
+
+    # Falling right images
+    xVal = 1655
+    yVal = 875
+    for imageCount in range(0, 3):
+      rawImage = otherSpriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
+      image = pygame.transform.scale(rawImage, (int(self.height - 30), int(self.height)))
+      self.fallingRightImages.append(image)
+      imageCount += 1
+
+    # Falling left images
+    for image in self.fallingRightImages:
+      leftImage = pygame.transform.flip(image, True, False)
+      self.fallingLeftImages.append(leftImage)
 
     self.image = image
     self.screen = screen
@@ -73,7 +127,10 @@ class Mcsquare(pygame.sprite.Sprite):
     self.runningLeft = False
     self.jumping = False
     self.jumpRecharged = True
-    self.falling = True
+    self.falling = False
+
+    self.facingRight = False
+    self.facingLeft = True
 
     # Count frames to make the animation look smooth
     self.frame = 0
@@ -101,6 +158,7 @@ class Mcsquare(pygame.sprite.Sprite):
         if self.yMove >= 0:
           # Peak of the jump
           self.jumping = False
+          self.falling = True
           self.yMove = GRAVITY * .1
       # As he's falling increase the amount of gravity until we reach full gravity
       else:
@@ -124,9 +182,11 @@ class Mcsquare(pygame.sprite.Sprite):
 
           # We've bumped our head, so immediately start moving downwards
           self.yMove = 1
+
         # Moving down
         elif self.yMove > 0:
           self.jumpRecharged = True
+          self.falling = False
           self.rect.y = platform.rect.y - self.height
 
 
@@ -205,10 +265,14 @@ class Mcsquare(pygame.sprite.Sprite):
   def moveLeft(self):
     self.runningLeft = True
     self.xMove = -MCSQUARE_SPEED
+    self.facingRight = False
+    self.facingLeft = True
 
   def moveRight(self):
     self.runningRight = True
     self.xMove = MCSQUARE_SPEED
+    self.facingRight = True
+    self.facingLeft = False
 
   def stopMoving(self):
     self.runningLeft = False
@@ -223,39 +287,91 @@ class Mcsquare(pygame.sprite.Sprite):
       self.jumpRecharged = False
 
   def animate(self):
-    # Check if it's time for a new fram and if we are currently running
-    if self.frameCount >= 1 and (self.runningRight or self.runningLeft):
-      # Select the correct set of images, and display the new frame
-      if self.runningLeft:
-        self.image = self.runningLeftImages[self.frame]
-      elif self.runningRight:
-        self.image = self.runningRightImages[self.frame]
-      self.frame += 1
+    # Select the correct set of images, and display the new frame
+    if self.jumping:
+      self.animateJumping()
+    elif self.falling:
+      self.animateFalling()
+    elif self.runningLeft:
+      self.animateRunningLeft()
+    elif self.runningRight:
+      self.animateRunningRight()
+    else:
+      self.animateStanding()
 
+    # Increment the frame count if it's not time to change frames
+    self.frameCount += 1
+
+  def animateRunningRight(self):
+    if self.frameCount >= 1:
       # Final fram reached
-      if self.frame == len(self.runningRightImages):
+      if self.frame >= len(self.runningRightImages):
         self.frame = 0
       self.frameCount = 0
 
-    # Increment the frame count if it's not time to change frames
-    else:
-      self.frameCount += 1
-
-  def animateRunRight(self):
-    # Check if it's time for a new fram and if we are currently running
-    if self.frameCount >= 2:
       # Select the correct set of images, and display the new frame
       self.image = self.runningRightImages[self.frame]
       self.frame += 1
+      self.frameCount = 0
 
+  def animateRunningLeft(self):
+    if self.frameCount >= 1:
       # Final fram reached
-      if self.frame == len(self.runningRightImages):
+      if self.frame >= len(self.runningLeftImages):
         self.frame = 0
       self.frameCount = 0
 
-    # Increment the frame count if it's not time to change frames
-    else:
-      self.frameCount += 1
+      # Select the correct set of images, and display the new frame
+      self.image = self.runningLeftImages[self.frame]
+      self.frame += 1
+      self.frameCount = 0
+
+  def animateStanding(self):
+    if self.frameCount >= 5:
+      # Final fram reached
+      if self.frame >= len(self.standingRightImages):
+        self.frame = 0
+      self.frameCount = 0
+
+      # Select the correct set of images, and display the new frame
+      if self.facingLeft == True:
+        self.image = self.standingLeftImages[self.frame]
+      else:
+        self.image = self.standingRightImages[self.frame]
+
+      self.frame += 1
+      self.frameCount = 0
+
+  def animateJumping(self):
+    if self.frameCount >= 5:
+      # Final fram reached
+      if self.frame >= len(self.jumpingRightImages):
+        self.frame = 0
+      self.frameCount = 0
+
+      # Select the correct set of images, and display the new frame
+      if self.facingLeft == True:
+        self.image = self.jumpingLeftImages[self.frame]
+      else:
+        self.image = self.jumpingRightImages[self.frame]
+      self.frame += 1
+      self.frameCount = 0
+
+  def animateFalling(self):
+    if self.frameCount >= 5:
+      # Final fram reached
+      if self.frame >= len(self.fallingRightImages):
+        self.frame = 0
+      self.frameCount = 0
+
+      # Select the correct set of images, and display the new frame
+      if self.facingLeft == True:
+        self.image = self.fallingLeftImages[self.frame]
+      else:
+        self.image = self.fallingRightImages[self.frame]
+      self.frame += 1
+      self.frameCount = 0
+
 
   def reposition(self, newLoc):
     self.rect.topleft = newLoc
