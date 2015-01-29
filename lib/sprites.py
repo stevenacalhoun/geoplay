@@ -31,8 +31,8 @@ class Mcsquare(pygame.sprite.Sprite):
     pygame.sprite.Sprite.__init__(self)
 
     # Sprite sheet for McSquare
-    spriteSheet = SpriteSheet("images/braid_man.png")
-    
+    spriteSheet = SpriteSheet("images/spritesheet.png")
+
     # McSquare sounds
     self.jump_sound = pygame.mixer.Sound("sounds/Bump.ogg")
     self.hurt_sound = pygame.mixer.Sound("sounds/Bump.ogg")
