@@ -15,6 +15,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
 screen.fill(WHITE)
 clock = pygame.time.Clock()
 
+pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
+
 def main():
   # Initialize the screen
   pygame.init()
@@ -61,6 +63,8 @@ def main():
     # Time to quit
     elif nextScene == scenes.Scene.quit:
       running = False
+      
+  pygame.quit()
 
 # Run our program
 if __name__ == "__main__":
