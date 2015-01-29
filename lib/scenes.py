@@ -137,11 +137,20 @@ class HUD():
   def resetLives(self):
     self.remainingLives = 3
 
+  def displayPauseButton(self):
+    pauseBox = Box(self.screen, 200, 25, WHITE)
+    pauseBox.drawByCenter((SCREEN_WIDTH/2, 50))
+    pauseBox.outline()
+
+    pauseLabel = TextLine(self.screen, str("Esc - ||"), color=BLACK, size=36)
+    pauseLabel.drawByCenter(center=(SCREEN_WIDTH/2, 50))
+
   def update(self):
     # Re draw the HUD
     pygame.draw.line(self.screen, BLACK, (0, HUD_HEIGHT), (SCREEN_WIDTH, HUD_HEIGHT))
     self.displayScore()
     self.displayLives()
+    self.displayPauseButton()
 
 class LevelScene(Scene):
   def __init__(self, screen):
@@ -151,6 +160,12 @@ class LevelScene(Scene):
     self.levelNum = 1
     self.level = getLevel(self.levelNum)
     self.oldTriLoc = 0
+
+    # Keep up with paused state
+    self.paused = False
+    self.selectResume = True
+    self.selectQuit = False
+    self.returnToMain = False
 
   # Start the game
   def display(self):
@@ -172,36 +187,44 @@ class LevelScene(Scene):
     self.rectangleCounter = 0
 
     # Continue so long as we have lives left
-    while self.HUD.livesRemaining():
+    while self.HUD.livesRemaining() and self.returnToMain == False:
       # Let the scene handle the movement
       event = pygame.event.poll()
       if event.type == pygame.KEYDOWN or event.type == pygame.KEYUP:
         self.handleKeyEvent(event)
 
-      # Update the screen and check for collisions
-      self.update()
-      self.checkCollisions()
-      self.draw()
+      # So long as we're not paused continue showing the game
+      if self.paused == False:
+        # Update the screen and check for collisions
+        self.update()
+        self.checkCollisions()
+        self.draw()
 
-      # Check to see if we need a new level
-      if self.level.levelComplete(self.HUD.score):
-        # Increment to the new level and get the new level object
-        self.levelNum += 1
-        self.level = getLevel(self.levelNum)
+        # Check to see if we need a new level
+        if self.level.levelComplete(self.HUD.score):
+          # Increment to the new level and get the new level object
+          self.levelNum += 1
+          self.level = getLevel(self.levelNum)
 
-        # Show a transition screen
-        self.showLevelTransitionScreen()
+          # Show a transition screen
+          self.showLevelTransitionScreen()
 
-        # Regenerate all the new locations and sprites
-        self.platformParams, self.triangleLocs, self.startingLoc = self.level.generateLevel()
-        self.generateSprites()
+          # Regenerate all the new locations and sprites
+          self.platformParams, self.triangleLocs, self.startingLoc = self.level.generateLevel()
+          self.generateSprites()
+
+      else:
+        self.displayPauseInfo()
 
       # Update the display according to the FPS
       pygame.display.flip()
       clock.tick(FRAME_RATE)
 
-    # Go to the game over scene when we're out of lives
-    return Scene.gameOverScene
+    # Go to the game over scene when we're out of lives or to main menu if wev'e quit
+    if self.returnToMain:
+      return Scene.mainMenuScene
+    else:
+      return Scene.gameOverScene
 
   def showLevelTransitionScreen(self):
     self.screen.fill(WHITE)
@@ -283,12 +306,36 @@ class LevelScene(Scene):
   def handleKeyEvent(self, event):
     # Key pushed down
     if event.type == pygame.KEYDOWN:
+      # If we're not paused let McSquare handle the key
       if event.key == pygame.K_LEFT:
-        self.mcSquare.moveLeft()
+        if self.paused:
+          self.togglePauseSelection()
+        else:
+          self.mcSquare.moveLeft()
+
+      # If we're not paused let McSquare handle the key
       elif event.key == pygame.K_RIGHT:
-        self.mcSquare.moveRight()
+        if self.paused:
+          self.togglePauseSelection()
+        else:
+          self.mcSquare.moveRight()
+
+      # Only McSquare uses the space
       elif event.key == pygame.K_SPACE:
         self.mcSquare.jump()
+
+      # Pause when escape is hit
+      elif event.key == pygame.K_ESCAPE:
+        self.paused = not self.paused
+        self.displayPauseOverlay()
+
+      # Let return handle button pusing in the pause menu
+      elif event.key == pygame.K_RETURN:
+        if self.paused:
+          if self.selectResume:
+            self.paused = not self.paused
+          elif self.selectQuit:
+            self.returnToMain = True
 
     # Movement keys let go
     if event.type == pygame.KEYUP:
@@ -366,10 +413,58 @@ class LevelScene(Scene):
     self.rectangleSpriteGroup.draw(self.screen)
     self.triangleSpriteGroup.draw(self.screen)
 
+  # Overlay to blur out the game when it is paused
+  def displayPauseOverlay(self):
+    overlay = Box(self.screen, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, alpha=128)
+    overlay.drawByTopLeft((0,0))
+
+  # Box that shows a bit of help and the option to resume or quit
+  def displayPauseInfo(self):
+    # Nice sized box centered on the screen
+    pauseBoxWidth = SCREEN_WIDTH/2
+    pauseBoxHeight = SCREEN_HEIGHT/2
+    pauseBoxX = SCREEN_WIDTH/2
+    pauseBoxY = SCREEN_HEIGHT/2
+
+    # Box for all the pause menu stuff
+    pauseBox = Box(self.screen, pauseBoxWidth, pauseBoxHeight, WHITE)
+    pauseBox.drawByCenter((pauseBoxX, pauseBoxY))
+    pauseBox.outline(padding=(0,0))
+
+    ### Need to add some more content to the pause box (rectangle key)
+
+    ## Button info
+    buttonWidth = pauseBoxWidth/4
+    buttonHeight = pauseBoxHeight/8
+
+    # Button to resume play
+    resumeButton = Box(self.screen, buttonWidth, buttonHeight, BLACK)
+    resumeButton.drawByCenter((pauseBoxX - (pauseBoxWidth/4), pauseBoxY + 150))
+    resumeLabel = TextLine(self.screen, "Resume", color=WHITE, size=28)
+    resumeLabel.drawByCenter((pauseBoxX - (pauseBoxWidth/4), pauseBoxY + 150))
+
+    # Button to quit back to the main menu
+    quitButton = Box(self.screen, buttonWidth, buttonHeight, BLACK)
+    quitButton.drawByCenter((pauseBoxX + (pauseBoxWidth/4), pauseBoxY + 150))
+    quitLabel = TextLine(self.screen, "Quit", color=WHITE, size=28)
+    quitLabel.drawByCenter((pauseBoxX ++ (pauseBoxWidth/4), pauseBoxY + 150))
+
+    # Outline the one that is currently selected
+    if self.selectResume == True:
+      resumeButton.outline()
+    elif self.selectQuit == True:
+      quitButton.outline()
+
+  # Toggle which pause button is selected
+  def togglePauseSelection(self):
+    self.selectResume = not self.selectResume
+    self.selectQuit = not self.selectQuit
+
   # Sets the difficult for the level
   def setDifficulty(self, difficulty):
     self.difficulty = difficulty
 
+  # Get the final score to display at the end of the game
   def getFinalProgress(self):
     return self.HUD.score, self.levelNum
 
