@@ -61,8 +61,11 @@ class Level(object):
     self.tileWidth = SCREEN_WIDTH/numColumns
     self.tileHeight = (SCREEN_HEIGHT-HUD_HEIGHT)/numRows
 
-    # Since the tileHeigth is a rounded down integer then it leaves this weird gap at the bottom
+    # Since the tileHeight is a rounded down integer then it leaves this weird gap at the bottom
     self.bottomGap = SCREEN_HEIGHT - (HUD_HEIGHT + (numRows*self.tileHeight))
+
+    # Adjust the jumpspeed for McSquare based on the size of the level
+    self.jumpSpeed = MCSQUARE_BASE_JUMP_SPEED * (15.0/numRows)
 
     # Current x,y coordinate for the current tile
     currentXLoc = 0
@@ -190,7 +193,7 @@ class Level(object):
 
 class Level_01(Level):
    def __init__(self):
-    Level.__init__(self, requiredScore=2, normalRainChance=0, bounceRainChance=0, explodingRainChance=0, puddleRainChance=1)
+    Level.__init__(self, requiredScore=2, normalRainChance=1, bounceRainChance=0, explodingRainChance=0, puddleRainChance=0)
 
     self.levelTiles = [
     "_ _ _ _ _ _ _ _ _ _ _ _",

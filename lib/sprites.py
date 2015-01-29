@@ -11,7 +11,7 @@ import time
 MCSQUARE_HEIGHT = 53
 MCSQUARE_WIDTH = 50
 MCSQUARE_SPEED = 15
-MCSQUARE_JUMP_SPEED = 30
+MCSQUARE_BASE_JUMP_SPEED = 30.0
 
 # Rectangle size
 RECTANGLE_WIDTH = 40
@@ -27,7 +27,7 @@ puddleRectangleImages = []
 # McSquare class
 class Mcsquare(pygame.sprite.Sprite):
   # Initializer
-  def __init__(self, screen, startingLoc, height):
+  def __init__(self, screen, startingLoc, height, jumpSpeed):
     pygame.sprite.Sprite.__init__(self)
 
     # Sprite sheet for McSquare
@@ -135,8 +135,12 @@ class Mcsquare(pygame.sprite.Sprite):
     self.jumpRecharged = True
     self.falling = False
 
+    # Start facing left
     self.facingRight = False
     self.facingLeft = True
+
+    # Adjusted jump speed based on the size of the level
+    self.jumpSpeed = jumpSpeed
 
     # Count frames to make the animation look smooth
     self.frame = 0
@@ -160,7 +164,7 @@ class Mcsquare(pygame.sprite.Sprite):
       self.rect.y += self.yMove
       if self.jumping:
         # Slow down the jump
-        self.yMove += MCSQUARE_JUMP_SPEED * .04
+        self.yMove += self.jumpSpeed * .04
         if self.yMove >= 0:
           # Peak of the jump
           self.jumping = False
@@ -290,7 +294,7 @@ class Mcsquare(pygame.sprite.Sprite):
     if self.jumpRecharged:
       self.jumping = True
       self.jump_sound.play() # Test sound code
-      self.yMove = -MCSQUARE_JUMP_SPEED
+      self.yMove = -self.jumpSpeed
       self.jumpRecharged = False
 
   def animate(self):
