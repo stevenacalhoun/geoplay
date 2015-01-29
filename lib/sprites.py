@@ -17,6 +17,8 @@ MCSQUARE_JUMP_SPEED = 30
 RECTANGLE_WIDTH = 40
 RECTANGLE_HEIGHT = 100
 
+
+
 # McSquare class
 class Mcsquare(pygame.sprite.Sprite):
   # Initializer
@@ -25,6 +27,11 @@ class Mcsquare(pygame.sprite.Sprite):
 
     # Sprite sheet for McSquare
     spriteSheet = SpriteSheet("images/braid_man.png")
+    
+    # McSquare sounds
+    self.jump_sound = pygame.mixer.Sound("sounds/Bump.ogg")
+    self.hurt_sound = pygame.mixer.Sound("sounds/Bump.ogg")
+    self.land_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     # Keep up with our height for collision detection
     self.height = height
@@ -283,6 +290,7 @@ class Mcsquare(pygame.sprite.Sprite):
     # No double jumping allowed
     if self.jumpRecharged:
       self.jumping = True
+      self.jump_sound.play() # Test sound code
       self.yMove = -MCSQUARE_JUMP_SPEED
       self.jumpRecharged = False
 
