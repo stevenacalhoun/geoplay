@@ -25,20 +25,15 @@ class MainMenu(Scene):
   def __init__(self, screen):
     Scene.__init__(self, screen)
 
+    # Show some rectangles falling down in the background
+    self.rectangleCounter = 75
+    self.rectangleSpriteGroup = pygame.sprite.Group()
+    self.level = Level(normalRainChance=1, bounceRainChance=1, explodingRainChance=1, puddleRainChance=1)
+
   # Show the main menu where you can select play, difficulty, or help
   def display(self):
-    # Constants for the boxes
-    menuBoxWidth = SCREEN_WIDTH/3
-    menuBoxHeight = 80
-
-    # Locations for the menu items
-    playBoxY = SCREEN_HEIGHT/4 + 40
-    diffBoxY = playBoxY + 150
-    helpBoxY = diffBoxY + 150
-    quitBoxY = helpBoxY + 150
-
     # Keep up with what's selected
-    menuSelection = Scene.levelScene
+    self.menuSelection = Scene.levelScene
 
     # Keep looping unitl somehting has been selected
     selectionMade = False
@@ -50,55 +45,98 @@ class MainMenu(Scene):
       if event.type == pygame.KEYDOWN:
         # Go down one option
         if event.key == pygame.K_DOWN:
-          menuSelection += 1
-          if menuSelection >= 5:
-            menuSelection = Scene.levelScene
+          self.menuSelection += 1
+          if self.menuSelection >= 5:
+            self.menuSelection = Scene.levelScene
         # Go up one option
         if event.key == pygame.K_UP:
-          menuSelection -= 1
-          if menuSelection < Scene.levelScene:
-            menuSelection = Scene.quit
+          self.menuSelection -= 1
+          if self.menuSelection < Scene.levelScene:
+            self.menuSelection = Scene.quit
         # Select the current option
         if event.key == pygame.K_RETURN:
           selectionMade = True
-          return menuSelection
+          return self.menuSelection
 
-      # Draw the title
-      title = TextLine(self.screen, "Geo-Play", color=BLACK, size=76)
-      title.drawByCenter((SCREEN_WIDTH/2, 100))
+      # Draw the background, then blur it out, then draw the menu
+      self.drawBackground()
+      overlay = Box(self.screen, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, alpha=128)
+      overlay.drawByTopLeft((0,0))
+      self.drawMenu()
 
-      # Draw all the menu options
-      playBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
-      playBox.drawByCenter((SCREEN_WIDTH/2, playBoxY))
-      playLabel = TextLine(self.screen, "Play Game", color=WHITE, size=36)
-      playLabel.drawByCenter((SCREEN_WIDTH/2, playBoxY))
-
-      diffBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
-      diffBox.drawByCenter((SCREEN_WIDTH/2, diffBoxY))
-      diffLabel = TextLine(self.screen, "Select Difficulty", color=WHITE, size=36)
-      diffLabel.drawByCenter((SCREEN_WIDTH/2, diffBoxY))
-
-      helpBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
-      helpBox.drawByCenter((SCREEN_WIDTH/2, helpBoxY))
-      helpLabel = TextLine(self.screen, "Game Help", color=WHITE, size=36)
-      helpLabel.drawByCenter((SCREEN_WIDTH/2, helpBoxY))
-
-      quitBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
-      quitBox.drawByCenter((SCREEN_WIDTH/2, quitBoxY))
-      quitLabel = TextLine(self.screen, "Quit", color=WHITE, size=36)
-      quitLabel.drawByCenter((SCREEN_WIDTH/2, quitBoxY))
-
-      # Draw a box around the currently selected menu item
-      if menuSelection == Scene.levelScene:
-        playBox.outline()
-      elif menuSelection == Scene.difficultyScene:
-        diffBox.outline()
-      elif menuSelection == Scene.helpScene:
-        helpBox.outline()
-      elif menuSelection == Scene.quit:
-        quitBox.outline()
+      # Remove any dead rectangles
+      for rectangle in self.rectangleSpriteGroup:
+        if rectangle.alive == False:
+          rectangle.update()
+          self.rectangleSpriteGroup.remove(rectangle)
+          rectangle = None
 
       pygame.display.flip()
+
+  # Draw the falling rectangles
+  def drawBackground(self):
+    # Control the spawn rate of the rectangles
+    self.rectangleCounter += 1
+    if self.rectangleCounter >= 65:
+      self.rectangleCounter = 0
+      randomX = random.randint(0, SCREEN_WIDTH - RECTANGLE_WIDTH)
+
+      # Get the type of rectangle we need to spawn
+      rectangle = self.level.spawnNewRectangle(randomX)
+
+      # Add the rectangle to our group
+      self.rectangleSpriteGroup.add(rectangle)
+
+    # Redraw all the rain
+    self.rectangleSpriteGroup.update()
+    self.rectangleSpriteGroup.draw(self.screen)
+
+  # Draw the entire main menu
+  def drawMenu(self):
+    # Constants for the boxes
+    menuBoxWidth = SCREEN_WIDTH/3
+    menuBoxHeight = 80
+
+    # Locations for the menu items
+    playBoxY = SCREEN_HEIGHT/4 + 40
+    diffBoxY = playBoxY + 150
+    helpBoxY = diffBoxY + 150
+    quitBoxY = helpBoxY + 150
+
+    # Draw the title
+    title = TextLine(self.screen, "Geo-Play", color=BLACK, size=76)
+    title.drawByCenter((SCREEN_WIDTH/2, 100))
+
+    # Draw all the menu options
+    playBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+    playBox.drawByCenter((SCREEN_WIDTH/2, playBoxY))
+    playLabel = TextLine(self.screen, "Play Game", color=WHITE, size=36)
+    playLabel.drawByCenter((SCREEN_WIDTH/2, playBoxY))
+
+    diffBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+    diffBox.drawByCenter((SCREEN_WIDTH/2, diffBoxY))
+    diffLabel = TextLine(self.screen, "Select Difficulty", color=WHITE, size=36)
+    diffLabel.drawByCenter((SCREEN_WIDTH/2, diffBoxY))
+
+    helpBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+    helpBox.drawByCenter((SCREEN_WIDTH/2, helpBoxY))
+    helpLabel = TextLine(self.screen, "Game Help", color=WHITE, size=36)
+    helpLabel.drawByCenter((SCREEN_WIDTH/2, helpBoxY))
+
+    quitBox = Box(self.screen, menuBoxWidth, menuBoxHeight, BLACK)
+    quitBox.drawByCenter((SCREEN_WIDTH/2, quitBoxY))
+    quitLabel = TextLine(self.screen, "Quit", color=WHITE, size=36)
+    quitLabel.drawByCenter((SCREEN_WIDTH/2, quitBoxY))
+
+    # Draw a box around the currently selected menu item
+    if self.menuSelection == Scene.levelScene:
+      playBox.outline()
+    elif self.menuSelection == Scene.difficultyScene:
+      diffBox.outline()
+    elif self.menuSelection == Scene.helpScene:
+      helpBox.outline()
+    elif self.menuSelection == Scene.quit:
+      quitBox.outline()
 
 class HUD():
   def __init__(self, screen):
@@ -147,6 +185,8 @@ class HUD():
 
   def update(self):
     # Re draw the HUD
+    hudRect = pygame.Rect((0, 0), (SCREEN_WIDTH, HUD_HEIGHT))
+    pygame.draw.rect(self.screen, WHITE, hudRect)
     pygame.draw.line(self.screen, BLACK, (0, HUD_HEIGHT), (SCREEN_WIDTH, HUD_HEIGHT))
     self.displayScore()
     self.displayLives()
@@ -199,6 +239,7 @@ class LevelScene(Scene):
         self.update()
         self.checkCollisions()
         self.draw()
+        self.HUD.update()
 
         # Check to see if we need a new level
         if self.level.levelComplete(self.HUD.score):

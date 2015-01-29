@@ -468,6 +468,10 @@ class NormalRectangleRain(RectangleRain):
       self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
       self.image.fill(WHITE)
 
+    # If it somehow gets off screen then despawn it
+    if self.rect.y > SCREEN_HEIGHT:
+      self.despawn()
+
   def animate():
     # No animation for this type of rain currently
     pass
@@ -514,6 +518,10 @@ class BounceRectangleRain(RectangleRain):
       # Blank out last location
       self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
       self.image.fill(WHITE)
+
+    # If it somehow gets off screen then despawn it
+    if self.rect.y > SCREEN_HEIGHT:
+      self.despawn()
 
   def animate(self):
     self.frameCount += 1
@@ -567,6 +575,10 @@ class ExplodingRectangleRain(RectangleRain):
       self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
       self.image.fill(WHITE)
 
+    # If it somehow gets off screen then despawn it
+    if self.rect.y > SCREEN_HEIGHT:
+      self.despawn()
+
   def animate(self):
     self.frameCount += 1
     if self.frameCount >= 5:
@@ -604,6 +616,10 @@ class PuddleRectangleRain(RectangleRain):
 
       if self.puddleCount >= 100:
         self.despawn()
+
+    # If it somehow gets off screen then despawn it
+    if self.rect.y > SCREEN_HEIGHT:
+      self.despawn()
 
   def checkCollisions(self, platforms, mcSquare):
     # Check collisions with platforms

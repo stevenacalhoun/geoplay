@@ -168,25 +168,25 @@ class Level(object):
     for chance in range(self.puddleRainChance):
       self.rectangleChoices.append("P")
 
-  def spawnNewRectangle(self, xLoc):
+  def spawnNewRectangle(self, xLoc, yLoc=HUD_HEIGHT):
     # Get a random rectangle choice from our list
     rectangleChoice = random.choice(self.rectangleChoices)
 
     # Normal rain
     if rectangleChoice == "N":
-      return NormalRectangleRain((xLoc, HUD_HEIGHT + 1))
+      return NormalRectangleRain((xLoc, yLoc - RECTANGLE_HEIGHT))
 
     # Bouncing rain
     elif rectangleChoice == "B":
-      return BounceRectangleRain((xLoc, HUD_HEIGHT + 1))
+      return BounceRectangleRain((xLoc, yLoc - RECTANGLE_HEIGHT))
 
     # Exploding rain
     elif rectangleChoice == "E":
-      return ExplodingRectangleRain((xLoc, HUD_HEIGHT + 1))
+      return ExplodingRectangleRain((xLoc, yLoc - RECTANGLE_HEIGHT))
 
     # Puddle rain
     elif rectangleChoice == "P":
-      return PuddleRectangleRain((xLoc, HUD_HEIGHT + 1))
+      return PuddleRectangleRain((xLoc, yLoc - RECTANGLE_HEIGHT))
 
   def levelComplete(self, currentScore):
     return currentScore >= self.requiredScore
