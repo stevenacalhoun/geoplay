@@ -472,9 +472,43 @@ class LevelScene(Scene):
     pauseBox.drawByCenter((pauseBoxX, pauseBoxY))
     pauseBox.outline(padding=(0,0))
 
-    ### Need to add some more content to the pause box (rectangle key)
+    # Key for all the rectangle types...not proud of the following math
 
-    ## Button info
+    # Normal
+    normalX = pauseBoxX + 20 - (RECTANGLE_WIDTH*2)
+    normalY = pauseBoxY - 175
+    normalRectangle = NormalRectangleRain((normalX, normalY))
+    normalRectangle.draw(self.screen)
+    normalLabel = TextLine(self.screen, "Normal", color=BLACK, size=28)
+    normalLabel._render()
+    normalLabel.drawByTopLeft((normalX - 50 - normalLabel.width, normalY + (RECTANGLE_HEIGHT/2) - 12))
+
+    # Exploding
+    explodingX = pauseBoxX + 20
+    explodingY = pauseBoxY - 175
+    explodingRectangle = ExplodingRectangleRain((explodingX, explodingY))
+    explodingRectangle.draw(self.screen)
+    explodingLabel = TextLine(self.screen, "Exploding", color=BLACK, size=28)
+    explodingLabel.drawByTopLeft((explodingX + 50 + RECTANGLE_WIDTH, explodingY + (RECTANGLE_HEIGHT/2) - 12))
+
+    # Bouncing
+    bouncingX = pauseBoxX + 20 - (RECTANGLE_WIDTH*2)
+    bouncingY = pauseBoxY - 25
+    bouncingRectangle = BounceRectangleRain((bouncingX, bouncingY))
+    bouncingRectangle.draw(self.screen)
+    bouncingLabel = TextLine(self.screen, "Bouncing", color=BLACK, size=28)
+    bouncingLabel._render()
+    bouncingLabel.drawByTopLeft((bouncingX - 50 - bouncingLabel.width, bouncingY + (RECTANGLE_HEIGHT/2) - 12))
+
+    # Puddle
+    puddleX = pauseBoxX + 20
+    puddleY = pauseBoxY - 25
+    puddleRectangle = PuddleRectangleRain((puddleX, puddleY))
+    puddleRectangle.draw(self.screen)
+    puddleLabel = TextLine(self.screen, "Puddle", color=BLACK, size=28)
+    puddleLabel.drawByTopLeft((puddleX + 50 + RECTANGLE_WIDTH, puddleY + (RECTANGLE_HEIGHT/2) - 12))
+
+    # Button info
     buttonWidth = pauseBoxWidth/4
     buttonHeight = pauseBoxHeight/8
 
