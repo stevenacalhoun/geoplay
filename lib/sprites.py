@@ -313,8 +313,12 @@ class Mcsquare(pygame.sprite.Sprite):
     # Increment the frame count if it's not time to change frames
     self.frameCount += 1
 
-  def animateRunningRight(self):
-    if self.frameCount >= 2:
+  def animateRunningRight(self, override=False):
+    # I had to do this weird override thing so that the help screen could use the animations
+    if override == True:
+      self.frameCount += 1
+
+    if self.frameCount >= 5:
       # Final fram reached
       if self.frame >= len(self.runningRightImages):
         self.frame = 0
@@ -325,8 +329,12 @@ class Mcsquare(pygame.sprite.Sprite):
       self.frame += 1
       self.frameCount = 0
 
-  def animateRunningLeft(self):
-    if self.frameCount >= 2:
+  def animateRunningLeft(self, override=False):
+    # I had to do this weird override thing so that the help screen could use the animations
+    if override == True:
+      self.frameCount += 1
+
+    if self.frameCount >= 5:
       # Final fram reached
       if self.frame >= len(self.runningLeftImages):
         self.frame = 0
@@ -337,7 +345,11 @@ class Mcsquare(pygame.sprite.Sprite):
       self.frame += 1
       self.frameCount = 0
 
-  def animateStanding(self):
+  def animateStanding(self, override=False):
+    # I had to do this weird override thing so that the help screen could use the animations
+    if override == True:
+      self.frameCount += 1
+
     if self.frameCount >= 5:
       # Final fram reached
       if self.frame >= len(self.standingRightImages):
@@ -353,7 +365,11 @@ class Mcsquare(pygame.sprite.Sprite):
       self.frame += 1
       self.frameCount = 0
 
-  def animateJumping(self):
+  def animateJumping(self, override=False):
+    # I had to do this weird override thing so that the help screen could use the animations
+    if override == True:
+      self.frameCount += 1
+
     if self.frameCount >= 5:
       # Final fram reached
       if self.frame >= len(self.jumpingRightImages):
@@ -368,7 +384,11 @@ class Mcsquare(pygame.sprite.Sprite):
       self.frame += 1
       self.frameCount = 0
 
-  def animateFalling(self):
+  def animateFalling(self, override=False):
+    # I had to do this weird override thing so that the help screen could use the animations
+    if override == True:
+      self.frameCount += 1
+
     if self.frameCount >= 5:
       # Final fram reached
       if self.frame >= len(self.fallingRightImages):
@@ -476,6 +496,13 @@ class NormalRectangleRain(RectangleRain):
     # No animation for this type of rain currently
     pass
 
+  # Animation and movement for the help screen
+  def helpAnimation(self):
+    # Continuously spawn a falling rectangle
+    self.rect.y += self.fallingSpeed * 0.5
+    if self.rect.y >= 500:
+      self.rect.y = (SCREEN_HEIGHT*0.33) - 60
+
 class BounceRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
@@ -487,6 +514,11 @@ class BounceRectangleRain(RectangleRain):
 
     self.frame = 0
     self.frameCount = 0
+
+    # Flags and counter for help animation
+    self.animateBounce = False
+    self.waiting = False
+    self.waitCount = 0
 
   def update(self):
     self.move()
@@ -505,6 +537,41 @@ class BounceRectangleRain(RectangleRain):
       self.despawn()
       return True
     return False
+
+  # Animation and movement for the help screen
+  def helpAnimation(self):
+    fallingSpeed = GRAVITY * 0.3
+
+    # If we're not waiting or bouncing then move the rectangle
+    if self.animateBounce == False and self.waiting == False:
+      if self.goingBackUp == False:
+        self.rect.y += fallingSpeed * 0.5
+      else:
+        self.rect.y -= fallingSpeed * 0.5
+
+      # If we hit the bottom then bounce back up
+      if self.rect.y >= 500:
+        self.goingBackUp = True
+        self.animateBounce = True
+
+      # If we hit the top then stop moving up and wait a bit
+      if self.rect.y <= ((SCREEN_HEIGHT*0.4)  - 60):
+        self.goingBackUp = False
+        self.waiting = True
+
+    # Start animating if we're at the bottom, flag that we're finished animating when the animation is done
+    elif self.doneAnimating == False and self.waiting == False:
+      self.animate()
+      if self.doneAnimating == True:
+        self.animateBounce = False
+        self.doneAnimating = False
+
+    # Wait at the top for a bit before starting again
+    else:
+      self.waitCount += 1
+      if self.waitCount >= 50:
+        self.waiting = False
+        self.waitCount = 0
 
 
   def move(self):
@@ -548,6 +615,13 @@ class ExplodingRectangleRain(RectangleRain):
     self.frameCount = 0
 
     self.exploding = False
+    self.exploded = False
+    self.animateExplosion = False
+
+    # Flags and counter for help animation
+    self.doneAnimating = False
+    self.waiting = False
+    self.waitCount = 0
 
   def update(self):
     self.move()
@@ -576,7 +650,7 @@ class ExplodingRectangleRain(RectangleRain):
       self.image.fill(WHITE)
 
     # If it somehow gets off screen then despawn it
-    if self.rect.y > SCREEN_HEIGHT:
+    if self.rect.y > SCREEN_HEIGHT or self.exploded:
       self.despawn()
 
   def animate(self):
@@ -586,12 +660,39 @@ class ExplodingRectangleRain(RectangleRain):
 
       # Final fram reached
       if self.frame >= len(self.explodingImages):
-        self.despawn()
+        self.exploded = True
+        self.doneAnimating = True
 
       # Change to the next frame
       # self.image = self.explodingRectangleImages[self.frame]
       self.frame += 1
 
+  # Animation and movement for the help screen
+  def helpAnimation(self):
+    fallingSpeed = GRAVITY * 0.3
+
+    # If we're not waiting or exploding then move the rectangle
+    if self.animateExplosion == False:
+      self.rect.y += fallingSpeed * 0.5
+
+      # If we hit the bottom then start exploding
+      if self.rect.y >= 500:
+        self.animateExplosion = True
+
+    #Start animating at the bottom, move the rectangle to the top when it's done exploding
+    elif self.doneAnimating == False and self.waiting == False:
+      self.animate()
+      if self.doneAnimating == True:
+        self.animateExplosion = False
+        self.doneAnimating = False
+        self.rect.y = (SCREEN_HEIGHT*0.33) - 60
+
+    # Wait a bit at the top before starting again
+    else:
+      self.waitCount += 1
+      if self.waitCount >= 50:
+        self.waiting = False
+        self.waitCount = 0
 
 class PuddleRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
@@ -605,6 +706,12 @@ class PuddleRectangleRain(RectangleRain):
 
     self.frame = 0
     self.frameCount = 0
+
+    # Flags and counters to help keep up with the help animation
+    self.doneAnimating = False
+    self.waiting = False
+    self.waitCount = 0
+    self.animatePuddle = False
 
   def update(self):
     self.move()
@@ -650,10 +757,36 @@ class PuddleRectangleRain(RectangleRain):
       # Final fram reached
       if self.frame >= len(self.puddleImages):
         self.puddled = True
+        self.doneAnimating = True
 
       # Change to the next frame
       # self.image = self.puddleRectangleImages[self.frame]
       self.frame += 1
+
+  def helpAnimation(self):
+    fallingSpeed = GRAVITY * 0.3
+
+    # If we're not puddling, continue falling
+    if self.animatePuddle == False:
+      self.rect.y += fallingSpeed * 0.5
+
+      if self.rect.y >= 500:
+        self.animatePuddle = True
+
+    # At the bottom starting puddling
+    elif self.doneAnimating == False and self.waiting == False:
+      self.animate()
+      if self.doneAnimating == True:
+        self.animatePuddle = False
+        self.doneAnimating = False
+        self.rect.y = (SCREEN_HEIGHT*0.33) - 60
+
+    # After animating wait a bit before starting again
+    else:
+      self.waitCount += 1
+      if self.waitCount >= 50:
+        self.waiting = False
+        self.waitCount = 0
 
 
 # Triangle class
