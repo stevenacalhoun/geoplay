@@ -193,7 +193,7 @@ class Level(object):
 
 class Level_01(Level):
    def __init__(self):
-    Level.__init__(self, requiredScore=2, normalRainChance=1, bounceRainChance=0, explodingRainChance=0, puddleRainChance=0)
+    Level.__init__(self, requiredScore=2, normalRainChance=1, bounceRainChance=1, explodingRainChance=1, puddleRainChance=1)
 
     self.levelTiles = [
     "_ _ _ _ _ _ _ _ _ _ _ _",

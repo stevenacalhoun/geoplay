@@ -725,7 +725,7 @@ class HelpScene(Scene):
 
     # Show McSquare running around
     self.mcSquare.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
-    self.mcSquare.animateRunningLeft(override=True)
+    self.mcSquare.animateRunningRight(override=True)
     self.mcSquare.draw(self.screen)
 
 

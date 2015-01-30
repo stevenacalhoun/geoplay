@@ -38,88 +38,33 @@ class Mcsquare(pygame.sprite.Sprite):
     self.hurt_sound = pygame.mixer.Sound("sounds/Bump.ogg")
     self.land_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
-    # Keep up with our height for collision detection
-    self.height = height
-    self.width = height
+    # Running right images
+    self.runningRightImages = getImages("images/sprites-individ/run-right", 8, 2)
 
-    # Arrays to hold all the animations
-    self.runningRightImages = []
-    self.runningLeftImages = []
+    # Running left images
+    self.runningLeftImages = getImages("images/sprites-individ/run-left", 8, 2)
 
-    self.standingRightImages = []
-    self.standingLeftImages = []
-
-    self.jumpingRightImages = []
-    self.jumpingLeftImages = []
-
-    self.fallingRightImages = []
-    self.fallingLeftImages = []
-
-    # Location for the next image in the sprite sheet
-    xVal = 15
-    yVal = 160
-
-    # There are 26 images in the sprite sheet, load them all
-    for imageCount in range(0, 8):
-      # Load each image, scale them, and add it to the running right images
-      rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
-      image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
-      self.runningRightImages.append(image)
-      xVal += MCSQUARE_WIDTH + 12
-
-    # For the running left images just flip the right ones
-    for image in self.runningRightImages:
-      leftImage = pygame.transform.flip(image, True, False)
-      self.runningLeftImages.append(leftImage)
+    # Standing right images
+    self.standingRightImages = getImages("images/sprites-individ/stand-right", 4, 2)
 
     # Standing left images
-    xVal = 986
-    yVal = 190
-    for imageCount in range(0, 3):
-      rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
-      image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
-      self.standingRightImages.append(image)
-
-      xVal += MCSQUARE_WIDTH + 7
-
-    # Standing left images
-    for image in self.standingRightImages:
-      leftImage = pygame.transform.flip(image, True, False)
-      self.standingLeftImages.append(leftImage)
+    self.standingLeftImages = getImages("images/sprites-individ/stand-left", 4, 2)
 
     # Jumping right images
-    xVal = 575
-    yVal = 200
-    for imageCount in range(0, 3):
-      rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
-      image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
-      self.jumpingRightImages.append(image)
-
-      xVal += MCSQUARE_WIDTH + 7
-      yVal -= 9 + imageCount*9
+    fullJumpingRightImages = getImages("images/sprites-individ/jump-right", 6, 2)
+    self.jumpingRightImages= fullJumpingRightImages[0:2]
+    self.fallingRightImages= fullJumpingRightImages[3:6]
 
     # Jumping left images
-    for image in self.jumpingRightImages:
-      leftImage = pygame.transform.flip(image, True, False)
-      self.jumpingLeftImages.append(leftImage)
+    fullJumpingLeftImages = getImages("images/sprites-individ/jump-left", 6, 2)
+    self.jumpingLeftImages= fullJumpingLeftImages[0:2]
+    self.fallingLeftImages= fullJumpingLeftImages[3:6]
 
-    # Falling right images
-    xVal = 750
-    yVal = 170
-    for imageCount in range(0, 3):
-      rawImage = spriteSheet.get_image(xVal, yVal, MCSQUARE_WIDTH, MCSQUARE_HEIGHT)
-      image = pygame.transform.scale(rawImage, (int(self.height), int(self.height)))
-      self.fallingRightImages.append(image)
+    self.image = self.standingLeftImages[0]
 
-      xVal += MCSQUARE_WIDTH + 7
-      yVal += 9 + imageCount*9
+    # Keep up with our height for collision detection
+    self.width, self.height = self.image.get_rect().size
 
-    # Falling left images
-    for image in self.fallingRightImages:
-      leftImage = pygame.transform.flip(image, True, False)
-      self.fallingLeftImages.append(leftImage)
-
-    self.image = image
     self.screen = screen
 
     # Start him on the ground in the center of the screen
@@ -455,11 +400,6 @@ class RectangleRain(pygame.sprite.Sprite):
     self.fallingSpeed = 0
     self.alive = False
 
-    # Blank out last location
-    blank = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
-    blank.fill(WHITE)
-    self.image = blank
-
   def reposition(self, newLoc):
     self.rect.topleft = newLoc
 
@@ -508,9 +448,16 @@ class BounceRectangleRain(RectangleRain):
     RectangleRain.__init__(self, initialPosition)
 
     self.bouncingImages = bouncingRectangleImages
+    self.image = self.bouncingImages[0]
+
+    # Keep up with the center point
+    self.initialPositionX, initailPositionY = initialPosition
+    sizeWidth, sizeHeight = self.rect.size
+    self.centerX = self.initialPositionX + (sizeWidth/2)
 
     self.goingBackUp = False
     self.doneAnimating = False
+    # self.animate = False
 
     self.frame = 0
     self.frameCount = 0
@@ -522,7 +469,7 @@ class BounceRectangleRain(RectangleRain):
 
   def update(self):
     self.move()
-    if self.goingBackUp:
+    if self.animateBounce:
       self.animate()
 
   def checkCollisions(self, platforms, mcSquare):
@@ -531,6 +478,7 @@ class BounceRectangleRain(RectangleRain):
       if self.rect.colliderect(platform.rect) and self.goingBackUp == False:
         self.fallingSpeed = 0
         self.goingBackUp = True
+        self.animateBounce = True
 
     # Check collisions with McSquare
     if self.rect.colliderect(mcSquare.rect):
@@ -563,8 +511,9 @@ class BounceRectangleRain(RectangleRain):
     elif self.doneAnimating == False and self.waiting == False:
       self.animate()
       if self.doneAnimating == True:
-        self.animateBounce = False
         self.doneAnimating = False
+        self.rect.y -= 7
+        self.goingBackUp = True
 
     # Wait at the top for a bit before starting again
     else:
@@ -592,36 +541,60 @@ class BounceRectangleRain(RectangleRain):
 
   def animate(self):
     self.frameCount += 1
-    if self.frameCount >= 5:
+    if self.frameCount >= 2:
       self.frameCount = 0
 
-      # Final fram reached
+      # Final frame reached
       if self.frame >= len(self.bouncingImages):
         self.doneAnimating = True
         self.fallingSpeed = (-1 * GRAVITY * .3)
+        self.frame = 0
+        self.image = self.bouncingImages[self.frame]
+        self.animateBounce = False
 
-      # Change to the next frame
-      # self.image = self.bouncingRectangleImages[self.frame]
-      self.frame += 1
+      else:
+        # Keep up with how big we just were
+        prevSizeWidth, prevSizeHeight = self.image.get_rect().size
 
+        # Change to the next frame
+        self.image = self.bouncingImages[self.frame]
+
+        # Change how big the collision box is
+        tempRect = self.image.get_rect()
+        self.rect.size = tempRect.size
+
+        # Reposition the rectangle to offse the new size
+        newSizeWidth, newSizeHeight = tempRect.size
+        heightDifference = prevSizeHeight - newSizeHeight
+        self.rect.x = self.centerX - (newSizeWidth/2)
+        self.rect.y = self.rect.y + heightDifference
+
+        self.frame += 1
 
 class ExplodingRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
 
+    # Set the animation images
     self.explodingImages = explodingRectangleImages
+    self.image = self.explodingImages[0]
 
+    # Keep up with the center point
+    self.initialPositionX, initailPositionY = initialPosition
+    sizeWidth, sizeHeight = self.rect.size
+    self.centerX = self.initialPositionX + (sizeWidth/2)
+
+    # Control the animation
     self.frame = 0
     self.frameCount = 0
 
+    # Startes of the animation
     self.exploding = False
     self.exploded = False
     self.animateExplosion = False
 
     # Flags and counter for help animation
     self.doneAnimating = False
-    self.waiting = False
-    self.waitCount = 0
 
   def update(self):
     self.move()
@@ -655,7 +628,7 @@ class ExplodingRectangleRain(RectangleRain):
 
   def animate(self):
     self.frameCount += 1
-    if self.frameCount >= 5:
+    if self.frameCount >= 3:
       self.frameCount = 0
 
       # Final fram reached
@@ -663,9 +636,24 @@ class ExplodingRectangleRain(RectangleRain):
         self.exploded = True
         self.doneAnimating = True
 
-      # Change to the next frame
-      # self.image = self.explodingRectangleImages[self.frame]
-      self.frame += 1
+      else:
+        # Keep up with how big we just were
+        prevSizeWidth, prevSizeHeight = self.image.get_rect().size
+
+        # Change to the next frame
+        self.image = self.explodingImages[self.frame]
+
+        # Change how big the collision box is
+        tempRect = self.image.get_rect()
+        self.rect.size = tempRect.size
+
+        # Reposition the rectangle to offse the new size
+        newSizeWidth, newSizeHeight = tempRect.size
+        heightDifference = prevSizeHeight - newSizeHeight
+        self.rect.x = self.centerX - (newSizeWidth/2)
+        self.rect.y = self.rect.y + heightDifference
+
+        self.frame += 1
 
   # Animation and movement for the help screen
   def helpAnimation(self):
@@ -680,37 +668,37 @@ class ExplodingRectangleRain(RectangleRain):
         self.animateExplosion = True
 
     #Start animating at the bottom, move the rectangle to the top when it's done exploding
-    elif self.doneAnimating == False and self.waiting == False:
+    elif self.doneAnimating == False:
       self.animate()
       if self.doneAnimating == True:
         self.animateExplosion = False
         self.doneAnimating = False
+        self.rect.x = self.initialPositionX
         self.rect.y = (SCREEN_HEIGHT*0.33) - 60
-
-    # Wait a bit at the top before starting again
-    else:
-      self.waitCount += 1
-      if self.waitCount >= 50:
-        self.waiting = False
-        self.waitCount = 0
+        self.image = self.explodingImages[0]
+        self.frame = 0
 
 class PuddleRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
 
     self.puddleImages = puddleRectangleImages
+    self.image = self.puddleImages[0]
 
     self.puddling = False
     self.puddled = False
     self.puddleCount = 0
+
+    # Keep up with the center point
+    self.initialPositionX, initailPositionY = initialPosition
+    sizeWidth, sizeHeight = self.rect.size
+    self.centerX = self.initialPositionX + (sizeWidth/2)
 
     self.frame = 0
     self.frameCount = 0
 
     # Flags and counters to help keep up with the help animation
     self.doneAnimating = False
-    self.waiting = False
-    self.waitCount = 0
     self.animatePuddle = False
 
   def update(self):
@@ -751,7 +739,7 @@ class PuddleRectangleRain(RectangleRain):
 
   def animate(self):
     self.frameCount += 1
-    if self.frameCount >= 5:
+    if self.frameCount >= 3:
       self.frameCount = 0
 
       # Final fram reached
@@ -759,35 +747,54 @@ class PuddleRectangleRain(RectangleRain):
         self.puddled = True
         self.doneAnimating = True
 
-      # Change to the next frame
-      # self.image = self.puddleRectangleImages[self.frame]
-      self.frame += 1
+      else:
+        # Keep up with how big we just were
+        prevSizeWidth, prevSizeHeight = self.image.get_rect().size
+
+        # Change to the next frame
+        self.image = self.puddleImages[self.frame]
+
+        # Change how big the collision box is
+        tempRect = self.image.get_rect()
+        self.rect.size = tempRect.size
+
+        # Reposition the rectangle to offse the new size
+        newSizeWidth, newSizeHeight = tempRect.size
+        heightDifference = prevSizeHeight - newSizeHeight
+        self.rect.x = self.centerX - (newSizeWidth/2)
+        self.rect.y = self.rect.y + heightDifference
+
+        self.frame += 1
 
   def helpAnimation(self):
     fallingSpeed = GRAVITY * 0.3
 
     # If we're not puddling, continue falling
-    if self.animatePuddle == False:
+    if self.animatePuddle == False and self.puddled == False:
       self.rect.y += fallingSpeed * 0.5
 
       if self.rect.y >= 500:
         self.animatePuddle = True
 
     # At the bottom starting puddling
-    elif self.doneAnimating == False and self.waiting == False:
+    if self.animatePuddle:
       self.animate()
       if self.doneAnimating == True:
         self.animatePuddle = False
         self.doneAnimating = False
-        self.rect.y = (SCREEN_HEIGHT*0.33) - 60
+        self.frame = 0
+        self.puddled = True
 
     # After animating wait a bit before starting again
-    else:
-      self.waitCount += 1
-      if self.waitCount >= 50:
-        self.waiting = False
-        self.waitCount = 0
+    if self.puddled:
+      self.puddleCount += 1
 
+      if self.puddleCount >= 100:
+        self.puddleCount = 1
+        self.rect.x = self.initialPositionX
+        self.rect.y = (SCREEN_HEIGHT*0.33) - 60
+        self.image = self.puddleImages[self.frame]
+        self.puddled = False
 
 # Triangle class
 class Triangle(pygame.sprite.Sprite):
@@ -808,7 +815,7 @@ class Triangle(pygame.sprite.Sprite):
     # Load the triangle image and transform it to the desired size
     self.image = pygame.Surface([self.width, self.height])
     self.image.fill(WHITE)
-    self.image = pygame.image.load("images/triangle.png")
+    self.image = self.hoverImages[0]
     self.image = pygame.transform.scale(self.image, (int(self.width), int(self.height)))
 
     # The rectangle is for collision detection, really should be a triangle
@@ -845,7 +852,7 @@ class Triangle(pygame.sprite.Sprite):
 
   def animate(self):
     self.frameCount += 1
-    if self.frameCount >= 5:
+    if self.frameCount >= 1:
       self.frameCount = 0
 
       # Final fram reached
@@ -853,7 +860,7 @@ class Triangle(pygame.sprite.Sprite):
         self.frame = 0
 
       # Change to the next frame
-      # self.image = self.hoverImages[self.frame]
+      self.image = self.hoverImages[self.frame]
       self.frame += 1
 
   def reposition(self, newTopPoint):
@@ -866,25 +873,34 @@ def prepareSprites():
   global triangleImages, powerUpImages, normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
 
   # Exploding Rectangle
-  # explodingRectangleImages = getImages("explodingRectangle", 7)
+  explodingRectangleImages = getImages("images/sprites-individ/rect-blue", 7, 3)
 
   # Bouncing Rectangle
-  # bouncingRectangleImages = getImages("bouncingRectangle", 9)
+  bouncingRectangleImages = getImages("images/sprites-individ/rect-purple", 8, 3)
 
   # Puddle Rectangle
-  # puddleRectangleImages = getImages("puddleRectangle", 6)
+  puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, 3)
 
   # Triangle
-  # triangleImages = getImages("triangle", 5)
+  triangleImages = getImages("images/sprites-individ/triangle", 5, 2)
 
   # Power up
-  # powerUpImages = getImages("powerUp", 5)
+  powerUpImages = getImages("images/sprites-individ/hexagon", 4, 2)
 
-def getImages(baseName, totalImages):
+def getImages(baseName, totalImages, scaleFactor):
   images = []
 
-  for imageNum in range (1, totalImages):
-    image = pygame.image.load(baseName + str(totalImages)).convert()
+  for imageNum in range (1, totalImages+1):
+    rawImage = pygame.image.load(baseName + str(imageNum) + ".png").convert()
+    rawImageWidth, rawImageHeight = rawImage.get_rect().size
+
+
+    rawImage = pygame.transform.scale(rawImage, (rawImageWidth*scaleFactor, rawImageHeight*scaleFactor))
+
+    image = rawImage
+
+    transColor = image.get_at((0,0))
+    image.set_colorkey(transColor)
     images.append(image)
 
   return images
