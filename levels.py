@@ -57,7 +57,9 @@ class Level(object):
     numRows = len(self.levelTiles)
     numColumns = self.countColumns()
 
+    # Scale the triangle and powerup sprites based on the size of the level
     prepareTriangleSprites(int(30/numRows))
+    preparePowerUpSprites(int(30/numRows))
 
     # Tile width and height based on the number of columns and rows
     self.tileWidth = SCREEN_WIDTH/numColumns

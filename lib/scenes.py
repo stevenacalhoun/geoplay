@@ -620,7 +620,7 @@ class HelpScene(Scene):
   def display(self):
     self.screen.fill(WHITE)
     currentHelpScreen = 1
-    numberOfHelpScreens = 6
+    numberOfHelpScreens = 7
 
     # Constants for the help box
     helpBoxWidth = SCREEN_WIDTH * 0.75
@@ -642,6 +642,7 @@ class HelpScene(Scene):
     backButtonLoc = SCREEN_WIDTH/2, SCREEN_HEIGHT*0.85
 
     prepareTriangleSprites(5)
+    preparePowerUpSprites(3)
 
     # Sprites for various help sheets
     self.mcSquare = Mcsquare(self.screen, self.helpBoxLoc, 150, MCSQUARE_BASE_JUMP_SPEED)
@@ -650,6 +651,9 @@ class HelpScene(Scene):
     self.explodingRectangle = ExplodingRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))
     self.bounceRectangle = BounceRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))
     self.puddleRectangle = PuddleRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))
+    self.powerUpTime = PowerUp((helpBoxLocX - 170, helpBoxLocY - 150), 100, 1)
+    self.powerUpLife = PowerUp((helpBoxLocX - 170, helpBoxLocY), 100, 2)
+    self.powerUpShield = PowerUp((helpBoxLocX - 170, helpBoxLocY + 150), 100, 3)
 
     # Wait until we want to go back
     goBack = False
@@ -717,6 +721,8 @@ class HelpScene(Scene):
       self.showBounceRectangleHelp()
     elif currentHelpScreen == 6:
       self.showPuddleRectangleHelp()
+    elif currentHelpScreen == 7:
+      self.showPowerUpHelp()
 
   def showMcSquareHelp(self):
     helpBoxX, helpBoxY = self.helpLabelLoc
@@ -785,6 +791,28 @@ class HelpScene(Scene):
     # Show rectangle puddling (waiting on the sprites)
     self.puddleRectangle.helpAnimation()
     self.puddleRectangle.draw(self.screen)
+
+  def showPowerUpHelp(self):
+    helpLabelX, helpLabelY = self.helpLabelLoc
+    helpBoxX, helpBoxY = self.helpBoxLoc
+
+    # Help text for puddle rectangle
+    helpLabel = TextLine(self.screen, "Collect these to help you power up", color=BLACK, size=36)
+    helpLabel.drawByCenter((helpLabelX, helpLabelY - 80))
+
+    helpTimeLabel = TextLine(self.screen, "Pauses the rain", color=BLACK, size=24)
+    helpTimeLabel.drawByTopLeft((helpBoxX - 20, helpBoxY - 115))
+
+    helpLifeLabel = TextLine(self.screen, "Gain an extra life", color=BLACK, size=24)
+    helpLifeLabel.drawByTopLeft((helpBoxX - 20, helpBoxY + 35))
+
+    helpShieldLabel = TextLine(self.screen, "Invincibility", color=BLACK, size=24)
+    helpShieldLabel.drawByTopLeft((helpBoxX - 20, helpBoxY + 185))
+
+
+    self.powerUpTime.draw(self.screen)
+    self.powerUpLife.draw(self.screen)
+    self.powerUpShield.draw(self.screen)
 
 class GameOverScene(Scene):
   def __init(self):

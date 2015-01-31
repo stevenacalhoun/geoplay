@@ -18,7 +18,9 @@ RECTANGLE_WIDTH = 40
 RECTANGLE_HEIGHT = 100
 
 triangleImages = []
-powerUpImages = []
+powerUpTimeImages = []
+powerUpLifeImages = []
+powerUpShieldImages = []
 normalRectangleImages = []
 explodingRectangleImages =[]
 bouncingRectangleImages = []
@@ -804,22 +806,22 @@ class Triangle(pygame.sprite.Sprite):
 
     # Store the triangle's top point
     self.topPoint = topPoint
-    self.height = height
-
-    self.findTriangleInfo()
 
     self.hoverImages = triangleImages
     self.frameCount = 0
     self.frame = 0
 
     # Load the triangle image and transform it to the desired size
-    self.image = pygame.Surface([self.width, self.height])
-    self.image.fill(WHITE)
     self.image = self.hoverImages[0]
-    self.image = pygame.transform.scale(self.image, (int(self.width), int(self.height)))
 
     # The rectangle is for collision detection, really should be a triangle
-    self.rect = pygame.Rect(self.points[1][0], self.points[2][1], self.width, self.height)
+    self.rect = self.image.get_rect()
+
+    # Position the triangle
+    width, height = self.rect.size
+    topPointX, topPointY =  topPoint
+    self.rect.x = topPointX - width/2
+    self.rect.y = topPointY
 
     # Currently not captured
     self.captured = False
@@ -830,25 +832,74 @@ class Triangle(pygame.sprite.Sprite):
   def draw(self, screen):
     screen.blit(self.image, self.rect.topleft)
 
-  def findTriangleInfo(self):
-    # C point is simply the passed in topPoint
-    cX, cY = self.topPoint
+  def animate(self):
+    self.frameCount += 1
+    if self.frameCount >= 1:
+      self.frameCount = 0
 
-    # Find the x offset for the other two points
-    xOffset = self.height * math.tan(math.radians(30))
+      # Final fram reached
+      if self.frame >= len(self.hoverImages):
+        self.frame = 0
 
-    # bY is simply cY minus the height, and bX is cX minus the offset
-    bX = cX - xOffset
-    bY = cY + self.height
+      # Change to the next frame
+      self.image = self.hoverImages[self.frame]
+      self.frame += 1
 
-    # aY is simply cY minus the height, and aX is cX plus the offset
-    aX = cX + xOffset
-    aY = cY + self.height
+  def reposition(self, newTopPoint):
+    # Change the top point
+    self.topPoint = newTopPoint
 
-    self.points = [[aX, aY], [bX, bY], [cX, cY]]
+    # Reposition the triangle
+    width, height = self.rect.size
+    topPointX, topPointY = self.topPoint
+    self.rect.x = topPointX - width/2
+    self.rect.y = topPointY
 
-    # Load the triangle and size it based on the input parameters
-    self.width = 2*xOffset
+# Power up class
+class PowerUp(pygame.sprite.Sprite):
+  # Initializer
+  def __init__(self, topPoint, height, powerUpType=0):
+    pygame.sprite.Sprite.__init__(self)
+
+    # Store the triangle's top point
+    self.topPoint = topPoint
+
+    # Pick a random type if type not specified
+    if powerUpType == 0:
+      powerUpType = random.randint(1 ,3)
+
+    # Choose the right image set based on the power up type
+    self.powerUpType = powerUpType
+    if self.powerUpType == 1:
+      self.hoverImages = powerUpTimeImages
+    elif self.powerUpType == 2:
+      self.hoverImages = powerUpLifeImages
+    elif self.powerUpType == 3:
+      self.hoverImages = powerUpShieldImages
+
+    self.frameCount = 0
+    self.frame = 0
+
+    self.image = self.hoverImages[0]
+
+    # The rectangle is for collision detection
+    self.rect = self.image.get_rect()
+
+    # Position the powerup
+    width, height = self.rect.size
+    topPointX, topPointY =  topPoint
+    self.rect.x = topPointX - width/2
+    self.rect.y = topPointY
+
+    # Currently not captured or expired
+    self.captured = False
+    self.expired = False
+
+  def update(self):
+    self.animate()
+
+  def draw(self, screen):
+    screen.blit(self.image, self.rect.topleft)
 
   def animate(self):
     self.frameCount += 1
@@ -865,12 +916,10 @@ class Triangle(pygame.sprite.Sprite):
 
   def reposition(self, newTopPoint):
     self.topPoint = newTopPoint
-    self.findTriangleInfo()
     self.rect.topleft = (self.points[1][0], self.points[2][1])
 
-
 def prepareSprites():
-  global powerUpImages, normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
+  global normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
 
   # Exploding Rectangle
   explodingRectangleImages = getImages("images/sprites-individ/rect-blue", 7, 3)
@@ -881,15 +930,19 @@ def prepareSprites():
   # Puddle Rectangle
   puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, 3)
 
-  # Power up
-  powerUpImages = getImages("images/sprites-individ/hexagon", 4, 2)
-
 def prepareTriangleSprites(scale):
   global triangleImages
 
   # Triangle
   triangleImages = getImages("images/sprites-individ/triangle", 5, scale)
 
+def preparePowerUpSprites(scale):
+  global powerUpTimeImages, powerUpLifeImages, powerUpShieldImages
+
+  # Power ups
+  powerUpTimeImages = getImages("images/sprites-individ/hexagon", 4, scale)
+  powerUpLifeImages = getImages("images/sprites-individ/hexagon", 4, scale)
+  powerUpShieldImages = getImages("images/sprites-individ/hexagon", 4, scale)
 
 def getImages(baseName, totalImages, scaleFactor):
   images = []
@@ -897,7 +950,6 @@ def getImages(baseName, totalImages, scaleFactor):
   for imageNum in range (1, totalImages+1):
     rawImage = pygame.image.load(baseName + str(imageNum) + ".png").convert()
     rawImageWidth, rawImageHeight = rawImage.get_rect().size
-
 
     rawImage = pygame.transform.scale(rawImage, (rawImageWidth*scaleFactor, rawImageHeight*scaleFactor))
 
