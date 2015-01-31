@@ -17,6 +17,12 @@ MCSQUARE_BASE_JUMP_SPEED = 30.0
 RECTANGLE_WIDTH = 40
 RECTANGLE_HEIGHT = 100
 
+# Power up expiration time
+POWERUP_EXPIRATION_TIME = 300
+
+# Shield duration
+SHIELD_DURATION = 100
+
 triangleImages = []
 powerUpTimeImages = []
 powerUpLifeImages = []
@@ -93,12 +99,22 @@ class Mcsquare(pygame.sprite.Sprite):
     self.frame = 0
     self.frameCount = 0
 
+    # Shield power up
+    self.shielded = False
+    self.shieldCounter = 0
+
   # Update based on the current number of ticks
   def update(self):
     # Move the sprite, check bounds, and animate
     self.move()
     self.checkBounds()
     self.animate()
+
+    if self.shielded:
+      self.shieldCounter += 1
+      if self.shieldCounter >= SHIELD_DURATION:
+        self.shielded = False
+        self.shieldCounter = 0
 
   # Moves McSquare on the screen
   def move(self):
@@ -128,7 +144,7 @@ class Mcsquare(pygame.sprite.Sprite):
     screen.blit(self.image, self.rect.topleft)
 
   # Check to see if we've collided with anything
-  def checkCollisions(self, platforms, triangles):
+  def checkCollisions(self, platforms, triangles, powerUps):
     # Check to see if we landed on any platforms
     # self.falling = True
     for platform in platforms:
@@ -202,7 +218,18 @@ class Mcsquare(pygame.sprite.Sprite):
       if self.rect.colliderect(triangle.rect):
         captureCount += 1
         triangle.captured = True
-    return captureCount
+
+    powerUpType = 0
+    for powerUp in powerUps:
+      if self.rect.colliderect(powerUp.rect):
+        # self.addPowerUp(powerUp)
+        powerUp.captured = True
+        powerUpType = powerUp.powerUpType
+
+    if powerUpType == 3:
+      self.shielded = True
+
+    return captureCount, powerUpType
 
   # Just to make sure we haven't crossed any bounds
   def checkBounds(self):
@@ -350,7 +377,6 @@ class Mcsquare(pygame.sprite.Sprite):
       self.frame += 1
       self.frameCount = 0
 
-
   def reposition(self, newLoc):
     self.rect.topleft = newLoc
 
@@ -415,7 +441,10 @@ class NormalRectangleRain(RectangleRain):
     # Check collisions with McSquare
     if self.rect.colliderect(mcSquare.rect):
       self.despawn()
-      return True
+      if not mcSquare.shielded:
+        return True
+      else:
+        return False
     return False
 
   def update(self):
@@ -485,7 +514,10 @@ class BounceRectangleRain(RectangleRain):
     # Check collisions with McSquare
     if self.rect.colliderect(mcSquare.rect):
       self.despawn()
-      return True
+      if not mcSquare.shielded:
+        return True
+      else:
+        return False
     return False
 
   # Animation and movement for the help screen
@@ -613,7 +645,10 @@ class ExplodingRectangleRain(RectangleRain):
     # Check collisions with McSquare
     if self.rect.colliderect(mcSquare.rect):
       self.despawn()
-      return True
+      if not mcSquare.shielded:
+        return True
+      else:
+        return False
     return False
 
   def move(self):
@@ -728,7 +763,10 @@ class PuddleRectangleRain(RectangleRain):
     # Check collisions with McSquare
     if self.rect.colliderect(mcSquare.rect):
       self.despawn()
-      return True
+      if not mcSquare.shielded:
+        return True
+      else:
+        return False
     return False
 
   def move(self):
@@ -872,8 +910,10 @@ class PowerUp(pygame.sprite.Sprite):
     self.powerUpType = powerUpType
     if self.powerUpType == 1:
       self.hoverImages = powerUpTimeImages
+
     elif self.powerUpType == 2:
       self.hoverImages = powerUpLifeImages
+
     elif self.powerUpType == 3:
       self.hoverImages = powerUpShieldImages
 
@@ -894,6 +934,7 @@ class PowerUp(pygame.sprite.Sprite):
     # Currently not captured or expired
     self.captured = False
     self.expired = False
+    self.expirationCount = 0
 
   def update(self):
     self.animate()
@@ -913,6 +954,11 @@ class PowerUp(pygame.sprite.Sprite):
       # Change to the next frame
       self.image = self.hoverImages[self.frame]
       self.frame += 1
+
+    self.expirationCount += 1
+
+    if self.expirationCount >= POWERUP_EXPIRATION_TIME:
+      self.expired = True
 
   def reposition(self, newTopPoint):
     self.topPoint = newTopPoint

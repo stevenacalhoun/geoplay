@@ -29,9 +29,10 @@ def getLevel(level):
 
 
 class Level(object):
-  def __init__(self, requiredScore=10, rectangleSpawnNumber=100, normalRainChance=1, bounceRainChance=0, explodingRainChance=0, puddleRainChance=0):
+  def __init__(self, requiredScore=10, rectangleSpawnNumber=100, normalRainChance=1, bounceRainChance=0, explodingRainChance=0, puddleRainChance=0, powerUpLifeChance=1, powerUpTimeChance=1, powerUpShieldChance=1, powerUpRate=1000):
     # An array to help generate a random rectangle type
     self.rectangleChoices = []
+    self.powerUpChoices = []
 
     # Recquire score to complete the level
     self.requiredScore = requiredScore
@@ -45,13 +46,23 @@ class Level(object):
     self.explodingRainChance = explodingRainChance
     self.puddleRainChance = puddleRainChance
 
+    # Rate at which the power ups spawn
+    self.powerUpRate = powerUpRate
+
+    # Spawn chances for each of the power up types
+    self.powerUpLifeChance = powerUpLifeChance
+    self.powerUpTimeChance = powerUpTimeChance
+    self.powerUpShieldChance = powerUpShieldChance
+
     # Create the rectangle choice array
     self.createRectangleChoiceHolder()
+    self.createPowerUpChoiceHolder()
 
   def generateLevel(self):
     # Keep track of our platforms and triangles
     platformLocs = []
     triangleLocs = []
+    powerUpLocs = []
 
     # Get our total number of rows and columns
     numRows = len(self.levelTiles)
@@ -106,6 +117,28 @@ class Level(object):
             else:
               currentSearch += 1
 
+        # U stands for power up spawn point
+        if tile == "U":
+          # Search for either a 't' or a '_'
+          currentSearch = 1
+          stillSearching = True
+          while stillSearching:
+            # If there is a t that means position it between the two tiles
+            if row[tileNum+currentSearch] == "u":
+              powerUpLoc = ((currentXLoc + self.tileWidth), currentYLoc)
+              powerUpLocs.append(powerUpLoc)
+              stillSearching = False
+
+            # Otherwise just position it in the middle of the tile
+            elif row[tileNum+currentSearch] == "_":
+              powerUpLoc = ((currentXLoc + (self.tileWidth/2)), (currentYLoc))
+              powerUpLocs.append(powerUpLoc)
+              stillSearching = False
+
+            # Still looking for it
+            else:
+              currentSearch += 1
+
         # P stands for platform
         if tile == "P":
           # If we are currently building a platform, create it
@@ -145,7 +178,7 @@ class Level(object):
     platformLocs.append([platformLoc, (platformWidth+self.tileWidth, self.tileHeight+self.bottomGap)])
 
     # Return the platform locations and starting location
-    return platformLocs, triangleLocs, startingLoc
+    return platformLocs, triangleLocs, powerUpLocs, startingLoc
 
   def countColumns(self):
     columnCount = 0
@@ -192,12 +225,41 @@ class Level(object):
     elif rectangleChoice == "P":
       return PuddleRectangleRain((xLoc, yLoc - RECTANGLE_HEIGHT))
 
+  def createPowerUpChoiceHolder(self):
+    # L stands for life power up
+    for chance in range(self.powerUpLifeChance):
+      self.powerUpChoices.append("L")
+
+    # T stands for time power up
+    for chance in range(self.powerUpTimeChance):
+      self.powerUpChoices.append("T")
+
+    # S stand for shield power up
+    for chance in range(self.powerUpShieldChance):
+      self.powerUpChoices.append("S")
+
+  def spawnNewPowerUp(self, location):
+    # Get a random rectangle choice from our list
+    powerUpChoice = random.choice(self.powerUpChoices)
+
+    # Time power up
+    if powerUpChoice == "T":
+      return PowerUp(location, 0, 1)
+
+    # Life power up
+    elif powerUpChoice == "L":
+      return PowerUp(location, 0, 2)
+
+    # Shield power up
+    elif powerUpChoice == "S":
+      return PowerUp(location, 0, 3)
+
   def levelComplete(self, currentScore):
     return currentScore >= self.requiredScore
 
 class Level_01(Level):
    def __init__(self):
-    Level.__init__(self, requiredScore=2, normalRainChance=1, bounceRainChance=1, explodingRainChance=1, puddleRainChance=1)
+    Level.__init__(self, requiredScore=2, normalRainChance=1, bounceRainChance=1, explodingRainChance=1, puddleRainChance=1, powerUpLifeChance=0, powerUpTimeChance=0, powerUpShieldChance=1, powerUpRate=100)
 
     self.levelTiles = [
     "_ _ _ _ _ _ _ _ _ _ _ _",
@@ -213,7 +275,7 @@ class Level_01(Level):
     "_ _ _ _ _ _ _ _ _ _ _ _",
     "_ _ _ _ _ _ _ _ _ S _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _",
-    "_ T _ _ _ T _ _ _ T _ _",
+    "_ T _ U _ T _ _ _ T _ _",
     "P p p p p p p p p p p p"]
 
     self.caption = "Just warming up"
@@ -244,7 +306,7 @@ class Level_02(Level):
     "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ S _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
-    "_ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _",
+    "_ T _ _ _ T _ _ _ T _ _ _ T _ U _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _",
     "P p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p"]
 
     self.caption = "Try this"

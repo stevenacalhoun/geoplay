@@ -10,6 +10,8 @@ from levels import *
 
 clock = pygame.time.Clock()
 
+PAUSE_DURATION = 100
+
 class Scene(object):
   mainMenuScene = 0
   levelScene = 1
@@ -149,7 +151,14 @@ class HUD():
     self.score = 0
 
     # Display lives
-    self.remainingLives = 3
+    self.remainingLives = 6
+
+    rawImage = pygame.image.load("images/sprites-individ/stand-left1.png").convert()
+    rawImageWidth, rawImageHeight = rawImage.get_rect().size
+    transColor = rawImage.get_at((0,0))
+    rawImage.set_colorkey(transColor)
+
+    self.lifeImage = pygame.transform.scale(rawImage, (rawImageWidth, rawImageHeight))
 
   def displayScore(self):
     # Draw new score
@@ -163,8 +172,17 @@ class HUD():
     # Display current number of lives
     xLoc, yLoc = LIVES_POS
 
-    for x in range(self.remainingLives):
-      pygame.draw.rect(self.screen, BLACK, (xLoc - (x * 80), yLoc, 40, 40))
+    if self.remainingLives <= 5:
+      for x in range(self.remainingLives):
+        self.screen.blit(self.lifeImage, (xLoc - (x * 80), yLoc, 40, 40))
+        # pygame.draw.rect(self.screen, BLACK, (xLoc - (x * 80), yLoc, 40, 40))
+    else:
+      lifeCount = TextLine(self.screen, "x " + str(self.remainingLives), color=BLACK, size=38)
+      lifeCount.drawByTopLeft((xLoc - 20, yLoc))
+      self.screen.blit(self.lifeImage, (xLoc - 85, yLoc, 40, 40))
+
+  def addLife(self):
+    self.remainingLives += 1
 
   def removeLife(self):
     self.remainingLives -= 1
@@ -201,6 +219,9 @@ class LevelScene(Scene):
     self.level = getLevel(self.levelNum)
     self.oldTriLoc = 0
 
+    self.pausePowerUpCount = 0
+    self.pausePowerUp = False
+
     # Keep up with paused state
     self.paused = False
     self.selectResume = True
@@ -212,7 +233,7 @@ class LevelScene(Scene):
     self.screen.fill(WHITE)
 
     # Generate all the sprite locations for the level
-    self.platformParams, self.triangleLocs, self.startingLoc = self.level.generateLevel()
+    self.platformParams, self.triangleLocs, self.powerUpLocs, self.startingLoc = self.level.generateLevel()
 
     # Generate the HUD
     self.HUD = HUD(self.screen)
@@ -225,6 +246,9 @@ class LevelScene(Scene):
 
     # Keep up with when we need to draw a new rectangle rain
     self.rectangleCounter = 0
+
+    # Keep up with when to spawn a power up
+    self.powerUpCounter = 0
 
     # Continue so long as we have lives left
     while self.HUD.livesRemaining() and self.returnToMain == False:
@@ -251,7 +275,7 @@ class LevelScene(Scene):
           self.showLevelTransitionScreen()
 
           # Regenerate all the new locations and sprites
-          self.platformParams, self.triangleLocs, self.startingLoc = self.level.generateLevel()
+          self.platformParams, self.triangleLocs, self.powerUpLocs, self.startingLoc = self.level.generateLevel()
           self.generateSprites()
 
       else:
@@ -326,6 +350,9 @@ class LevelScene(Scene):
     self.triangleSpriteGroup = pygame.sprite.Group()
     triangleLoc = random.choice(self.triangleLocs)
     self.spawnTriangle()
+
+    # Sprite group to hold the power ups
+    self.powerUpSpriteGroup = pygame.sprite.Group()
 
   # Spawn a new triangle with the given top point
   def spawnTriangle(self):
@@ -412,8 +439,35 @@ class LevelScene(Scene):
     else:
       self.rectangleCounter += 1
 
+    # Remove any expired powerups
+    for powerUp in self.powerUpSpriteGroup:
+      if powerUp.expired or powerUp.captured:
+        powerUp.update()
+        self.powerUpSpriteGroup.remove(powerUp)
+        powerUp = None
+
+    # See if we need to spawn a power up
+    if self.powerUpCounter >= self.level.powerUpRate:
+      # Reset the counter and pick a location to spawn the power up
+      self.powerUpCounter = 0
+      randomLoc = random.choice(self.powerUpLocs)
+
+      # Spawn a new power up
+      powerUp = self.level.spawnNewPowerUp(randomLoc)
+
+      # Add the new power up
+      self.powerUpSpriteGroup.add(powerUp)
+    else:
+      self.powerUpCounter += 1
+
     # Update the rectangle rain
-    self.rectangleSpriteGroup.update()
+    if self.pausePowerUp:
+      self.pausePowerUpCount += 1
+      if self.pausePowerUpCount >= PAUSE_DURATION:
+        self.pausePowerUpCount = 0
+        self.pausePowerUp = False
+    else:
+      self.rectangleSpriteGroup.update()
 
     # Update the platform sprites
     self.platformSpriteGroup.update()
@@ -421,13 +475,16 @@ class LevelScene(Scene):
     # Update the triangles
     self.triangleSpriteGroup.update()
 
+    # Update the powerUps
+    self.powerUpSpriteGroup.update()
+
     # Update the HUD
     self.HUD.update()
 
   # Checks for collisions with rectangles or triangles
   def checkCollisions(self):
     # Check for triangle collisions
-    captureCount = self.mcSquare.checkCollisions(self.platforms, self.triangleSpriteGroup)
+    captureCount, powerUpType = self.mcSquare.checkCollisions(self.platforms, self.triangleSpriteGroup, self.powerUpSpriteGroup)
 
     # If one or more have been capture then increment the score and draw a new one
     if captureCount:
@@ -441,6 +498,11 @@ class LevelScene(Scene):
 
       self.HUD.addPoints(captureCount)
 
+    if powerUpType == 1:
+      self.pausePowerUp = True
+    elif powerUpType == 2:
+      self.HUD.addLife()
+
     # Check for a hit by the rain
     for rectangle in self.rectangleSpriteGroup:
         hit = rectangle.checkCollisions(self.platforms, self.mcSquare)
@@ -453,6 +515,7 @@ class LevelScene(Scene):
     self.platformSpriteGroup.draw(self.screen)
     self.rectangleSpriteGroup.draw(self.screen)
     self.triangleSpriteGroup.draw(self.screen)
+    self.powerUpSpriteGroup.draw(self.screen)
 
   # Overlay to blur out the game when it is paused
   def displayPauseOverlay(self):
