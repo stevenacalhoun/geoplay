@@ -57,6 +57,8 @@ class Level(object):
     numRows = len(self.levelTiles)
     numColumns = self.countColumns()
 
+    prepareTriangleSprites(int(30/numRows))
+
     # Tile width and height based on the number of columns and rows
     self.tileWidth = SCREEN_WIDTH/numColumns
     self.tileHeight = (SCREEN_HEIGHT-HUD_HEIGHT)/numRows

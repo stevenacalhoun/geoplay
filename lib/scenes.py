@@ -307,7 +307,7 @@ class LevelScene(Scene):
   # Generate all the new sprites for a level
   def generateSprites(self):
     # Get our square character and add him to the dynamic sprite group
-    self.mcSquare = Mcsquare(self.screen, self.startingLoc, self.level.tileHeight*2, self.level.jumpSpeed)
+    self.mcSquare = Mcsquare(self.screen, self.startingLoc, self.level.tileHeight, self.level.jumpSpeed)
     self.dynamicSpriteGroup = pygame.sprite.Group(self.mcSquare)
 
     # Create a sprite group to hold the rain
@@ -641,9 +641,11 @@ class HelpScene(Scene):
     backButtonHeight = 80
     backButtonLoc = SCREEN_WIDTH/2, SCREEN_HEIGHT*0.85
 
+    prepareTriangleSprites(5)
+
     # Sprites for various help sheets
-    self.mcSquare = Mcsquare(self.screen, self.helpBoxLoc, 200, MCSQUARE_BASE_JUMP_SPEED)
-    self.triangle = Triangle(self.helpBoxLoc, 100)
+    self.mcSquare = Mcsquare(self.screen, self.helpBoxLoc, 150, MCSQUARE_BASE_JUMP_SPEED)
+    self.triangle = Triangle((helpBoxLocX - 25, helpBoxLocY), 100)
     self.normalRectangle = NormalRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))
     self.explodingRectangle = ExplodingRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))
     self.bounceRectangle = BounceRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))

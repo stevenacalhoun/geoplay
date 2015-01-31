@@ -39,24 +39,24 @@ class Mcsquare(pygame.sprite.Sprite):
     self.land_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     # Running right images
-    self.runningRightImages = getImages("images/sprites-individ/run-right", 8, 2)
+    self.runningRightImages = getImages("images/sprites-individ/run-right", 8, int(height/26.5))
 
     # Running left images
-    self.runningLeftImages = getImages("images/sprites-individ/run-left", 8, 2)
+    self.runningLeftImages = getImages("images/sprites-individ/run-left", 8, int(height/26.5))
 
     # Standing right images
-    self.standingRightImages = getImages("images/sprites-individ/stand-right", 4, 2)
+    self.standingRightImages = getImages("images/sprites-individ/stand-right", 4, int(height/26.5))
 
     # Standing left images
-    self.standingLeftImages = getImages("images/sprites-individ/stand-left", 4, 2)
+    self.standingLeftImages = getImages("images/sprites-individ/stand-left", 4, int(height/26.5))
 
     # Jumping right images
-    fullJumpingRightImages = getImages("images/sprites-individ/jump-right", 6, 2)
+    fullJumpingRightImages = getImages("images/sprites-individ/jump-right", 6, int(height/26.5))
     self.jumpingRightImages= fullJumpingRightImages[0:2]
     self.fallingRightImages= fullJumpingRightImages[3:6]
 
     # Jumping left images
-    fullJumpingLeftImages = getImages("images/sprites-individ/jump-left", 6, 2)
+    fullJumpingLeftImages = getImages("images/sprites-individ/jump-left", 6, int(height/26.5))
     self.jumpingLeftImages= fullJumpingLeftImages[0:2]
     self.fallingLeftImages= fullJumpingLeftImages[3:6]
 
@@ -870,7 +870,7 @@ class Triangle(pygame.sprite.Sprite):
 
 
 def prepareSprites():
-  global triangleImages, powerUpImages, normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
+  global powerUpImages, normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
 
   # Exploding Rectangle
   explodingRectangleImages = getImages("images/sprites-individ/rect-blue", 7, 3)
@@ -881,11 +881,15 @@ def prepareSprites():
   # Puddle Rectangle
   puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, 3)
 
-  # Triangle
-  triangleImages = getImages("images/sprites-individ/triangle", 5, 2)
-
   # Power up
   powerUpImages = getImages("images/sprites-individ/hexagon", 4, 2)
+
+def prepareTriangleSprites(scale):
+  global triangleImages
+
+  # Triangle
+  triangleImages = getImages("images/sprites-individ/triangle", 5, scale)
+
 
 def getImages(baseName, totalImages, scaleFactor):
   images = []
