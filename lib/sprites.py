@@ -468,6 +468,9 @@ class RectangleRain(pygame.sprite.Sprite):
 class NormalRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
+    
+    # Sound
+    self.normalRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     # Set the animation images
     self.normalImages = normalRectangleImages
@@ -495,6 +498,7 @@ class NormalRectangleRain(RectangleRain):
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         self.fallingSpeed = 0
+        self.normalRectangle_sound.play()
         self.fadingOut = True
 
     # Check collisions with McSquare
@@ -578,6 +582,8 @@ class NormalRectangleRain(RectangleRain):
 class BounceRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
+    
+    self.bounceRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     self.bouncingImages = bouncingRectangleImages
     self.image = self.bouncingImages[0]
@@ -608,6 +614,7 @@ class BounceRectangleRain(RectangleRain):
     # Check collisions with platforms
     for platform in platforms:
       if self.rect.colliderect(platform.rect) and self.goingBackUp == False:
+        self.bounceRectangle_sound.play()
         self.fallingSpeed = 0
         self.goingBackUp = True
         self.animateBounce = True
@@ -709,6 +716,9 @@ class BounceRectangleRain(RectangleRain):
 class ExplodingRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
+    
+    # Sound
+    self.explodingRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     # Set the animation images
     self.explodingImages = explodingRectangleImages
@@ -740,6 +750,7 @@ class ExplodingRectangleRain(RectangleRain):
     # Check collisions with platforms
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
+        self.explodingRectangle_sound.play()
         self.fallingSpeed = 0
         self.exploding = True
 
@@ -819,6 +830,9 @@ class ExplodingRectangleRain(RectangleRain):
 class PuddleRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
+    
+    # Sound
+    self.puddleRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     self.puddleImages = puddleRectangleImages
     self.image = self.puddleImages[0]
@@ -858,6 +872,7 @@ class PuddleRectangleRain(RectangleRain):
     # Check collisions with platforms
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
+        self.puddleRectangle_sound.play()
         self.fallingSpeed = 0
         self.puddling = True
 

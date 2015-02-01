@@ -576,7 +576,7 @@ class LevelScene(Scene):
           self.HUD.removeLife()
 
   def generateGround(self):
-    numTiles = SCREEN_WIDTH/GROUND_TILE_WIDTH
+    numTiles = int(SCREEN_WIDTH/GROUND_TILE_WIDTH)
 
     for tileNum in range(0, numTiles):
       groundPiece = Ground(self.screen, (GROUND_TILE_WIDTH*tileNum, (SCREEN_HEIGHT - GROUND_HEIGHT)), (GROUND_TILE_WIDTH, GROUND_HEIGHT))
@@ -683,6 +683,10 @@ class LevelScene(Scene):
 class DifficultyMenu(Scene):
   def __init__(self, screen):
     Scene.__init__(self, screen)
+    
+    # Sounds
+    self.changeSelection_sound = pygame.mixer.Sound("sounds/Bump.ogg")
+    self.confirm_sound = pygame.mixer.Sound("sounds/Bump.ogg")    
 
   def display(self):
     # Constants for the boxes
@@ -707,13 +711,16 @@ class DifficultyMenu(Scene):
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_DOWN:
           menuSelection += 1
+          self.changeSelection_sound.play()
           if menuSelection > 3:
             menuSelection = 1
         if event.key == pygame.K_UP:
           menuSelection -= 1
+          self.changeSelection_sound.play()
           if menuSelection < 0:
             menuSelection = 2
         if event.key == pygame.K_RETURN:
+          self.confirm_sound.play()
           self.display = 3
           self.difficulty = menuSelection
           selectionMade = True
