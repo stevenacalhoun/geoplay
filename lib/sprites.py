@@ -87,6 +87,7 @@ class Mcsquare(pygame.sprite.Sprite):
     self.jumping = False
     self.jumpRecharged = True
     self.falling = False
+    self.landed = False
 
     # Start facing left
     self.facingRight = False
@@ -146,7 +147,7 @@ class Mcsquare(pygame.sprite.Sprite):
   # Check to see if we've collided with anything
   def checkCollisions(self, platforms, triangles, powerUps):
     # Check to see if we landed on any platforms
-    # self.falling = True
+    self.landed = False
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         # Moving up
@@ -158,10 +159,17 @@ class Mcsquare(pygame.sprite.Sprite):
 
         # Moving down
         elif self.yMove > 0:
+          self.landed = True
+          if self.falling:
+            self.landing()
+
           self.jumpRecharged = True
           self.falling = False
           self.rect.y = platform.rect.y - self.height
 
+      # If we've landed then recharge the jump
+      if self.landed == False:
+        self.jumpRecharged = False
 
         ###########################################################################
         # Bunch of failed attempts to make collisions work better
@@ -270,6 +278,10 @@ class Mcsquare(pygame.sprite.Sprite):
       self.jump_sound.play() # Test sound code
       self.yMove = -self.jumpSpeed
       self.jumpRecharged = False
+
+  def landing(self):
+    # Play landing sound
+    self.land_sound.play()
 
   def animate(self):
     # Select the correct set of images, and display the new frame
