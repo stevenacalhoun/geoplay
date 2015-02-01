@@ -40,7 +40,7 @@ class MainMenu(Scene):
     # Keep looping unitl somehting has been selected
     selectionMade = False
     while selectionMade == False:
-      self.screen.fill(WHITE)
+      self.screen.fill(LIGHT_BLUE)
       event = pygame.event.poll()
 
       # Key up and down the menu
@@ -151,8 +151,9 @@ class HUD():
     self.score = 0
 
     # Display lives
-    self.remainingLives = 6
+    self.remainingLives = 3
 
+    # Image to display for remaining lives
     rawImage = pygame.image.load("images/sprites-individ/stand-left1.png").convert()
     rawImageWidth, rawImageHeight = rawImage.get_rect().size
     transColor = rawImage.get_at((0,0))
@@ -230,7 +231,7 @@ class LevelScene(Scene):
 
   # Start the game
   def display(self):
-    self.screen.fill(WHITE)
+    self.screen.fill(LIGHT_BLUE)
 
     # Generate all the sprite locations for the level
     self.platformParams, self.triangleLocs, self.powerUpLocs, self.startingLoc = self.level.generateLevel()
@@ -292,7 +293,7 @@ class LevelScene(Scene):
       return Scene.gameOverScene
 
   def showLevelTransitionScreen(self):
-    self.screen.fill(WHITE)
+    self.screen.fill(LIGHT_BLUE)
 
     # Constants to hold the main menu button
     nextLevelButtonWidth = SCREEN_WIDTH/3
@@ -413,7 +414,7 @@ class LevelScene(Scene):
   # Update all the sprites on screen
   def update(self):
     # Update our dynamic sprite and refresh the screen
-    self.screen.fill(WHITE)
+    self.screen.fill(LIGHT_BLUE)
     self.dynamicSpriteGroup.update()
 
     # Remove any dead rectangles
@@ -624,7 +625,7 @@ class DifficultyMenu(Scene):
     # Loop until we've made a selection
     selectionMade = False
     while selectionMade == False:
-      self.screen.fill(WHITE)
+      self.screen.fill(LIGHT_BLUE)
       event = pygame.event.poll()
       if event.type == pygame.QUIT:
         running = False
@@ -681,7 +682,7 @@ class HelpScene(Scene):
     Scene.__init__(self, screen)
 
   def display(self):
-    self.screen.fill(WHITE)
+    self.screen.fill(LIGHT_BLUE)
     currentHelpScreen = 1
     numberOfHelpScreens = 7
 
@@ -721,7 +722,7 @@ class HelpScene(Scene):
     # Wait until we want to go back
     goBack = False
     while goBack == False:
-      self.screen.fill(WHITE)
+      self.screen.fill(LIGHT_BLUE)
 
       # Show the current help screen
       self.showHelpScreen(currentHelpScreen)
@@ -883,7 +884,7 @@ class GameOverScene(Scene):
 
   # Show game over screen
   def display(self):
-    self.screen.fill(WHITE)
+    self.screen.fill(LIGHT_BLUE)
 
     # Constants to hold the main menu button
     mainMenuButtonWidth = SCREEN_WIDTH/3
