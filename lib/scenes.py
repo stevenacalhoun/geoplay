@@ -867,7 +867,7 @@ class HelpScene(Scene):
     helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
 
     # Show triangle hovering (waiting on the sprites)
-    self.triangle.animate()
+    self.triangle.helpAnimation()
     self.triangle.draw(self.screen)
 
   def showNormalRectangleHelp(self):
@@ -932,8 +932,13 @@ class HelpScene(Scene):
     helpShieldLabel.drawByTopLeft((helpBoxX - 20, helpBoxY + 185))
 
 
+    self.powerUpTime.helpAnimation()
     self.powerUpTime.draw(self.screen)
+
+    self.powerUpLife.helpAnimation()
     self.powerUpLife.draw(self.screen)
+
+    self.powerUpShield.helpAnimation()
     self.powerUpShield.draw(self.screen)
 
 class GameOverScene(Scene):
