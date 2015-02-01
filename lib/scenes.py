@@ -23,6 +23,54 @@ class Scene(object):
   def __init__(self, screen):
     self.screen = screen
 
+class IntroScene(Scene):
+  def __init__(self, screen):
+    Scene.__init__(self, screen)
+
+  def display(self):
+    waitCounter = 0
+    waitCounterEnd = 75
+    moveUp = False
+
+    moveCounter = 0
+    doneAnimating = False
+    startHeight = SCREEN_HEIGHT/2
+    endHeight = 100
+    moveCountEnd = 87
+    step = (startHeight - endHeight)/moveCountEnd
+    title = TextLine(self.screen, "Geo-Play", color=BLACK, size=76)
+
+    while not doneAnimating:
+      # Leave the splash screen if a key is hit
+      event = pygame.event.poll()
+      if event.type == pygame.KEYDOWN:
+        return
+
+      # Fill the screen
+      self.screen.fill(LIGHT_BLUE)
+      overlay = Box(self.screen, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, alpha=128)
+      overlay.drawByTopLeft((0,0))
+
+      # Show the title before moving up
+      if not moveUp:
+        # Draw the title
+        title.drawByCenter((SCREEN_WIDTH/2, startHeight))
+
+        waitCounter += 1
+        if waitCounter >= waitCounterEnd:
+          moveUp = True
+
+      # Start moving up
+      else:
+        # Draw the title
+        title.drawByCenter((SCREEN_WIDTH/2, startHeight - (step*moveCounter)))
+
+        moveCounter += 1
+        if moveCounter > moveCountEnd:
+          doneAnimating = True
+
+      pygame.display.flip()
+
 class MainMenu(Scene):
   def __init__(self, screen):
     Scene.__init__(self, screen)
@@ -697,8 +745,8 @@ class HelpScene(Scene):
     numberOfHelpScreens = 7
 
     # Constants for the help box
-    helpBoxWidth = SCREEN_WIDTH * 0.75
-    helpBoxHeight = SCREEN_HEIGHT * 0.60
+    helpBoxWidth = (SCREEN_WIDTH * 0.75)
+    helpBoxHeight = (SCREEN_HEIGHT * 0.60)
     helpBoxLocX = SCREEN_WIDTH/2
     helpBoxLocY = SCREEN_HEIGHT*0.4
     self.helpBoxLoc = helpBoxLocX, helpBoxLocY
@@ -708,7 +756,7 @@ class HelpScene(Scene):
     self.helpLabelLoc = helpLabelLocX, helpLabelLocY
 
     # Location for page number
-    pageNumberLoc = (helpBoxLocX + (helpBoxWidth/2)) - 28, (helpBoxLocY + (helpBoxHeight/2)) - 18
+    pageNumberLoc = (helpBoxLocX + (helpBoxWidth/2)) - 36, (helpBoxLocY + (helpBoxHeight/2)) - 22
 
     # Constants for the back button
     backButtonWidth = SCREEN_WIDTH/3
@@ -740,7 +788,7 @@ class HelpScene(Scene):
       # Draw the help box and label
       helpBox = Box(self.screen, helpBoxWidth, helpBoxHeight, WHITE)
       helpBox.drawByCenter(self.helpBoxLoc)
-      helpBox.outline(color=BLACK)
+      helpBox.outline(color=BLACK, padding=(0, 0))
 
       # Draw the back button
       backBox = Box(self.screen, backButtonWidth, backButtonHeight, BLACK)

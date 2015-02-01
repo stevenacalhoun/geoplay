@@ -23,6 +23,10 @@ def main():
   pygame.font.init()
   sprites.prepareSprites()
 
+  # Show the splash screen
+  intro = scenes.IntroScene(screen)
+  intro.display()
+
   # Default difficulty is two, start on the main menu
   difficulty = 2
   nextScene = scenes.Scene.mainMenuScene
@@ -63,7 +67,7 @@ def main():
     # Time to quit
     elif nextScene == scenes.Scene.quit:
       running = False
-      
+
   pygame.quit()
 
 # Run our program
