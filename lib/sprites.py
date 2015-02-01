@@ -466,11 +466,36 @@ class RectangleRain(pygame.sprite.Sprite):
     self.rect.topleft = newLoc
 
 class NormalRectangleRain(RectangleRain):
+  def __init__(self, initialPosition):
+    RectangleRain.__init__(self, initialPosition)
+
+    # Set the animation images
+    self.normalImages = normalRectangleImages
+    self.image = self.normalImages[0]
+
+    # Keep up with the center point
+    self.initialPositionX, initailPositionY = initialPosition
+    sizeWidth, sizeHeight = self.rect.size
+    self.centerX = self.initialPositionX + (sizeWidth/2)
+
+    # Control the animation
+    self.frame = 0
+    self.frameCount = 0
+
+    # Startes of the animation
+    self.fadingOut = False
+    self.fadedOut = False
+    self.animateFade = False
+
+    # Flags and counter for help animation
+    self.doneAnimating = False
+
   def checkCollisions(self, platforms, mcSquare):
     # Check collisions with platforms
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
-        self.despawn()
+        self.fallingSpeed = 0
+        self.fadingOut = True
 
     # Check collisions with McSquare
     if self.rect.colliderect(mcSquare.rect):
@@ -484,6 +509,8 @@ class NormalRectangleRain(RectangleRain):
   def update(self):
     # Move the sprite and plan the next update
     self.move()
+    if self.fadingOut:
+      self.animate()
 
   def move(self):
     self.rect.y += self.fallingSpeed
@@ -494,19 +521,59 @@ class NormalRectangleRain(RectangleRain):
       self.image.fill(WHITE)
 
     # If it somehow gets off screen then despawn it
-    if self.rect.y > SCREEN_HEIGHT:
+    if self.rect.y > SCREEN_HEIGHT or self.fadedOut:
       self.despawn()
 
-  def animate():
-    # No animation for this type of rain currently
-    pass
+  def animate(self):
+    self.frameCount += 1
+    if self.frameCount >= 1:
+      self.frameCount = 0
 
+      # Final fram reached
+      if self.frame >= len(self.normalImages):
+        self.fadedOut = True
+        self.doneAnimating = True
+
+      else:
+        # Keep up with how big we just were
+        prevSizeWidth, prevSizeHeight = self.image.get_rect().size
+
+        # Change to the next frame
+        self.image = self.normalImages[self.frame]
+
+        # Change how big the collision box is
+        tempRect = self.image.get_rect()
+        self.rect.size = tempRect.size
+
+        # Reposition the rectangle to offse the new size
+        newSizeWidth, newSizeHeight = tempRect.size
+        heightDifference = prevSizeHeight - newSizeHeight
+        self.rect.x = self.centerX - (newSizeWidth/2)
+        self.rect.y = self.rect.y + heightDifference
+
+        self.frame += 1
   # Animation and movement for the help screen
   def helpAnimation(self):
-    # Continuously spawn a falling rectangle
-    self.rect.y += self.fallingSpeed * 0.5
-    if self.rect.y >= 500:
-      self.rect.y = (SCREEN_HEIGHT*0.33) - 60
+    fallingSpeed = GRAVITY * 0.3
+
+    # If we're not waiting or exploding then move the rectangle
+    if self.animateFade == False:
+      self.rect.y += fallingSpeed * 0.5
+
+      # If we hit the bottom then start exploding
+      if self.rect.y >= 500:
+        self.animateFade = True
+
+    #Start animating at the bottom, move the rectangle to the top when it's done exploding
+    elif self.doneAnimating == False:
+      self.animate()
+      if self.doneAnimating == True:
+        self.animateFade = False
+        self.doneAnimating = False
+        self.rect.x = self.initialPositionX
+        self.rect.y = (SCREEN_HEIGHT*0.33) - 60
+        self.image = self.normalImages[0]
+        self.frame = 0
 
 class BounceRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
@@ -906,7 +973,7 @@ class Triangle(pygame.sprite.Sprite):
 
   def animate(self):
     self.frameCount += 1
-    if self.frameCount >= 1:
+    if self.frameCount >= 10:
       self.frameCount = 0
 
       # Final fram reached
@@ -926,6 +993,17 @@ class Triangle(pygame.sprite.Sprite):
     topPointX, topPointY = self.topPoint
     self.rect.x = topPointX - width/2
     self.rect.y = topPointY
+
+  def helpAnimation(self):
+    self.frameCount += 1
+    if self.frameCount >= 10:
+      self.frameCount = 0
+
+      if self.frame >= len(self.hoverImages):
+        self.frame = 0
+
+      self.image = self.hoverImages[self.frame]
+      self.frame += 1
 
 # Power up class
 class PowerUp(pygame.sprite.Sprite):
@@ -978,7 +1056,7 @@ class PowerUp(pygame.sprite.Sprite):
 
   def animate(self):
     self.frameCount += 1
-    if self.frameCount >= 1:
+    if self.frameCount >= 10:
       self.frameCount = 0
 
       # Final fram reached
@@ -998,8 +1076,22 @@ class PowerUp(pygame.sprite.Sprite):
     self.topPoint = newTopPoint
     self.rect.topleft = (self.points[1][0], self.points[2][1])
 
+  def helpAnimation(self):
+    self.frameCount += 1
+    if self.frameCount >= 10:
+      self.frameCount = 0
+
+      if self.frame >= len(self.hoverImages):
+        self.frame = 0
+
+      self.image = self.hoverImages[self.frame]
+      self.frame += 1
+
 def prepareSprites():
   global normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
+
+  # Normal Rectangle
+  normalRectangleImages = getImages("images/sprites-individ/rect-pink", 4, 3)
 
   # Exploding Rectangle
   explodingRectangleImages = getImages("images/sprites-individ/rect-blue", 7, 3)
@@ -1014,15 +1106,15 @@ def prepareTriangleSprites(scale):
   global triangleImages
 
   # Triangle
-  triangleImages = getImages("images/sprites-individ/triangle", 5, scale)
+  triangleImages = getImages("images/sprites-individ/triangle", 4, scale)
 
 def preparePowerUpSprites(scale):
   global powerUpTimeImages, powerUpLifeImages, powerUpShieldImages
 
   # Power ups
-  powerUpTimeImages = getImages("images/sprites-individ/hexagon", 4, scale)
-  powerUpLifeImages = getImages("images/sprites-individ/hexagon", 4, scale)
-  powerUpShieldImages = getImages("images/sprites-individ/hexagon", 4, scale)
+  powerUpTimeImages = getImages("images/sprites-individ/hourglass", 4, scale)
+  powerUpLifeImages = getImages("images/sprites-individ/heart", 4, scale)
+  powerUpShieldImages = getImages("images/sprites-individ/shield", 4, scale)
 
 def getImages(baseName, totalImages, scaleFactor):
   images = []
