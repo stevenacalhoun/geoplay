@@ -69,12 +69,12 @@ class Level(object):
     numColumns = self.countColumns()
 
     # Scale the triangle and powerup sprites based on the size of the level
-    prepareTriangleSprites(int(30/numRows))
-    preparePowerUpSprites(int(30/numRows))
+    prepareTriangleSprites(30.0/numRows)
+    preparePowerUpSprites(30.0/numRows)
 
     # Tile width and height based on the number of columns and rows
     self.tileWidth = SCREEN_WIDTH/numColumns
-    self.tileHeight = (SCREEN_HEIGHT-HUD_HEIGHT)/numRows
+    self.tileHeight = (SCREEN_HEIGHT-HUD_HEIGHT-GROUND_HEIGHT)/numRows
 
     # Since the tileHeight is a rounded down integer then it leaves this weird gap at the bottom
     self.bottomGap = SCREEN_HEIGHT - (HUD_HEIGHT + (numRows*self.tileHeight))
@@ -174,8 +174,8 @@ class Level(object):
       currentYLoc += self.tileHeight
       currentXLoc = 0
 
-    # Create any platform we were still building at the end, which will be the ground so add the weird gap at the bottom
-    platformLocs.append([platformLoc, (platformWidth+self.tileWidth, self.tileHeight+self.bottomGap)])
+    # Generate the ground at the end
+    platformLocs.append([platformLoc, (platformWidth, self.tileHeight)])
 
     # Return the platform locations and starting location
     return platformLocs, triangleLocs, powerUpLocs, startingLoc
@@ -266,6 +266,7 @@ class Level_01(Level):
     "_ _ _ _ _ _ _ _ _ _ _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _",
     "_ _ _ _ _ _ T _ _ _ _ _",
     "_ _ _ _ _ _ P _ _ _ _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _",
@@ -275,8 +276,8 @@ class Level_01(Level):
     "_ _ _ _ _ _ _ _ _ _ _ _",
     "_ _ _ _ _ _ _ _ _ S _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _",
-    "_ T _ U _ T _ _ _ T _ _",
-    "P p p p p p p p p p p p"]
+    "_ _ _ _ _ _ _ _ _ _ _ _",
+    "_ T _ U _ T _ _ _ T _ _"]
 
     self.caption = "Just warming up"
 
@@ -304,10 +305,10 @@ class Level_02(Level):
     "_ _ T t _ _ _ _ T t _ _ T t _ _ _ _ _ _ _ _ _ _ T t _ _ T t _ _ T t _ _",
     "_ _ P p _ _ _ _ P p _ _ P p _ _ _ _ _ _ _ _ _ _ P p _ _ P p _ _ P p _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
-    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ S _ _",
     "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
-    "_ T _ _ _ T _ _ _ T _ _ _ T _ U _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _",
-    "P p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p p"]
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _",
+    "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ S _ _",
+    "_ T _ _ _ T _ _ _ T _ _ _ T _ U _ T _ _ _ T _ _ _ T _ _ _ T _ _ _ T _ _"]
 
     self.caption = "Try this"
 

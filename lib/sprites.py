@@ -47,24 +47,24 @@ class Mcsquare(pygame.sprite.Sprite):
     self.land_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     # Running right images
-    self.runningRightImages = getImages("images/sprites-individ/run-right", 8, int(height/26.5))
+    self.runningRightImages = getImages("images/sprites-individ/run-right", 8, height/26.5)
 
     # Running left images
-    self.runningLeftImages = getImages("images/sprites-individ/run-left", 8, int(height/26.5))
+    self.runningLeftImages = getImages("images/sprites-individ/run-left", 8, height/26.5)
 
     # Standing right images
-    self.standingRightImages = getImages("images/sprites-individ/stand-right", 4, int(height/26.5))
+    self.standingRightImages = getImages("images/sprites-individ/stand-right", 4, height/26.5)
 
     # Standing left images
-    self.standingLeftImages = getImages("images/sprites-individ/stand-left", 4, int(height/26.5))
+    self.standingLeftImages = getImages("images/sprites-individ/stand-left", 4, height/26.5)
 
     # Jumping right images
-    fullJumpingRightImages = getImages("images/sprites-individ/jump-right", 6, int(height/26.5))
+    fullJumpingRightImages = getImages("images/sprites-individ/jump-right", 6, height/26.5)
     self.jumpingRightImages= fullJumpingRightImages[0:2]
     self.fallingRightImages= fullJumpingRightImages[3:6]
 
     # Jumping left images
-    fullJumpingLeftImages = getImages("images/sprites-individ/jump-left", 6, int(height/26.5))
+    fullJumpingLeftImages = getImages("images/sprites-individ/jump-left", 6, height/26.5)
     self.jumpingLeftImages= fullJumpingLeftImages[0:2]
     self.fallingLeftImages= fullJumpingLeftImages[3:6]
 
@@ -392,6 +392,28 @@ class Platform(pygame.sprite.Sprite):
     # Simple rectangular image
     self.image = pygame.Surface(size)
     self.image.fill(BLACK)
+
+    self.screen = screen
+
+    # Position the platform by the passed in value
+    self.rect = self.image.get_rect()
+    self.rect.topleft = position
+
+  def update(self):
+    # Platforms are currently stationary
+    pass
+
+# Ground class
+class Ground(pygame.sprite.Sprite):
+  # Initializer
+  def __init__(self, screen, position, size):
+    pygame.sprite.Sprite.__init__(self)
+
+    self.width, self.height = size
+
+    # Simple rectangular image
+    self.image = pygame.Surface(size)
+    self.image.fill(GREEN)
 
     self.screen = screen
 
@@ -997,7 +1019,7 @@ def getImages(baseName, totalImages, scaleFactor):
     rawImage = pygame.image.load(baseName + str(imageNum) + ".png").convert()
     rawImageWidth, rawImageHeight = rawImage.get_rect().size
 
-    rawImage = pygame.transform.scale(rawImage, (rawImageWidth*scaleFactor, rawImageHeight*scaleFactor))
+    rawImage = pygame.transform.scale(rawImage, (int(rawImageWidth*scaleFactor), int(rawImageHeight*scaleFactor)))
 
     image = rawImage
 

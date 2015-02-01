@@ -244,6 +244,7 @@ class LevelScene(Scene):
 
     # Generate all the sprites for the level
     self.generateSprites()
+    self.generateGround()
 
     # Keep up with when we need to draw a new rectangle rain
     self.rectangleCounter = 0
@@ -278,6 +279,7 @@ class LevelScene(Scene):
           # Regenerate all the new locations and sprites
           self.platformParams, self.triangleLocs, self.powerUpLocs, self.startingLoc = self.level.generateLevel()
           self.generateSprites()
+          self.generateGround()
 
       else:
         self.displayPauseInfo()
@@ -509,6 +511,14 @@ class LevelScene(Scene):
         hit = rectangle.checkCollisions(self.platforms, self.mcSquare)
         if hit:
           self.HUD.removeLife()
+
+  def generateGround(self):
+    numTiles = SCREEN_WIDTH/GROUND_TILE_WIDTH
+
+    for tileNum in range(0, numTiles):
+      groundPiece = Ground(self.screen, (GROUND_TILE_WIDTH*tileNum, (SCREEN_HEIGHT - GROUND_HEIGHT)), (GROUND_TILE_WIDTH, GROUND_HEIGHT))
+      self.platformSpriteGroup.add(groundPiece)
+      self.platforms.append(groundPiece)
 
   # Redraws all the current sprites
   def draw(self):
