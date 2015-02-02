@@ -418,14 +418,24 @@ class Platform(pygame.sprite.Sprite):
 # Ground class
 class Ground(pygame.sprite.Sprite):
   # Initializer
-  def __init__(self, screen, position, size):
+  def __init__(self, screen, position, size, groundType):
     pygame.sprite.Sprite.__init__(self)
 
     self.width, self.height = size
 
     # Simple rectangular image
-    self.image = pygame.Surface(size)
-    self.image.fill(GREEN)
+    if groundType == 0:
+      rawImage = pygame.image.load("images/sprites-individ/grass1.png").convert()
+      self.image = pygame.transform.scale2x(rawImage)
+      # self.image = pygame.Surface(size)
+    elif groundType == 1:
+      rawImage = pygame.image.load("images/sprites-individ/grass2.png").convert()
+      self.image = pygame.transform.scale2x(rawImage)
+      # self.image = pygame.Surface(size)
+    elif groundType == 2:
+      rawImage = pygame.image.load("images/sprites-individ/grass3.png").convert()
+      self.image = pygame.transform.scale2x(rawImage)
+      # self.image = pygame.Surface(size)
 
     self.screen = screen
 
@@ -468,7 +478,7 @@ class RectangleRain(pygame.sprite.Sprite):
 class NormalRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
-    
+
     # Sound
     self.normalRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
@@ -582,7 +592,7 @@ class NormalRectangleRain(RectangleRain):
 class BounceRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
-    
+
     self.bounceRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     self.bouncingImages = bouncingRectangleImages
@@ -716,7 +726,7 @@ class BounceRectangleRain(RectangleRain):
 class ExplodingRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
-    
+
     # Sound
     self.explodingRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
@@ -830,7 +840,7 @@ class ExplodingRectangleRain(RectangleRain):
 class PuddleRectangleRain(RectangleRain):
   def __init__(self, initialPosition):
     RectangleRain.__init__(self, initialPosition)
-    
+
     # Sound
     self.puddleRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 

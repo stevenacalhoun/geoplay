@@ -74,11 +74,11 @@ class IntroScene(Scene):
 class MainMenu(Scene):
   def __init__(self, screen):
     Scene.__init__(self, screen)
-    
+
     # Set sounds
     self.changeSelection_sound = pygame.mixer.Sound("sounds/Bump.ogg")
     self.confirm_sound = pygame.mixer.Sound("sounds/Bump.ogg")
-    
+
     # Show some rectangles falling down in the background
     self.rectangleCounter = 75
     self.rectangleSpriteGroup = pygame.sprite.Group()
@@ -269,7 +269,7 @@ class HUD():
 class LevelScene(Scene):
   def __init__(self, screen):
     Scene.__init__(self, screen)
-    
+
     # Sounds
     self.triangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
     self.hurt_sound = pygame.mixer.Sound("sounds/Bump.ogg")
@@ -578,8 +578,8 @@ class LevelScene(Scene):
   def generateGround(self):
     numTiles = int(SCREEN_WIDTH/GROUND_TILE_WIDTH)
 
-    for tileNum in range(0, numTiles):
-      groundPiece = Ground(self.screen, (GROUND_TILE_WIDTH*tileNum, (SCREEN_HEIGHT - GROUND_HEIGHT)), (GROUND_TILE_WIDTH, GROUND_HEIGHT))
+    for tileNum in range(0, 12):
+      groundPiece = Ground(self.screen, (GROUND_TILE_WIDTH*tileNum, (SCREEN_HEIGHT - GROUND_HEIGHT)), (GROUND_TILE_WIDTH, GROUND_HEIGHT), tileNum%3)
       self.platformSpriteGroup.add(groundPiece)
       self.platforms.append(groundPiece)
 
@@ -683,10 +683,10 @@ class LevelScene(Scene):
 class DifficultyMenu(Scene):
   def __init__(self, screen):
     Scene.__init__(self, screen)
-    
+
     # Sounds
     self.changeSelection_sound = pygame.mixer.Sound("sounds/Bump.ogg")
-    self.confirm_sound = pygame.mixer.Sound("sounds/Bump.ogg")    
+    self.confirm_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
   def display(self):
     # Constants for the boxes
