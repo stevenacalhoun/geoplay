@@ -100,18 +100,18 @@ class MainMenu(Scene):
         # Go down one option
         if event.key == pygame.K_DOWN:
           self.menuSelection += 1
-          self.changeSelection_sound.play()
+          channel1 = self.changeSelection_sound.play()
           if self.menuSelection >= 5:
             self.menuSelection = Scene.levelScene
         # Go up one option
         if event.key == pygame.K_UP:
           self.menuSelection -= 1
-          self.changeSelection_sound.play()
+          channela = self.changeSelection_sound.play()
           if self.menuSelection < Scene.levelScene:
             self.menuSelection = Scene.quit
         # Select the current option
         if event.key == pygame.K_RETURN:
-          self.confirm_sound.play()
+          channelb = self.confirm_sound.play()
           selectionMade = True
           return self.menuSelection
 
@@ -335,7 +335,7 @@ class LevelScene(Scene):
 
           # Show a transition screen
           self.showLevelTransitionScreen()
-          self.victory_sound.play()
+          channela = self.victory_sound.play()
 
           # Regenerate all the new locations and sprites
           self.platformParams, self.triangleLocs, self.powerUpLocs, self.startingLoc = self.level.generateLevel()
@@ -433,7 +433,7 @@ class LevelScene(Scene):
     # Keep up with where this triangle just was
     self.oldTriLoc = triangle.topPoint
     self.triangleSpriteGroup.remove(triangle)
-    self.triangle_sound.play()
+    channela = self.triangle_sound.play()
 
   # Hand key input
   def handleKeyEvent(self, event):
@@ -572,7 +572,7 @@ class LevelScene(Scene):
     for rectangle in self.rectangleSpriteGroup:
         hit = rectangle.checkCollisions(self.platforms, self.mcSquare)
         if hit:
-          self.hurt_sound.play()
+          channelb = self.hurt_sound.play()
           self.HUD.removeLife()
 
   def generateGround(self):
@@ -711,16 +711,16 @@ class DifficultyMenu(Scene):
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_DOWN:
           menuSelection += 1
-          self.changeSelection_sound.play()
+          channela = self.changeSelection_sound.play()
           if menuSelection > 3:
             menuSelection = 1
         if event.key == pygame.K_UP:
           menuSelection -= 1
-          self.changeSelection_sound.play()
+          channela = self.changeSelection_sound.play()
           if menuSelection < 0:
             menuSelection = 2
         if event.key == pygame.K_RETURN:
-          self.confirm_sound.play()
+          channelb = self.confirm_sound.play()
           self.display = 3
           self.difficulty = menuSelection
           selectionMade = True
