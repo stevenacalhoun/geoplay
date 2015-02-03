@@ -507,8 +507,10 @@ class NormalRectangleRain(RectangleRain):
     # Check collisions with platforms
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
-        self.fallingSpeed = 0
         self.normalRectangle_sound.play()
+        width, height = self.rect.size
+        self.rect.y = platform.rect.y - height
+        self.fallingSpeed = 0
         self.fadingOut = True
 
     # Check collisions with McSquare
@@ -625,6 +627,8 @@ class BounceRectangleRain(RectangleRain):
     for platform in platforms:
       if self.rect.colliderect(platform.rect) and self.goingBackUp == False:
         self.bounceRectangle_sound.play()
+        width, height = self.rect.size
+        self.rect.y = platform.rect.y - height
         self.fallingSpeed = 0
         self.goingBackUp = True
         self.animateBounce = True
@@ -761,6 +765,8 @@ class ExplodingRectangleRain(RectangleRain):
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         self.explodingRectangle_sound.play()
+        width, height = self.rect.size
+        self.rect.y = platform.rect.y - height
         self.fallingSpeed = 0
         self.exploding = True
 
@@ -883,6 +889,8 @@ class PuddleRectangleRain(RectangleRain):
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         self.puddleRectangle_sound.play()
+        width, height = self.rect.size
+        self.rect.y = platform.rect.y - height
         self.fallingSpeed = 0
         self.puddling = True
 
@@ -985,7 +993,7 @@ class Triangle(pygame.sprite.Sprite):
     width, height = self.rect.size
     topPointX, topPointY =  topPoint
     self.rect.x = topPointX - width/2
-    self.rect.y = topPointY
+    self.rect.y = topPointY - height/4
 
     # Currently not captured
     self.captured = False
@@ -1066,7 +1074,7 @@ class PowerUp(pygame.sprite.Sprite):
     width, height = self.rect.size
     topPointX, topPointY =  topPoint
     self.rect.x = topPointX - width/2
-    self.rect.y = topPointY
+    self.rect.y = topPointY - height/4
 
     # Currently not captured or expired
     self.captured = False
