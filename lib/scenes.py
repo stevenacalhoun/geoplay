@@ -79,6 +79,8 @@ class MainMenu(Scene):
     self.changeSelection_sound = pygame.mixer.Sound("sounds/Bump.ogg")
     self.confirm_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
+    prepareRectangleSprites(30.0/10)
+
     # Show some rectangles falling down in the background
     self.rectangleCounter = 75
     self.rectangleSpriteGroup = pygame.sprite.Group()

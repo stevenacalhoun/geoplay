@@ -455,13 +455,6 @@ class RectangleRain(pygame.sprite.Sprite):
   def __init__(self, initialPosition):
     pygame.sprite.Sprite.__init__(self)
 
-    # Draw a simple black rectangle
-    self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
-    self.image.fill(BLACK)
-
-    self.rect = self.image.get_rect()
-    self.rect.topleft = initialPosition
-
     # Set it to fall and make it alive
     self.fallingSpeed = GRAVITY * .3
     self.alive = True
@@ -487,6 +480,9 @@ class NormalRectangleRain(RectangleRain):
     # Set the animation images
     self.normalImages = normalRectangleImages
     self.image = self.normalImages[0]
+
+    self.rect = self.image.get_rect()
+    self.rect.topleft = initialPosition
 
     # Keep up with the center point
     self.initialPositionX, initailPositionY = initialPosition
@@ -601,6 +597,9 @@ class BounceRectangleRain(RectangleRain):
 
     self.bouncingImages = bouncingRectangleImages
     self.image = self.bouncingImages[0]
+
+    self.rect = self.image.get_rect()
+    self.rect.topleft = initialPosition
 
     # Keep up with the center point
     self.initialPositionX, initailPositionY = initialPosition
@@ -740,6 +739,9 @@ class ExplodingRectangleRain(RectangleRain):
     self.explodingImages = explodingRectangleImages
     self.image = self.explodingImages[0]
 
+    self.rect = self.image.get_rect()
+    self.rect.topleft = initialPosition
+
     # Keep up with the center point
     self.initialPositionX, initailPositionY = initialPosition
     sizeWidth, sizeHeight = self.rect.size
@@ -854,6 +856,9 @@ class PuddleRectangleRain(RectangleRain):
 
     self.puddleImages = puddleRectangleImages
     self.image = self.puddleImages[0]
+
+    self.rect = self.image.get_rect()
+    self.rect.topleft = initialPosition
 
     self.puddling = False
     self.puddled = False
@@ -1122,20 +1127,20 @@ class PowerUp(pygame.sprite.Sprite):
       self.image = self.hoverImages[self.frame]
       self.frame += 1
 
-def prepareSprites():
+def prepareRectangleSprites(scale):
   global normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
 
   # Normal Rectangle
-  normalRectangleImages = getImages("images/sprites-individ/rect-pink", 4, 3)
+  normalRectangleImages = getImages("images/sprites-individ/rect-pink", 4, scale)
 
   # Exploding Rectangle
-  explodingRectangleImages = getImages("images/sprites-individ/rect-blue", 7, 3)
+  explodingRectangleImages = getImages("images/sprites-individ/rect-blue", 7, scale)
 
   # Bouncing Rectangle
-  bouncingRectangleImages = getImages("images/sprites-individ/rect-purple", 8, 3)
+  bouncingRectangleImages = getImages("images/sprites-individ/rect-purple", 8, scale)
 
   # Puddle Rectangle
-  puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, 3)
+  puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, scale)
 
 def prepareTriangleSprites(scale):
   global triangleImages

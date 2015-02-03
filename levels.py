@@ -72,6 +72,7 @@ class Level(object):
     prepareTriangleSprites(30.0/numRows)
     preparePowerUpSprites(30.0/numRows)
     preparePlatformSprites(30.0/numRows)
+    prepareRectangleSprites(48.0/numRows)
 
     # Tile width and height based on the number of columns and rows
     self.tileWidth = SCREEN_WIDTH/numColumns
@@ -139,18 +140,18 @@ class Level(object):
             # Still looking for it
             else:
               currentSearch += 1
-		
+
 		# P stands for platform
         if tile == "P":
           platformLoc = currentXLoc, currentYLoc
-		
+
           if row[tileNum+2] == "p":
             # Left edge platform tile
             platformLocs.append([platformLoc, (self.tileWidth, self.tileHeight), 0])
           else:
             # Single floating platform
             platformLocs.append([platformLoc, (self.tileWidth, self.tileHeight), 3])
-		
+
 		# p stands for an extending platform
         if tile == "p":
           platformLoc = currentXLoc, currentYLoc
@@ -158,7 +159,7 @@ class Level(object):
           # Middle platform tile
           if row[tileNum+2] == "p":
             platformLocs.append([platformLoc, (self.tileWidth, self.tileHeight), 1])
-				
+
           # Right edge platform tile
           else:
             platformLocs.append([platformLoc, (self.tileWidth, self.tileHeight), 2])

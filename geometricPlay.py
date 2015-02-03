@@ -21,7 +21,6 @@ def main():
   # Initialize the screen
   pygame.init()
   pygame.font.init()
-  sprites.prepareSprites()
 
   # Show the splash screen
   intro = scenes.IntroScene(screen)
