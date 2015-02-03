@@ -402,7 +402,7 @@ class Platform(pygame.sprite.Sprite):
 
     self.width, self.height = size
     self.platformImages = platformImages
-		
+
     # Generate Cloud tile
     self.image = self.platformImages[platformType]
 
@@ -411,6 +411,7 @@ class Platform(pygame.sprite.Sprite):
     # Position the platform by the passed in value
     self.rect = self.image.get_rect()
     self.rect.topleft = position
+    self.width, self.height = self.rect.size
 
   def update(self):
     # Platforms are currently stationary
@@ -1132,7 +1133,7 @@ def prepareSprites():
 
   # Bouncing Rectangle
   bouncingRectangleImages = getImages("images/sprites-individ/rect-purple", 8, 3)
-  
+
   # Puddle Rectangle
   puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, 3)
 
@@ -1152,7 +1153,7 @@ def preparePowerUpSprites(scale):
 
 def preparePlatformSprites(scale):
   global platformImages
-	
+
   # Cloud tiles for platforms
   platformImages = getImages("images/sprites-individ/cloud", 4, scale)
 
