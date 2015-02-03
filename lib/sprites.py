@@ -23,6 +23,7 @@ POWERUP_EXPIRATION_TIME = 300
 # Shield duration
 SHIELD_DURATION = 100
 
+platformImages = []
 triangleImages = []
 powerUpTimeImages = []
 powerUpLifeImages = []
@@ -396,20 +397,21 @@ class Mcsquare(pygame.sprite.Sprite):
 # Platform class
 class Platform(pygame.sprite.Sprite):
   # Initializer
-  def __init__(self, screen, position, size):
+  def __init__(self, screen, position, size, platformType):
     pygame.sprite.Sprite.__init__(self)
 
     self.width, self.height = size
+    self.platformImages = platformImages
 
-    # Simple rectangular image
-    self.image = pygame.Surface(size)
-    self.image.fill(BLACK)
+    # Generate Cloud tile
+    self.image = self.platformImages[platformType]
 
     self.screen = screen
 
     # Position the platform by the passed in value
     self.rect = self.image.get_rect()
     self.rect.topleft = position
+    self.width, self.height = self.rect.size
 
   def update(self):
     # Platforms are currently stationary
@@ -453,13 +455,6 @@ class RectangleRain(pygame.sprite.Sprite):
   def __init__(self, initialPosition):
     pygame.sprite.Sprite.__init__(self)
 
-    # Draw a simple black rectangle
-    self.image = pygame.Surface((RECTANGLE_WIDTH, RECTANGLE_HEIGHT))
-    self.image.fill(BLACK)
-
-    self.rect = self.image.get_rect()
-    self.rect.topleft = initialPosition
-
     # Set it to fall and make it alive
     self.fallingSpeed = GRAVITY * .3
     self.alive = True
@@ -476,7 +471,7 @@ class RectangleRain(pygame.sprite.Sprite):
     self.rect.topleft = newLoc
 
 class NormalRectangleRain(RectangleRain):
-  def __init__(self, initialPosition):
+  def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
@@ -484,7 +479,14 @@ class NormalRectangleRain(RectangleRain):
 
     # Set the animation images
     self.normalImages = normalRectangleImages
-    self.image = self.normalImages[0]
+
+    if image == None:
+      self.image = self.normalImages[0]
+    else:
+      self.image = image
+
+    self.rect = self.image.get_rect()
+    self.rect.topleft = initialPosition
 
     # Keep up with the center point
     self.initialPositionX, initailPositionY = initialPosition
@@ -507,8 +509,10 @@ class NormalRectangleRain(RectangleRain):
     # Check collisions with platforms
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
-        self.fallingSpeed = 0
         self.normalRectangle_sound.play()
+        width, height = self.rect.size
+        self.rect.y = platform.rect.y - height
+        self.fallingSpeed = 0
         self.fadingOut = True
 
     # Check collisions with McSquare
@@ -575,7 +579,7 @@ class NormalRectangleRain(RectangleRain):
       self.rect.y += fallingSpeed * 0.5
 
       # If we hit the bottom then start exploding
-      if self.rect.y >= 500:
+      if self.rect.y >= 450:
         self.animateFade = True
 
     #Start animating at the bottom, move the rectangle to the top when it's done exploding
@@ -590,13 +594,20 @@ class NormalRectangleRain(RectangleRain):
         self.frame = 0
 
 class BounceRectangleRain(RectangleRain):
-  def __init__(self, initialPosition):
+  def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
     self.bounceRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     self.bouncingImages = bouncingRectangleImages
-    self.image = self.bouncingImages[0]
+
+    if image == None:
+      self.image = self.bouncingImages[0]
+    else:
+      self.image = image
+
+    self.rect = self.image.get_rect()
+    self.rect.topleft = initialPosition
 
     # Keep up with the center point
     self.initialPositionX, initailPositionY = initialPosition
@@ -625,6 +636,8 @@ class BounceRectangleRain(RectangleRain):
     for platform in platforms:
       if self.rect.colliderect(platform.rect) and self.goingBackUp == False:
         self.bounceRectangle_sound.play()
+        width, height = self.rect.size
+        self.rect.y = platform.rect.y - height
         self.fallingSpeed = 0
         self.goingBackUp = True
         self.animateBounce = True
@@ -650,7 +663,7 @@ class BounceRectangleRain(RectangleRain):
         self.rect.y -= fallingSpeed * 0.5
 
       # If we hit the bottom then bounce back up
-      if self.rect.y >= 500:
+      if self.rect.y >= 450:
         self.goingBackUp = True
         self.animateBounce = True
 
@@ -658,12 +671,13 @@ class BounceRectangleRain(RectangleRain):
       if self.rect.y <= ((SCREEN_HEIGHT*0.4)  - 60):
         self.goingBackUp = False
         self.waiting = True
+        self.doneAnimating = False
 
     # Start animating if we're at the bottom, flag that we're finished animating when the animation is done
-    elif self.doneAnimating == False and self.waiting == False:
+    elif self.animateBounce:
       self.animate()
       if self.doneAnimating == True:
-        self.doneAnimating = False
+        self.animateBounce = False
         self.rect.y -= 7
         self.goingBackUp = True
 
@@ -724,7 +738,7 @@ class BounceRectangleRain(RectangleRain):
         self.frame += 1
 
 class ExplodingRectangleRain(RectangleRain):
-  def __init__(self, initialPosition):
+  def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
@@ -732,7 +746,14 @@ class ExplodingRectangleRain(RectangleRain):
 
     # Set the animation images
     self.explodingImages = explodingRectangleImages
-    self.image = self.explodingImages[0]
+
+    if image == None:
+      self.image = self.explodingImages[0]
+    else:
+      self.image = image
+
+    self.rect = self.image.get_rect()
+    self.rect.topleft = initialPosition
 
     # Keep up with the center point
     self.initialPositionX, initailPositionY = initialPosition
@@ -761,6 +782,8 @@ class ExplodingRectangleRain(RectangleRain):
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         self.explodingRectangle_sound.play()
+        width, height = self.rect.size
+        self.rect.y = platform.rect.y - height
         self.fallingSpeed = 0
         self.exploding = True
 
@@ -823,7 +846,7 @@ class ExplodingRectangleRain(RectangleRain):
       self.rect.y += fallingSpeed * 0.5
 
       # If we hit the bottom then start exploding
-      if self.rect.y >= 500:
+      if self.rect.y >= 450:
         self.animateExplosion = True
 
     #Start animating at the bottom, move the rectangle to the top when it's done exploding
@@ -838,14 +861,21 @@ class ExplodingRectangleRain(RectangleRain):
         self.frame = 0
 
 class PuddleRectangleRain(RectangleRain):
-  def __init__(self, initialPosition):
+  def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
     self.puddleRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     self.puddleImages = puddleRectangleImages
-    self.image = self.puddleImages[0]
+
+    if image == None:
+      self.image = self.puddleImages[0]
+    else:
+      self.image = image
+
+    self.rect = self.image.get_rect()
+    self.rect.topleft = initialPosition
 
     self.puddling = False
     self.puddled = False
@@ -883,6 +913,8 @@ class PuddleRectangleRain(RectangleRain):
     for platform in platforms:
       if self.rect.colliderect(platform.rect):
         self.puddleRectangle_sound.play()
+        width, height = self.rect.size
+        self.rect.y = platform.rect.y - height
         self.fallingSpeed = 0
         self.puddling = True
 
@@ -939,7 +971,7 @@ class PuddleRectangleRain(RectangleRain):
     if self.animatePuddle == False and self.puddled == False:
       self.rect.y += fallingSpeed * 0.5
 
-      if self.rect.y >= 500:
+      if self.rect.y >= 450:
         self.animatePuddle = True
 
     # At the bottom starting puddling
@@ -985,7 +1017,7 @@ class Triangle(pygame.sprite.Sprite):
     width, height = self.rect.size
     topPointX, topPointY =  topPoint
     self.rect.x = topPointX - width/2
-    self.rect.y = topPointY
+    self.rect.y = topPointY - height/4
 
     # Currently not captured
     self.captured = False
@@ -1066,7 +1098,7 @@ class PowerUp(pygame.sprite.Sprite):
     width, height = self.rect.size
     topPointX, topPointY =  topPoint
     self.rect.x = topPointX - width/2
-    self.rect.y = topPointY
+    self.rect.y = topPointY - height/4
 
     # Currently not captured or expired
     self.captured = False
@@ -1084,7 +1116,7 @@ class PowerUp(pygame.sprite.Sprite):
     if self.frameCount >= 10:
       self.frameCount = 0
 
-      # Final fram reached
+      # Final frame reached
       if self.frame >= len(self.hoverImages):
         self.frame = 0
 
@@ -1112,20 +1144,20 @@ class PowerUp(pygame.sprite.Sprite):
       self.image = self.hoverImages[self.frame]
       self.frame += 1
 
-def prepareSprites():
+def prepareRectangleSprites(scale):
   global normalRectangleImages, explodingRectangleImages, bouncingRectangleImages, puddleRectangleImages
 
   # Normal Rectangle
-  normalRectangleImages = getImages("images/sprites-individ/rect-pink", 4, 3)
+  normalRectangleImages = getImages("images/sprites-individ/rect-pink", 4, scale)
 
   # Exploding Rectangle
-  explodingRectangleImages = getImages("images/sprites-individ/rect-blue", 7, 3)
+  explodingRectangleImages = getImages("images/sprites-individ/rect-blue", 7, scale)
 
   # Bouncing Rectangle
-  bouncingRectangleImages = getImages("images/sprites-individ/rect-purple", 8, 3)
+  bouncingRectangleImages = getImages("images/sprites-individ/rect-purple", 8, scale)
 
   # Puddle Rectangle
-  puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, 3)
+  puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, scale)
 
 def prepareTriangleSprites(scale):
   global triangleImages
@@ -1141,6 +1173,12 @@ def preparePowerUpSprites(scale):
   powerUpLifeImages = getImages("images/sprites-individ/heart", 4, scale)
   powerUpShieldImages = getImages("images/sprites-individ/shield", 4, scale)
 
+def preparePlatformSprites(scale):
+  global platformImages
+
+  # Cloud tiles for platforms
+  platformImages = getImages("images/sprites-individ/cloud", 4, scale)
+
 def getImages(baseName, totalImages, scaleFactor):
   images = []
 
@@ -1152,7 +1190,7 @@ def getImages(baseName, totalImages, scaleFactor):
 
     image = rawImage
 
-    transColor = image.get_at((0,0))
+    transColor = (255, 0, 0)
     image.set_colorkey(transColor)
     images.append(image)
 
