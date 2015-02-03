@@ -471,7 +471,7 @@ class RectangleRain(pygame.sprite.Sprite):
     self.rect.topleft = newLoc
 
 class NormalRectangleRain(RectangleRain):
-  def __init__(self, initialPosition):
+  def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
@@ -479,7 +479,11 @@ class NormalRectangleRain(RectangleRain):
 
     # Set the animation images
     self.normalImages = normalRectangleImages
-    self.image = self.normalImages[0]
+
+    if image == None:
+      self.image = self.normalImages[0]
+    else:
+      self.image = image
 
     self.rect = self.image.get_rect()
     self.rect.topleft = initialPosition
@@ -575,7 +579,7 @@ class NormalRectangleRain(RectangleRain):
       self.rect.y += fallingSpeed * 0.5
 
       # If we hit the bottom then start exploding
-      if self.rect.y >= 500:
+      if self.rect.y >= 450:
         self.animateFade = True
 
     #Start animating at the bottom, move the rectangle to the top when it's done exploding
@@ -590,13 +594,17 @@ class NormalRectangleRain(RectangleRain):
         self.frame = 0
 
 class BounceRectangleRain(RectangleRain):
-  def __init__(self, initialPosition):
+  def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
     self.bounceRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     self.bouncingImages = bouncingRectangleImages
-    self.image = self.bouncingImages[0]
+
+    if image == None:
+      self.image = self.bouncingImages[0]
+    else:
+      self.image = image
 
     self.rect = self.image.get_rect()
     self.rect.topleft = initialPosition
@@ -655,7 +663,7 @@ class BounceRectangleRain(RectangleRain):
         self.rect.y -= fallingSpeed * 0.5
 
       # If we hit the bottom then bounce back up
-      if self.rect.y >= 500:
+      if self.rect.y >= 450:
         self.goingBackUp = True
         self.animateBounce = True
 
@@ -663,12 +671,13 @@ class BounceRectangleRain(RectangleRain):
       if self.rect.y <= ((SCREEN_HEIGHT*0.4)  - 60):
         self.goingBackUp = False
         self.waiting = True
+        self.doneAnimating = False
 
     # Start animating if we're at the bottom, flag that we're finished animating when the animation is done
-    elif self.doneAnimating == False and self.waiting == False:
+    elif self.animateBounce:
       self.animate()
       if self.doneAnimating == True:
-        self.doneAnimating = False
+        self.animateBounce = False
         self.rect.y -= 7
         self.goingBackUp = True
 
@@ -729,7 +738,7 @@ class BounceRectangleRain(RectangleRain):
         self.frame += 1
 
 class ExplodingRectangleRain(RectangleRain):
-  def __init__(self, initialPosition):
+  def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
@@ -737,7 +746,11 @@ class ExplodingRectangleRain(RectangleRain):
 
     # Set the animation images
     self.explodingImages = explodingRectangleImages
-    self.image = self.explodingImages[0]
+
+    if image == None:
+      self.image = self.explodingImages[0]
+    else:
+      self.image = image
 
     self.rect = self.image.get_rect()
     self.rect.topleft = initialPosition
@@ -833,7 +846,7 @@ class ExplodingRectangleRain(RectangleRain):
       self.rect.y += fallingSpeed * 0.5
 
       # If we hit the bottom then start exploding
-      if self.rect.y >= 500:
+      if self.rect.y >= 450:
         self.animateExplosion = True
 
     #Start animating at the bottom, move the rectangle to the top when it's done exploding
@@ -848,14 +861,18 @@ class ExplodingRectangleRain(RectangleRain):
         self.frame = 0
 
 class PuddleRectangleRain(RectangleRain):
-  def __init__(self, initialPosition):
+  def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
     self.puddleRectangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
     self.puddleImages = puddleRectangleImages
-    self.image = self.puddleImages[0]
+
+    if image == None:
+      self.image = self.puddleImages[0]
+    else:
+      self.image = image
 
     self.rect = self.image.get_rect()
     self.rect.topleft = initialPosition
@@ -954,7 +971,7 @@ class PuddleRectangleRain(RectangleRain):
     if self.animatePuddle == False and self.puddled == False:
       self.rect.y += fallingSpeed * 0.5
 
-      if self.rect.y >= 500:
+      if self.rect.y >= 450:
         self.animatePuddle = True
 
     # At the bottom starting puddling

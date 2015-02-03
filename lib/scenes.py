@@ -306,6 +306,28 @@ class LevelScene(Scene):
     self.selectQuit = False
     self.returnToMain = False
 
+    transColor = (255, 0, 0)
+
+    rawImage = pygame.image.load("images/sprites-individ/rect-pink1.png").convert()
+    rawImageWidth, rawImageHeight = rawImage.get_rect().size
+    rawImage.set_colorkey(transColor)
+    self.normalImage = pygame.transform.scale(rawImage, (int(rawImageWidth*3), int(rawImageHeight*3)))
+
+    rawImage = pygame.image.load("images/sprites-individ/rect-purple1.png").convert()
+    rawImageWidth, rawImageHeight = rawImage.get_rect().size
+    rawImage.set_colorkey(transColor)
+    self.bounceImage = pygame.transform.scale(rawImage, (int(rawImageWidth*3), int(rawImageHeight*3)))
+
+    rawImage = pygame.image.load("images/sprites-individ/rect-blue1.png").convert()
+    rawImageWidth, rawImageHeight = rawImage.get_rect().size
+    rawImage.set_colorkey(transColor)
+    self.explodingImage = pygame.transform.scale(rawImage, (int(rawImageWidth*3), int(rawImageHeight*3)))
+
+    rawImage = pygame.image.load("images/sprites-individ/rect-green1.png").convert()
+    rawImageWidth, rawImageHeight = rawImage.get_rect().size
+    rawImage.set_colorkey(transColor)
+    self.puddleImage = pygame.transform.scale(rawImage, (int(rawImageWidth*3), int(rawImageHeight*3)))
+
   # Start the game
   def display(self):
     self.screen.fill(LIGHT_BLUE)
@@ -631,7 +653,7 @@ class LevelScene(Scene):
     # Normal
     normalX = pauseBoxX + 20 - (RECTANGLE_WIDTH*2)
     normalY = pauseBoxY - 175
-    normalRectangle = NormalRectangleRain((normalX, normalY))
+    normalRectangle = NormalRectangleRain((normalX, normalY), image=self.normalImage)
     normalRectangle.draw(self.screen)
     normalLabel = TextLine(self.screen, "Normal", color=BLACK, size=28)
     normalLabel._render()
@@ -640,7 +662,7 @@ class LevelScene(Scene):
     # Exploding
     explodingX = pauseBoxX + 20
     explodingY = pauseBoxY - 175
-    explodingRectangle = ExplodingRectangleRain((explodingX, explodingY))
+    explodingRectangle = ExplodingRectangleRain((explodingX, explodingY), image=self.explodingImage)
     explodingRectangle.draw(self.screen)
     explodingLabel = TextLine(self.screen, "Exploding", color=BLACK, size=28)
     explodingLabel.drawByTopLeft((explodingX + 50 + RECTANGLE_WIDTH, explodingY + (RECTANGLE_HEIGHT/2) - 12))
@@ -648,7 +670,7 @@ class LevelScene(Scene):
     # Bouncing
     bouncingX = pauseBoxX + 20 - (RECTANGLE_WIDTH*2)
     bouncingY = pauseBoxY - 25
-    bouncingRectangle = BounceRectangleRain((bouncingX, bouncingY))
+    bouncingRectangle = BounceRectangleRain((bouncingX, bouncingY), image=self.bounceImage)
     bouncingRectangle.draw(self.screen)
     bouncingLabel = TextLine(self.screen, "Bouncing", color=BLACK, size=28)
     bouncingLabel._render()
@@ -657,7 +679,7 @@ class LevelScene(Scene):
     # Puddle
     puddleX = pauseBoxX + 20
     puddleY = pauseBoxY - 25
-    puddleRectangle = PuddleRectangleRain((puddleX, puddleY))
+    puddleRectangle = PuddleRectangleRain((puddleX, puddleY), image=self.puddleImage)
     puddleRectangle.draw(self.screen)
     puddleLabel = TextLine(self.screen, "Puddle", color=BLACK, size=28)
     puddleLabel.drawByTopLeft((puddleX + 50 + RECTANGLE_WIDTH, puddleY + (RECTANGLE_HEIGHT/2) - 12))
@@ -804,10 +826,11 @@ class HelpScene(Scene):
 
     prepareTriangleSprites(5)
     preparePowerUpSprites(3)
+    prepareRectangleSprites(4)
 
     # Sprites for various help sheets
-    self.mcSquare = Mcsquare(self.screen, self.helpBoxLoc, 150, MCSQUARE_BASE_JUMP_SPEED)
-    self.triangle = Triangle((helpBoxLocX - 25, helpBoxLocY), 100)
+    self.mcSquare = Mcsquare(self.screen, (helpBoxLocX - 135, helpBoxLocY - 70), 125, MCSQUARE_BASE_JUMP_SPEED)
+    self.triangle = Triangle((helpBoxLocX, helpBoxLocY), 100)
     self.normalRectangle = NormalRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))
     self.explodingRectangle = ExplodingRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))
     self.bounceRectangle = BounceRectangleRain((helpBoxLocX - (RECTANGLE_WIDTH/2), helpBoxLocY - 60))
@@ -893,7 +916,6 @@ class HelpScene(Scene):
     helpLabel.drawByCenter((helpBoxX, helpBoxY - 80))
 
     # Show McSquare running around
-    self.mcSquare.reposition((helpBoxX - (self.mcSquare.width/2), helpBoxY + 60))
     self.mcSquare.animateRunningRight(override=True)
     self.mcSquare.draw(self.screen)
 
@@ -962,13 +984,13 @@ class HelpScene(Scene):
     helpLabel.drawByCenter((helpLabelX, helpLabelY - 80))
 
     helpTimeLabel = TextLine(self.screen, "Pauses the rain", color=BLACK, size=24)
-    helpTimeLabel.drawByTopLeft((helpBoxX - 20, helpBoxY - 115))
+    helpTimeLabel.drawByTopLeft((helpBoxX - 20, helpBoxY - 135))
 
     helpLifeLabel = TextLine(self.screen, "Gain an extra life", color=BLACK, size=24)
-    helpLifeLabel.drawByTopLeft((helpBoxX - 20, helpBoxY + 35))
+    helpLifeLabel.drawByTopLeft((helpBoxX - 20, helpBoxY + 15))
 
     helpShieldLabel = TextLine(self.screen, "Invincibility", color=BLACK, size=24)
-    helpShieldLabel.drawByTopLeft((helpBoxX - 20, helpBoxY + 185))
+    helpShieldLabel.drawByTopLeft((helpBoxX - 20, helpBoxY + 165))
 
 
     self.powerUpTime.helpAnimation()
