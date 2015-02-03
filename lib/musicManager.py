@@ -14,6 +14,8 @@ class musicManager():
         pygame.mixer.music.queue("music/7-Seventeen-Years.wav")
         pygame.mixer.music.queue("music/8-Desert-Eagle.wav")
         
+        pygame.mixer.music.set_volume(0.5)
+        
     def play(self):
         
-        pygame.mixer.music.play()
+        pygame.mixer.music.play(-1)

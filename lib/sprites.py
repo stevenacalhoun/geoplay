@@ -43,10 +43,10 @@ class Mcsquare(pygame.sprite.Sprite):
     spriteSheet = SpriteSheet("images/spritesheet.png")
 
     # McSquare sounds
-    self.jump_sound = pygame.mixer.Sound("sounds/mcSquareJump.wav")
-    self.hurt_sound = pygame.mixer.Sound("sounds/Bump.ogg")
-    self.land_sound = pygame.mixer.Sound("sounds/landing2.wav")
-    self.powerUp_sound = pygame.mixer.Sound("sounds/powerUpGrab.wav")
+    self.jump_sound = pygame.mixer.Sound("sounds/Jump10.wav")
+    self.hurt_sound = pygame.mixer.Sound("sounds/short damage.wav")
+    self.land_sound = pygame.mixer.Sound("sounds/short landing.wav")
+    self.powerUp_sound = pygame.mixer.Sound("sounds/short aquire item.wav")
 
     # Running right images
     self.runningRightImages = getImages("images/sprites-individ/run-right", 8, height/26.5)
@@ -478,7 +478,7 @@ class NormalRectangleRain(RectangleRain):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
-    self.normalRectangle_sound = pygame.mixer.Sound("sounds/vanishing rect.wav")
+    self.normalRectangle_sound = pygame.mixer.Sound("sounds/short vanishing.wav")
 
     # Set the animation images
     self.normalImages = normalRectangleImages
@@ -600,7 +600,7 @@ class BounceRectangleRain(RectangleRain):
   def __init__(self, initialPosition, image=None):
     RectangleRain.__init__(self, initialPosition)
 
-    self.bounceRectangle_sound = pygame.mixer.Sound("sounds/rectBounce.wav")
+    self.bounceRectangle_sound = pygame.mixer.Sound("sounds/short bounce.wav")
 
     self.bouncingImages = bouncingRectangleImages
 
@@ -745,7 +745,7 @@ class ExplodingRectangleRain(RectangleRain):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
-    self.explodingRectangle_sound = pygame.mixer.Sound("sounds/rectExplode.wav")
+    self.explodingRectangle_sound = pygame.mixer.Sound("sounds/short fragmenting.wav")
 
     # Set the animation images
     self.explodingImages = explodingRectangleImages
@@ -868,7 +868,7 @@ class PuddleRectangleRain(RectangleRain):
     RectangleRain.__init__(self, initialPosition)
 
     # Sound
-    self.puddleRectangle_sound = pygame.mixer.Sound("sounds/rectPuddle.wav")
+    self.puddleRectangle_sound = pygame.mixer.Sound("sounds/short melting.wav")
 
     self.puddleImages = puddleRectangleImages
 

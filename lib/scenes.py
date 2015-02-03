@@ -77,8 +77,8 @@ class MainMenu(Scene):
     Scene.__init__(self, screen)
 
     # Set sounds
-    self.changeSelection_sound = pygame.mixer.Sound("sounds/menuDown.wav")
-    self.confirm_sound = pygame.mixer.Sound("sounds/menuEnter.wav")
+    self.changeSelection_sound = pygame.mixer.Sound("sounds/menu up.wav")
+    self.confirm_sound = pygame.mixer.Sound("sounds/menu enter.wav")
 
     prepareRectangleSprites(30.0/10)
 
@@ -290,9 +290,9 @@ class LevelScene(Scene):
     Scene.__init__(self, screen)
 
     # Sounds
-    self.triangle_sound = pygame.mixer.Sound("sounds/Bump.ogg")
-    self.hurt_sound = pygame.mixer.Sound("sounds/Bump.ogg")
-    self.victory_sound = pygame.mixer.Sound("sounds/Bump.ogg")
+    self.triangle_sound = pygame.mixer.Sound("sounds/short aquire item.wav")
+    self.hurt_sound = pygame.mixer.Sound("sounds/short damage.wav")
+    self.victory_sound = pygame.mixer.Sound("sounds/end of lvl(long).wav")
 
     # Start off with the first level
     self.levelNum = 1
@@ -726,8 +726,8 @@ class DifficultyMenu(Scene):
     Scene.__init__(self, screen)
 
     # Sounds
-    self.changeSelection_sound = pygame.mixer.Sound("sounds/menuDown.wav")
-    self.confirm_sound = pygame.mixer.Sound("sounds/menuEnter.wav")
+    self.changeSelection_sound = pygame.mixer.Sound("sounds/menu up.wav")
+    self.confirm_sound = pygame.mixer.Sound("sounds/menu enter.wav")
 
   def display(self):
     # Constants for the boxes
