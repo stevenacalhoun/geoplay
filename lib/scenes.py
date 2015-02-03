@@ -12,6 +12,7 @@ import math
 clock = pygame.time.Clock()
 
 PAUSE_DURATION = 100
+levelNum = 1
 
 class Scene(object):
   mainMenuScene = 0
@@ -89,6 +90,7 @@ class MainMenu(Scene):
 
   # Show the main menu where you can select play, difficulty, or help
   def display(self):
+    global levelNum
     # Keep up with what's selected
     self.menuSelection = Scene.levelScene
 
@@ -117,6 +119,27 @@ class MainMenu(Scene):
           self.confirm_sound.play()
           selectionMade = True
           return self.menuSelection
+
+        if event.key == pygame.K_1:
+          levelNum = 1
+        if event.key == pygame.K_2:
+          levelNum = 2
+        if event.key == pygame.K_3:
+          levelNum = 3
+        if event.key == pygame.K_4:
+          levelNum = 4
+        if event.key == pygame.K_5:
+          levelNum = 5
+        if event.key == pygame.K_6:
+          levelNum = 6
+        if event.key == pygame.K_7:
+          levelNum = 7
+        if event.key == pygame.K_8:
+          levelNum = 8
+        if event.key == pygame.K_9:
+          levelNum = 9
+        if event.key == pygame.K_0:
+          levelNum = 0
 
       # Draw the background, then blur it out, then draw the menu
       self.drawBackground()
@@ -292,8 +315,7 @@ class LevelScene(Scene):
     self.hurt_sound = pygame.mixer.Sound("sounds/Bump.ogg")
     self.victory_sound = pygame.mixer.Sound("sounds/Bump.ogg")
 
-    # Start off with the first level
-    self.levelNum = 1
+    self.getLevelNum()
     self.level = getLevel(self.levelNum)
     self.oldTriLoc = 0
 
@@ -393,6 +415,11 @@ class LevelScene(Scene):
       return Scene.mainMenuScene
     else:
       return Scene.gameOverScene
+
+  def getLevelNum(self):
+    global levelNum
+
+    self.levelNum = levelNum
 
   def showLevelTransitionScreen(self):
     self.screen.fill(LIGHT_BLUE)
