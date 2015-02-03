@@ -71,6 +71,7 @@ class Level(object):
     # Scale the triangle and powerup sprites based on the size of the level
     prepareTriangleSprites(30.0/numRows)
     preparePowerUpSprites(30.0/numRows)
+    preparePlatformSprites(30.0/numRows)
 
     # Tile width and height based on the number of columns and rows
     self.tileWidth = SCREEN_WIDTH/numColumns
@@ -138,21 +139,44 @@ class Level(object):
             # Still looking for it
             else:
               currentSearch += 1
+		
+		# P stands for platform
+        if tile == "P":
+          platformLoc = currentXLoc, currentYLoc
+		
+          if row[tileNum+2] == "p":
+            # Left edge platform tile
+            platformLocs.append([platformLoc, (self.tileWidth, self.tileHeight), 0])
+          else:
+            # Single floating platform
+            platformLocs.append([platformLoc, (self.tileWidth, self.tileHeight), 3])
+		
+		# p stands for an extending platform
+        if tile == "p":
+          platformLoc = currentXLoc, currentYLoc
+
+          # Middle platform tile
+          if row[tileNum+2] == "p":
+            platformLocs.append([platformLoc, (self.tileWidth, self.tileHeight), 1])
+				
+          # Right edge platform tile
+          else:
+            platformLocs.append([platformLoc, (self.tileWidth, self.tileHeight), 2])
 
         # P stands for platform
-        if tile == "P":
+        #if tile == "P":
           # If we are currently building a platform, create it
-          if buildingPlatform:
-            platformLocs.append([platformLoc, (platformWidth, tileHeight)])
+          #if buildingPlatform:
+            #platformLocs.append([platformLoc, (platformWidth, tileHeight)])
 
           # Start a new platform
-          buildingPlatform = True
-          platformLoc = currentXLoc, currentYLoc
-          platformWidth = self.tileWidth
+          #buildingPlatform = True
+          #platformLoc = currentXLoc, currentYLoc
+          #platformWidth = self.tileWidth
 
         # p stands for a growing platform
-        elif tile == "p":
-          platformWidth += self.tileWidth
+        #elif tile == "p":
+          #platformWidth += self.tileWidth
 
         # S stands for the starting point for McSquare
         elif tile == "S":
@@ -175,7 +199,7 @@ class Level(object):
       currentXLoc = 0
 
     # Generate the ground at the end
-    platformLocs.append([platformLoc, (platformWidth, self.tileHeight)])
+    #platformLocs.append([platformLoc, (platformWidth, self.tileHeight)])
 
     # Return the platform locations and starting location
     return platformLocs, triangleLocs, powerUpLocs, startingLoc

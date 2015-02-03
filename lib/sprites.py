@@ -23,6 +23,7 @@ POWERUP_EXPIRATION_TIME = 300
 # Shield duration
 SHIELD_DURATION = 100
 
+platformImages = []
 triangleImages = []
 powerUpTimeImages = []
 powerUpLifeImages = []
@@ -396,14 +397,14 @@ class Mcsquare(pygame.sprite.Sprite):
 # Platform class
 class Platform(pygame.sprite.Sprite):
   # Initializer
-  def __init__(self, screen, position, size):
+  def __init__(self, screen, position, size, platformType):
     pygame.sprite.Sprite.__init__(self)
 
     self.width, self.height = size
-
-    # Simple rectangular image
-    self.image = pygame.Surface(size)
-    self.image.fill(BLACK)
+    self.platformImages = platformImages
+		
+    # Generate Cloud tile
+    self.image = self.platformImages[platformType]
 
     self.screen = screen
 
@@ -1092,7 +1093,7 @@ class PowerUp(pygame.sprite.Sprite):
     if self.frameCount >= 10:
       self.frameCount = 0
 
-      # Final fram reached
+      # Final frame reached
       if self.frame >= len(self.hoverImages):
         self.frame = 0
 
@@ -1131,7 +1132,7 @@ def prepareSprites():
 
   # Bouncing Rectangle
   bouncingRectangleImages = getImages("images/sprites-individ/rect-purple", 8, 3)
-
+  
   # Puddle Rectangle
   puddleRectangleImages = getImages("images/sprites-individ/rect-green", 6, 3)
 
@@ -1149,6 +1150,12 @@ def preparePowerUpSprites(scale):
   powerUpLifeImages = getImages("images/sprites-individ/heart", 4, scale)
   powerUpShieldImages = getImages("images/sprites-individ/shield", 4, scale)
 
+def preparePlatformSprites(scale):
+  global platformImages
+	
+  # Cloud tiles for platforms
+  platformImages = getImages("images/sprites-individ/cloud", 4, scale)
+
 def getImages(baseName, totalImages, scaleFactor):
   images = []
 
@@ -1160,7 +1167,7 @@ def getImages(baseName, totalImages, scaleFactor):
 
     image = rawImage
 
-    transColor = image.get_at((0,0))
+    transColor = (255, 0, 0)
     image.set_colorkey(transColor)
     images.append(image)
 

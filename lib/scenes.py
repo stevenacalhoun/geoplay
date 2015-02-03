@@ -405,8 +405,8 @@ class LevelScene(Scene):
     self.platformSpriteGroup = pygame.sprite.Group()
     self.platforms = []
     for platformParams in self.platformParams:
-      platformLoc, platformSize = platformParams
-      platform = Platform(self.screen, platformLoc, platformSize)
+      platformLoc, platformSize, platformType = platformParams
+      platform = Platform(self.screen, platformLoc, platformSize, platformType)
       self.platforms.append(platform)
       self.platformSpriteGroup.add(platform)
 
