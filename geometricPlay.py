@@ -12,7 +12,7 @@ import sprites
 import musicManager
 
 # Global variable to draw on the screen
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 screen.fill(WHITE)
 clock = pygame.time.Clock()
 
@@ -33,7 +33,7 @@ def main():
   
   # Start music manager
   music = musicManager.musicManager()
-  # channel_m = music.play()
+  channel_m = music.play()
 
   # Loop until it's time to quit
   running = True

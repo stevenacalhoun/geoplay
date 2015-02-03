@@ -77,8 +77,8 @@ class MainMenu(Scene):
     Scene.__init__(self, screen)
 
     # Set sounds
-    self.changeSelection_sound = pygame.mixer.Sound("sounds/Bump.ogg")
-    self.confirm_sound = pygame.mixer.Sound("sounds/Bump.ogg")
+    self.changeSelection_sound = pygame.mixer.Sound("sounds/menuDown.wav")
+    self.confirm_sound = pygame.mixer.Sound("sounds/menuEnter.wav")
 
     prepareRectangleSprites(30.0/10)
 
@@ -117,6 +117,8 @@ class MainMenu(Scene):
           channelb = self.confirm_sound.play()
           selectionMade = True
           return self.menuSelection
+        if event.key == pygame.K_ESCAPE:
+          return Scene.quit
 
       # Draw the background, then blur it out, then draw the menu
       self.drawBackground()
@@ -724,8 +726,8 @@ class DifficultyMenu(Scene):
     Scene.__init__(self, screen)
 
     # Sounds
-    self.changeSelection_sound = pygame.mixer.Sound("sounds/Bump.ogg")
-    self.confirm_sound = pygame.mixer.Sound("sounds/Bump.ogg")
+    self.changeSelection_sound = pygame.mixer.Sound("sounds/menuDown.wav")
+    self.confirm_sound = pygame.mixer.Sound("sounds/menuEnter.wav")
 
   def display(self):
     # Constants for the boxes
