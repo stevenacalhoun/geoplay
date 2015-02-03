@@ -7,6 +7,7 @@ from boxes import *
 from sprites import *
 import random
 from levels import *
+import math
 
 clock = pygame.time.Clock()
 
@@ -252,18 +253,32 @@ class HUD():
     self.remainingLives = 3
 
   def displayPauseButton(self):
-    pauseBox = Box(self.screen, 200, 25, WHITE)
-    pauseBox.drawByCenter((SCREEN_WIDTH/2, 50))
+    pauseBox = Box(self.screen, 200, 25, GRAY)
+    pauseBox.drawByCenter((SCREEN_WIDTH/2, 40))
     pauseBox.outline()
 
     pauseLabel = TextLine(self.screen, str("Esc - ||"), color=BLACK, size=36)
-    pauseLabel.drawByCenter(center=(SCREEN_WIDTH/2, 50))
+    pauseLabel.drawByCenter(center=(SCREEN_WIDTH/2, 40))
 
   def update(self):
     # Re draw the HUD
     hudRect = pygame.Rect((0, 0), (SCREEN_WIDTH, HUD_HEIGHT))
-    pygame.draw.rect(self.screen, WHITE, hudRect)
-    pygame.draw.line(self.screen, BLACK, (0, HUD_HEIGHT), (SCREEN_WIDTH, HUD_HEIGHT))
+    # pygame.draw.rect(self.screen, WHITE, hudRect)
+    # pygame.draw.line(self.screen, BLACK, (0, HUD_HEIGHT), (SCREEN_WIDTH, HUD_HEIGHT))
+
+    initialX = 20
+    radius = 100
+    offset = 120
+
+    for cloudNum in range(0, 11):
+      pygame.draw.circle(self.screen, GRAY, (initialX + (cloudNum*offset), 0), radius)
+
+    for cloudNum in range(0, 11):
+      pygame.draw.arc(self.screen, DARK_GRAY, pygame.Rect((-80 + (cloudNum*offset),-radius), (200, 200)), 1.25*math.pi, 1.75*math.pi, 3)
+
+    # pygame.draw.circle(self.screen, GRAY, (SCREEN_WIDTH/2, SCREEN_HEIGHT/2), 100)
+    # pygame.draw.arc(self.screen, BLACK, pygame.Rect(( (SCREEN_WIDTH/2)-100, (SCREEN_HEIGHT/2) -100), (200, 200) ), math.pi, 2*math.pi, 2)
+
     self.displayScore()
     self.displayLives()
     self.displayPauseButton()
