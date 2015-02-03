@@ -9,13 +9,14 @@ from random import randint
 from constants import *
 import scenes
 import sprites
+import musicManager
 
 # Global variable to draw on the screen
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 screen.fill(WHITE)
 clock = pygame.time.Clock()
 
-pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
+pygame.mixer.pre_init(44100, -16, 16, 4096) # setup mixer to avoid sound lag
 
 def main():
   # Initialize the screen
@@ -29,6 +30,10 @@ def main():
   # Default difficulty is two, start on the main menu
   difficulty = 2
   nextScene = scenes.Scene.mainMenuScene
+  
+  # Start music manager
+  music = musicManager.musicManager()
+  channel_m = music.play()
 
   # Loop until it's time to quit
   running = True
