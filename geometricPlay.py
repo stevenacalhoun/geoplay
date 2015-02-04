@@ -13,6 +13,7 @@ import musicManager
 
 # Global variable to draw on the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+pygame.display.set_caption("Geo-Play")
 screen.fill(WHITE)
 clock = pygame.time.Clock()
 
@@ -23,6 +24,10 @@ def main():
   pygame.init()
   pygame.font.init()
 
+  # Start music manager
+  music = musicManager.musicManager()
+  channel_m = music.play()
+
   # Show the splash screen
   intro = scenes.IntroScene(screen)
   intro.display()
@@ -30,10 +35,6 @@ def main():
   # Default difficulty is two, start on the main menu
   difficulty = 2
   nextScene = scenes.Scene.mainMenuScene
-  
-  # Start music manager
-  music = musicManager.musicManager()
-  channel_m = music.play()
 
   # Loop until it's time to quit
   running = True
