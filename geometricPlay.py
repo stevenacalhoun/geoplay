@@ -14,6 +14,11 @@ import musicManager
 # Global variable to draw on the screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Geo-Play")
+image = pygame.image.load("images/sprites-individ/stand-right1.png").convert()
+transColor = (255, 0, 0)
+image.set_colorkey(transColor)
+pygame.display.set_icon(image)
+
 screen.fill(WHITE)
 clock = pygame.time.Clock()
 
