@@ -11,3 +11,6 @@
 
 # pyc files
 *.pyc
+
+# py2app file
+setup.py

@@ -141,7 +141,7 @@ class MainMenu(Scene):
         if event.key == pygame.K_9:
           levelNum = 9
         if event.key == pygame.K_0:
-          levelNum = 0
+          levelNum = 10
 
       # Draw the background, then blur it out, then draw the menu
       self.drawBackground()
