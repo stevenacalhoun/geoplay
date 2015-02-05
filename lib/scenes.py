@@ -642,6 +642,7 @@ class LevelScene(Scene):
         if hit:
           channelb = self.hurt_sound.play()
           self.HUD.removeLife()
+          self.mcSquare.gotHurt()
 
   def generateGround(self):
     numTiles = int(SCREEN_WIDTH/GROUND_TILE_WIDTH)

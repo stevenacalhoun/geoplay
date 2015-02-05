@@ -48,27 +48,53 @@ class Mcsquare(pygame.sprite.Sprite):
     self.land_sound = pygame.mixer.Sound("sounds/short landing.wav")
     self.powerUp_sound = pygame.mixer.Sound("sounds/short aquire item.wav")
 
-    # Running right images
-    self.runningRightImages = getImages("images/sprites-individ/run-right", 8, height/26.5)
+    ## NORMAL IMAGES
+    # Normal Running right images
+    self.normalRunningRightImages = getImages("images/sprites-individ/run-right", 8, height/26.5)
 
-    # Running left images
-    self.runningLeftImages = getImages("images/sprites-individ/run-left", 8, height/26.5)
+    # Normal Running left images
+    self.normalRunningLeftImages = getImages("images/sprites-individ/run-left", 8, height/26.5)
 
-    # Standing right images
-    self.standingRightImages = getImages("images/sprites-individ/stand-right", 4, height/26.5)
+    # Normal Standing right images
+    self.normalStandingRightImages = getImages("images/sprites-individ/stand-right", 4, height/26.5)
 
-    # Standing left images
-    self.standingLeftImages = getImages("images/sprites-individ/stand-left", 4, height/26.5)
+    # Normal Standing left images
+    self.normalStandingLeftImages = getImages("images/sprites-individ/stand-left", 4, height/26.5)
 
-    # Jumping right images
+    # Normal Jumping right images
     fullJumpingRightImages = getImages("images/sprites-individ/jump-right", 6, height/26.5)
-    self.jumpingRightImages= fullJumpingRightImages[0:2]
-    self.fallingRightImages= fullJumpingRightImages[3:6]
+    self.normalJumpingRightImages= fullJumpingRightImages[0:2]
+    self.normalFallingRightImages= fullJumpingRightImages[3:6]
 
-    # Jumping left images
+    # Normal Jumping left images
     fullJumpingLeftImages = getImages("images/sprites-individ/jump-left", 6, height/26.5)
-    self.jumpingLeftImages= fullJumpingLeftImages[0:2]
-    self.fallingLeftImages= fullJumpingLeftImages[3:6]
+    self.normalJumpingLeftImages= fullJumpingLeftImages[0:2]
+    self.normalFallingLeftImages= fullJumpingLeftImages[3:6]
+
+    ## HURT IMAGES
+    # Hurt Running right images
+    self.hurtRunningRightImages = getImages("images/sprites-individ/hurt-run-right", 8, height/26.5)
+
+    # Hurt Running left images
+    self.hurtRunningLeftImages = getImages("images/sprites-individ/hurt-run-left", 8, height/26.5)
+
+    # Hurt Standing right images
+    self.hurtStandingRightImages = getImages("images/sprites-individ/hurt-stand-right", 4, height/26.5)
+
+    # Hurt Standing left images
+    self.hurtStandingLeftImages = getImages("images/sprites-individ/hurt-stand-left", 4, height/26.5)
+
+    # Hurt Jumping right images
+    fullJumpingRightImages = getImages("images/sprites-individ/hurt-jump-right", 6, height/26.5)
+    self.hurtJumpingRightImages= fullJumpingRightImages[0:2]
+    self.hurtFallingRightImages= fullJumpingRightImages[3:6]
+
+    # Hurt Jumping left images
+    fullJumpingLeftImages = getImages("images/sprites-individ/hurt-jump-left", 6, height/26.5)
+    self.hurtJumpingLeftImages= fullJumpingLeftImages[0:2]
+    self.hurtFallingLeftImages= fullJumpingLeftImages[3:6]
+
+    self.switchToNormalImages()
 
     self.image = self.standingLeftImages[0]
 
@@ -105,6 +131,9 @@ class Mcsquare(pygame.sprite.Sprite):
     # Shield power up
     self.shielded = False
     self.shieldCounter = 0
+
+    self.hurt = False
+    self.hurtCounter = 0
 
   # Update based on the current number of ticks
   def update(self):
@@ -236,7 +265,7 @@ class Mcsquare(pygame.sprite.Sprite):
         powerUp.captured = True
         powerUpType = powerUp.powerUpType
         self.powerUp_sound.play()
-        
+
 
     if powerUpType == 3:
       self.shielded = True
@@ -289,6 +318,14 @@ class Mcsquare(pygame.sprite.Sprite):
 
   def animate(self):
     # Select the correct set of images, and display the new frame
+    if self.hurt:
+      self.switchToHurtImages()
+      self.hurtCounter += 1
+      if self.hurtCounter >= 20:
+        self.hurt = False
+    else:
+      self.switchToNormalImages()
+
     if self.jumping:
       self.animateJumping()
     elif self.falling:
@@ -392,6 +429,36 @@ class Mcsquare(pygame.sprite.Sprite):
         self.image = self.fallingRightImages[self.frame]
       self.frame += 1
       self.frameCount = 0
+
+  def gotHurt(self):
+    self.hurt = True
+    self.hurtCounter = 0
+
+  def switchToHurtImages(self):
+    self.fallingLeftImages = self.hurtFallingLeftImages
+    self.fallingRightImages = self.hurtFallingRightImages
+
+    self.jumpingLeftImages = self.hurtJumpingLeftImages
+    self.jumpingRightImages = self.hurtJumpingRightImages
+
+    self.runningLeftImages = self.hurtRunningLeftImages
+    self.runningRightImages = self.hurtRunningRightImages
+
+    self.standingLeftImages = self.hurtStandingLeftImages
+    self.standingRightImages = self.hurtStandingRightImages
+
+  def switchToNormalImages(self):
+    self.fallingLeftImages = self.normalFallingLeftImages
+    self.fallingRightImages = self.normalFallingRightImages
+
+    self.jumpingLeftImages = self.normalJumpingLeftImages
+    self.jumpingRightImages = self.normalJumpingRightImages
+
+    self.runningLeftImages = self.normalRunningLeftImages
+    self.runningRightImages = self.normalRunningRightImages
+
+    self.standingLeftImages = self.normalStandingLeftImages
+    self.standingRightImages = self.normalStandingRightImages
 
   def reposition(self, newLoc):
     self.rect.topleft = newLoc
