@@ -43,11 +43,6 @@ class IntroScene(Scene):
     title = TextLine(self.screen, "Geo-Play", color=BLACK, size=76)
 
     while not doneAnimating:
-      # Leave the splash screen if a key is hit
-      event = pygame.event.poll()
-      if event.type == pygame.KEYDOWN:
-        return
-
       # Fill the screen
       self.screen.fill(LIGHT_BLUE)
       overlay = Box(self.screen, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, alpha=128)
@@ -70,6 +65,11 @@ class IntroScene(Scene):
         moveCounter += 1
         if moveCounter > moveCountEnd:
           doneAnimating = True
+
+      # Leave the splash screen if a key is hit
+      event = pygame.event.poll()
+      if event.type == pygame.KEYDOWN:
+        return
 
       pygame.display.flip()
 
